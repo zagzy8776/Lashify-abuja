@@ -1,0 +1,644 @@
+import { useEffect, useState } from 'react';
+import {
+  Lock, Loader2, Calendar, Users, DollarSign, TrendingUp,
+  Clock, Check, X, Phone, Mail, ChevronRight, LogOut,
+  Scissors, Star, Image as ImageIcon
+} from 'lucide-react';
+import {
+  adminLogin, adminLogout, isAdminAuthenticated,
+  adminFetchAllAppointments, adminFetchAllServices,
+  adminUpdateService, updateAppointmentStatus,
+  adminFetchGallery, adminAddGalleryItem, adminDeleteGalleryItem,
+  adminFetchReviews, adminUpdateReview, adminDeleteReview,
+  type Service, type Appointment, type AppointmentStatus
+} from '../lib/supabase';
+import {
+  formatNaira, formatDuration, formatTime, DAYS_SHORT
+} from '../lib/utils';
+
+type Props = {
+  onNavigate: (page: string) => void;
+};
+
+type Tab = 'overview' | 'appointments' | 'services' | 'gallery' | 'reviews';
+
+export default function Admin({ onNavigate }: Props) {
+  const [session, setSession] = useState<boolean | null>(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+  const [loggingIn, setLoggingIn] = useState(false);
+
+  useEffect(() => {
+    setSession(isAdminAuthenticated());
+  }, []);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoggingIn(true);
+    setLoginError('');
+    const result = await adminLogin(email.trim(), password);
+    if (result.error) {
+      setLoginError(result.error);
+    } else {
+      setSession(true);
+    }
+    setLoggingIn(false);
+  };
+
+  const handleLogout = async () => {
+    await adminLogout();
+    setSession(false);
+    onNavigate('home');
+  };
+
+  if (session === null) {
+    return (
+      <div className="pt-32 pb-24 min-h-screen section-dark flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#d4a827' }} />
+      </div>
+    );
+  }
+
+  if (!session) {
+    return (
+      <div className="pt-32 pb-24 min-h-screen section-dark flex items-center justify-center px-6">
+        <div className="w-full max-w-md">
+          <div className="text-center mb-8">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 overflow-hidden" style={{ border: '1px solid rgba(212,168,39,0.3)', background: 'rgba(212,168,39,0.08)' }}>
+              <Lock className="w-8 h-8" style={{ color: '#d4a827' }} />
+            </div>
+            <h1 className="font-serif text-3xl" style={{ color: '#f9f1e8' }}>Admin Portal</h1>
+            <p className="text-sm mt-2" style={{ color: '#4e3219' }}>Sign in to manage LashifyAbuja</p>
+          </div>
+
+          <form onSubmit={handleLogin} className="rounded-2xl p-8" style={{ background: 'rgba(16,10,6,0.8)', border: '1px solid rgba(212,168,39,0.15)' }}>
+            <div className="mb-5">
+              <label className="block text-sm font-medium mb-2" style={{ color: '#6b5238' }}>Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="input-lux"
+                placeholder="admin@lashifyabuja.com"
+                required
+              />
+            </div>
+            <div className="mb-6">
+              <label className="block text-sm font-medium mb-2" style={{ color: '#6b5238' }}>Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="input-lux"
+                placeholder="••••••••"
+                required
+              />
+            </div>
+            {loginError && (
+              <p className="text-sm mb-4 text-center" style={{ color: 'rgba(200,80,80,0.8)' }}>{loginError}</p>
+            )}
+            <button
+              type="submit"
+              disabled={loggingIn}
+              className="w-full btn-gold disabled:opacity-60"
+            >
+              {loggingIn ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Sign In'}
+            </button>
+          </form>
+
+          <button
+            onClick={() => onNavigate('home')}
+            className="w-full text-center text-sm mt-6 transition-colors" style={{ color: '#3d2612' }} onMouseEnter={(e) => (e.currentTarget.style.color = '#d4a827')} onMouseLeave={(e) => (e.currentTarget.style.color = '#3d2612')}
+          >
+            ← Back to website
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return <AdminDashboard onLogout={handleLogout} />;
+}
+
+function AdminDashboard({ onLogout }: { onLogout: () => void }) {
+  const [tab, setTab] = useState<Tab>('overview');
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [apptData, svcData] = await Promise.all([
+          adminFetchAllAppointments(),
+          adminFetchAllServices(),
+        ]);
+        setAppointments(apptData);
+        setServices(svcData);
+      } catch (err) {
+        console.error('Failed to fetch dashboard data:', err);
+      }
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
+
+  const refreshAppointments = async () => {
+    try {
+      const data = await adminFetchAllAppointments();
+      setAppointments(data);
+    } catch (err) {
+      console.error('Failed to refresh appointments:', err);
+    }
+  };
+
+  const handleUpdateAppointmentStatus = async (id: string, status: AppointmentStatus) => {
+    try {
+      await updateAppointmentStatus(id, status);
+      refreshAppointments();
+    } catch (err) {
+      console.error('Failed to update appointment status:', err);
+    }
+  };
+
+  const toggleServiceActive = async (id: string, isActive: boolean) => {
+    try {
+      await adminUpdateService(id, { is_active: !isActive });
+      setServices(services.map((s) => s.id === id ? { ...s, is_active: !isActive } : s));
+    } catch (err) {
+      console.error('Failed to toggle service:', err);
+    }
+  };
+
+  const updateServicePrice = async (id: string, price: number) => {
+    try {
+      await adminUpdateService(id, { price });
+    } catch (err) {
+      console.error('Failed to update service price:', err);
+    }
+  };
+
+  const tabs: { key: Tab; label: string; icon: typeof Calendar }[] = [
+    { key: 'overview', label: 'Overview', icon: TrendingUp },
+    { key: 'appointments', label: 'Appointments', icon: Calendar },
+    { key: 'services', label: 'Services', icon: Scissors },
+    { key: 'gallery', label: 'Gallery', icon: ImageIcon },
+    { key: 'reviews', label: 'Reviews', icon: Star },
+  ];
+
+  const today = new Date();
+  const todayStr = today.toISOString().split('T')[0];
+  const todayAppointments = appointments.filter((a) => a.appointment_date === todayStr);
+  const upcomingAppointments = appointments
+    .filter((a) => a.appointment_date >= todayStr && a.status !== 'cancelled' && a.status !== 'completed')
+    .sort((a, b) => a.appointment_date.localeCompare(b.appointment_date) || a.start_time.localeCompare(b.start_time));
+  const totalRevenue = appointments
+    .filter((a) => a.status === 'completed')
+    .reduce((sum, a) => sum + Number(a.service_price), 0);
+  const pendingCount = appointments.filter((a) => a.status === 'pending').length;
+
+  if (loading) {
+    return (
+      <div className="pt-32 pb-24 min-h-screen section-dark flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#d4a827' }} />
+      </div>
+    );
+  }
+
+  return (
+    <div className="pt-24 min-h-screen section-dark">
+      <div className="container-lux py-8">
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="font-serif text-3xl" style={{ color: '#f9f1e8' }}>Dashboard</h1>
+            <p className="text-sm mt-1" style={{ color: '#4e3219' }}>Welcome back, Tusha</p>
+          </div>
+          <button
+            onClick={onLogout}
+            className="flex items-center gap-2 px-4 py-2 text-sm transition-colors" style={{ color: '#6b5238' }}
+          >
+            <LogOut className="w-4 h-4" /> Sign Out
+          </button>
+        </div>
+
+        <div className="flex gap-1 mb-8 overflow-x-auto scrollbar-hide">
+          {tabs.map((t) => (
+            <button
+              key={t.key}
+              onClick={() => setTab(t.key)}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all"
+              style={{
+                background: tab === t.key ? '#d4a827' : 'rgba(255,255,255,0.03)',
+                color: tab === t.key ? '#0a0806' : '#6b5238',
+                border: `1px solid ${tab === t.key ? '#d4a827' : 'rgba(212,168,39,0.1)'}`,
+              }}
+            >
+              <t.icon className="w-4 h-4" />
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        {tab === 'overview' && (
+          <div className="space-y-6">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <StatCard icon={Calendar} label="Today's Appointments" value={todayAppointments.length.toString()} color="gold" />
+              <StatCard icon={Clock} label="Pending Requests" value={pendingCount.toString()} color="rose" />
+              <StatCard icon={Users} label="Total Bookings" value={appointments.length.toString()} color="ink" />
+              <StatCard icon={DollarSign} label="Revenue (Completed)" value={formatNaira(totalRevenue)} color="green" />
+            </div>
+
+            <div className="rounded-2xl p-6" style={{ background: 'rgba(16,10,6,0.7)', border: '1px solid rgba(212,168,39,0.12)' }}>
+              <h3 className="font-serif text-xl mb-5" style={{ color: '#f9f1e8' }}>Upcoming Appointments</h3>
+              {upcomingAppointments.length === 0 ? (
+                <p className="text-sm py-8 text-center" style={{ color: '#4e3219' }}>No upcoming appointments.</p>
+              ) : (
+                <div className="space-y-3">
+                  {upcomingAppointments.slice(0, 5).map((apt) => (
+                    <AppointmentRow
+                      key={apt.id}
+                      apt={apt}
+                      onStatusChange={handleUpdateAppointmentStatus}
+                      compact
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {tab === 'appointments' && (
+          <div className="rounded-2xl p-6" style={{ background: 'rgba(16,10,6,0.7)', border: '1px solid rgba(212,168,39,0.12)' }}>
+            <h3 className="font-serif text-xl mb-5" style={{ color: '#f9f1e8' }}>All Appointments</h3>
+            {appointments.length === 0 ? (
+              <p className="text-sm py-8 text-center" style={{ color: '#4e3219' }}>No appointments yet.</p>
+            ) : (
+              <div className="space-y-3">
+                {appointments.map((apt) => (
+                  <AppointmentRow
+                    key={apt.id}
+                    apt={apt}
+                    onStatusChange={handleUpdateAppointmentStatus}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {tab === 'services' && (
+          <div className="rounded-2xl p-6" style={{ background: 'rgba(16,10,6,0.7)', border: '1px solid rgba(212,168,39,0.12)' }}>
+            <h3 className="font-serif text-xl mb-5" style={{ color: '#f9f1e8' }}>Manage Services</h3>
+            <div className="space-y-3">
+              {services.map((svc) => (
+                <div key={svc.id} className="flex items-center justify-between p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(212,168,39,0.1)' }}>
+                  <div className="flex-grow">
+                    <div className="flex items-center gap-3 mb-1">
+                      <h4 className="font-medium" style={{ color: '#f9f1e8' }}>{svc.name}</h4>
+                      <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: svc.is_active ? 'rgba(60,180,60,0.15)' : 'rgba(255,255,255,0.05)', color: svc.is_active ? '#6be06b' : '#4e3219' }}>
+                        {svc.is_active ? 'Active' : 'Inactive'}
+                      </span>
+                    </div>
+                    <p className="text-sm" style={{ color: '#4e3219' }}>{formatDuration(svc.duration_minutes)}</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-1">
+                      <span className="text-xs" style={{ color: '#4e3219' }}>₦</span>
+                      <input
+                        type="number"
+                        defaultValue={svc.price}
+                        onBlur={(e) => {
+                          const val = Number(e.target.value);
+                          if (val !== svc.price && val > 0) {
+                            updateServicePrice(svc.id, val);
+                            setServices(services.map((s) => s.id === svc.id ? { ...s, price: val } : s));
+                          }
+                        }}
+                        className="w-24 px-2 py-1.5 rounded-lg text-sm text-right focus:outline-none"
+                        style={{ background: 'rgba(10,8,6,0.8)', border: '1px solid rgba(212,168,39,0.2)', color: '#f9f1e8' }}
+                      />
+                    </div>
+                    <button
+                      onClick={() => toggleServiceActive(svc.id, svc.is_active)}
+                      className="relative w-11 h-6 rounded-full transition-colors"
+                      style={{ background: svc.is_active ? '#d4a827' : 'rgba(255,255,255,0.1)' }}
+                    >
+                      <span className="absolute top-0.5 w-5 h-5 rounded-full transition-transform" style={{ background: '#f9f1e8', transform: svc.is_active ? 'translateX(20px)' : 'translateX(2px)' }} />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {tab === 'gallery' && <GalleryManager />}
+        {tab === 'reviews' && <ReviewsManager />}
+      </div>
+    </div>
+  );
+}
+
+function StatCard({ icon: Icon, label, value, color }: {
+  icon: typeof Calendar;
+  label: string;
+  value: string;
+  color: 'gold' | 'rose' | 'ink' | 'green';
+}) {
+  const iconColors: Record<string, string> = { gold: '#d4a827', rose: 'rgba(200,80,80,0.8)', ink: '#a8896e', green: '#6be06b' };
+  return (
+    <div className="bg-white rounded-2xl p-5" style={{ background: 'rgba(16,10,6,0.7)', border: '1px solid rgba(212,168,39,0.12)' }}>
+      <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3`}
+        style={{ background: 'rgba(212,168,39,0.08)', border: '1px solid rgba(212,168,39,0.15)' }}>
+        <Icon className="w-5 h-5" style={{ color: iconColors[color] }} />
+      </div>
+      <div className="font-serif text-2xl" style={{ color: '#f9f1e8' }}>{value}</div>
+      <div className="text-xs mt-1" style={{ color: '#4e3219' }}>{label}</div>
+    </div>
+  );
+}
+
+function AppointmentRow({ apt, onStatusChange, compact }: {
+  apt: Appointment;
+  onStatusChange: (id: string, status: AppointmentStatus) => void;
+  compact?: boolean;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const statusColors: Record<string, { bg: string; color: string }> = {
+    pending:   { bg: 'rgba(212,168,39,0.1)',  color: '#d4a827' },
+    confirmed: { bg: 'rgba(60,120,200,0.1)',  color: '#7ab0f0' },
+    completed: { bg: 'rgba(60,180,60,0.1)',   color: '#6be06b' },
+    cancelled: { bg: 'rgba(200,60,60,0.1)',   color: 'rgba(200,80,80,0.8)' },
+    no_show:   { bg: 'rgba(255,255,255,0.05)', color: '#4e3219' },
+  };
+
+  const date = new Date(apt.appointment_date + 'T00:00:00');
+
+  return (
+    <div className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(212,168,39,0.08)' }}>
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center gap-4 flex-grow">
+          <div className="text-center shrink-0">
+            <div className="text-xs uppercase" style={{ color: '#4e3219' }}>{DAYS_SHORT[date.getDay()]}</div>
+            <div className="font-serif text-2xl" style={{ color: '#f9f1e8' }}>{date.getDate()}</div>
+            <div className="text-xs" style={{ color: '#4e3219' }}>{date.toLocaleDateString('en-US', { month: 'short' })}</div>
+          </div>
+          <div className="flex-grow min-w-0">
+            <div className="flex items-center gap-2 mb-1">
+              <h4 className="font-medium text-ink-900 truncate">{apt.service_name}</h4>
+              <span className={`text-xs px-2 py-0.5 rounded-full shrink-0 ${statusColors[apt.status]}`}>
+                {apt.status.replace('_', ' ')}
+              </span>
+            </div>
+            <p className="text-sm" style={{ color: '#6b5238' }}>{apt.client_name} · {formatTime(apt.start_time)}</p>
+            {!compact && (
+              <p className="text-xs mt-1" style={{ color: '#4e3219' }}>{formatNaira(Number(apt.service_price))}</p>
+            )}
+          </div>
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
+          {apt.status === 'pending' && (
+            <button
+              onClick={() => onStatusChange(apt.id, 'confirmed')}
+              className="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
+                style={{ background: 'rgba(60,120,200,0.1)', color: '#7ab0f0', border: '1px solid rgba(60,120,200,0.2)' }}
+            >
+              Confirm
+            </button>
+          )}
+          {(apt.status === 'pending' || apt.status === 'confirmed') && (
+            <button
+              onClick={() => onStatusChange(apt.id, 'completed')}
+              className="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
+                style={{ background: 'rgba(60,180,60,0.1)', color: '#6be06b', border: '1px solid rgba(60,180,60,0.2)' }}
+            >
+              <Check className="w-3.5 h-3.5 inline" /> Done
+            </button>
+          )}
+          {apt.status !== 'cancelled' && apt.status !== 'completed' && (
+            <button
+              onClick={() => onStatusChange(apt.id, 'cancelled')}
+              className="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
+                style={{ background: 'rgba(200,60,60,0.1)', color: 'rgba(200,80,80,0.8)', border: '1px solid rgba(200,60,60,0.15)' }}
+            >
+              <X className="w-3.5 h-3.5 inline" />
+            </button>
+          )}
+          {!compact && (
+            <button
+              onClick={() => setExpanded(!expanded)}
+              className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
+                style={{ background: 'rgba(255,255,255,0.04)' }}
+            >
+              <ChevronRight className="w-4 h-4 transition-transform" style={{ color: '#4e3219', transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)' }} />
+            </button>
+          )}
+        </div>
+      </div>
+      {expanded && !compact && (
+        <div className="mt-4 pt-4 grid sm:grid-cols-2 gap-3 text-sm" style={{ borderTop: '1px solid rgba(212,168,39,0.08)' }}>
+          <div className="flex items-center gap-2 text-ink-600">
+            <Phone className="w-4 h-4" style={{ color: '#d4a827' }} /> <span style={{ color: '#6b5238' }}>{apt.client_phone}</span>
+          </div>
+          {apt.client_email && (
+            <div className="flex items-center gap-2 text-ink-600">
+              <Mail className="w-4 h-4" style={{ color: '#d4a827' }} /> <span style={{ color: '#6b5238' }}>{apt.client_email}</span>
+            </div>
+          )}
+          <div className="text-ink-600">
+            Duration: {formatDuration(apt.service_duration)} · {formatTime(apt.start_time)} – {formatTime(apt.end_time)}
+          </div>
+          <div className="text-ink-600">Price: {formatNaira(Number(apt.service_price))}</div>
+          {apt.notes && (
+            <div className="sm:col-span-2 text-ink-600">
+              <span className="text-ink-400">Notes:</span> {apt.notes}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function GalleryManager() {
+  const [items, setItems] = useState<{ id: string; title: string; category: string; image_url: string }[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [newItem, setNewItem] = useState({ title: '', category: 'lashes', image_url: '' });
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const data = await adminFetchGallery();
+        setItems(data);
+      } catch (err) {
+        console.error('Failed to fetch gallery:', err);
+      }
+      setLoading(false);
+    };
+    fetch();
+  }, []);
+
+  const addItem = async () => {
+    if (!newItem.title.trim() || !newItem.image_url.trim()) return;
+    try {
+      const data = await adminAddGalleryItem({
+        title: newItem.title.trim(),
+        category: newItem.category,
+        image_url: newItem.image_url.trim(),
+      });
+      setItems([data, ...items]);
+      setNewItem({ title: '', category: 'lashes', image_url: '' });
+    } catch (err) {
+      console.error('Failed to add gallery item:', err);
+    }
+  };
+
+  const deleteItem = async (id: string) => {
+    try {
+      await adminDeleteGalleryItem(id);
+      setItems(items.filter((i) => i.id !== id));
+    } catch (err) {
+      console.error('Failed to delete gallery item:', err);
+    }
+  };
+
+  if (loading) return <Loader2 className="w-6 h-6 animate-spin" style={{ color: '#d4a827' }} />;
+
+  return (
+    <div className="space-y-6">
+      <div className="rounded-2xl p-6" style={{ background: 'rgba(16,10,6,0.7)', border: '1px solid rgba(212,168,39,0.12)' }}>
+        <h3 className="font-serif text-xl mb-5" style={{ color: '#f9f1e8' }}>Add Gallery Item</h3>
+        <div className="grid sm:grid-cols-3 gap-3">
+          <input
+            type="text"
+            placeholder="Title"
+            value={newItem.title}
+            onChange={(e) => setNewItem({ ...newItem, title: e.target.value })}
+            className="input-lux"
+          />
+          <select
+            value={newItem.category}
+            onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
+            className="input-lux"
+          >
+            <option value="lashes">Lashes</option>
+            <option value="brows">Brows</option>
+            <option value="other">Other</option>
+          </select>
+          <input
+            type="text"
+            placeholder="Image URL"
+            value={newItem.image_url}
+            onChange={(e) => setNewItem({ ...newItem, image_url: e.target.value })}
+            className="input-lux"
+          />
+        </div>
+        <button onClick={addItem} className="btn-gold mt-4 text-sm">
+          Add to Gallery
+        </button>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {items.map((item) => (
+          <div key={item.id} className="group relative aspect-square rounded-xl overflow-hidden">
+            <img src={item.image_url} alt={item.title} className="w-full h-full object-cover" />
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-3" style={{ background: 'rgba(10,8,6,0.85)' }}>
+              <p className="text-white text-sm font-medium mb-2 text-center">{item.title}</p>
+              <button
+                onClick={() => deleteItem(item.id)}
+                className="px-3 py-1.5 bg-rose-500 text-white rounded-lg text-xs font-medium hover:bg-rose-600"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ReviewsManager() {
+  const [reviews, setReviews] = useState<{ id: string; client_name: string; rating: number; comment: string; is_published: boolean }[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const data = await adminFetchReviews();
+        setReviews(data);
+      } catch (err) {
+        console.error('Failed to fetch reviews:', err);
+      }
+      setLoading(false);
+    };
+    fetch();
+  }, []);
+
+  const togglePublish = async (id: string, isPublished: boolean) => {
+    try {
+      await adminUpdateReview(id, { is_published: !isPublished });
+      setReviews(reviews.map((r) => r.id === id ? { ...r, is_published: !isPublished } : r));
+    } catch (err) {
+      console.error('Failed to toggle review publish status:', err);
+    }
+  };
+
+  const deleteReview = async (id: string) => {
+    try {
+      await adminDeleteReview(id);
+      setReviews(reviews.filter((r) => r.id !== id));
+    } catch (err) {
+      console.error('Failed to delete review:', err);
+    }
+  };
+
+  if (loading) return <Loader2 className="w-6 h-6 animate-spin" style={{ color: '#d4a827' }} />;
+
+  return (
+    <div className="space-y-3">
+      {reviews.length === 0 ? (
+        <p className="text-center py-8" style={{ color: '#4e3219' }}>No reviews yet.</p>
+      ) : (
+        reviews.map((review) => (
+          <div key={review.id} className="rounded-2xl p-5" style={{ background: 'rgba(16,10,6,0.7)', border: '1px solid rgba(212,168,39,0.12)' }}>
+            <div className="flex items-start justify-between mb-3">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <h4 className="font-medium" style={{ color: '#f9f1e8' }}>{review.client_name}</h4>
+                  <div className="flex gap-0.5">
+                    {[...Array(review.rating)].map((_, i) => (
+                      <Star key={i} className="w-3.5 h-3.5" style={{ fill: '#d4a827', color: '#d4a827' }} />
+                    ))}
+                  </div>
+                </div>
+                <p className="text-sm" style={{ color: '#6b5238' }}>{review.comment}</p>
+              </div>
+              <span className="text-xs px-2 py-1 rounded-full shrink-0" style={{ background: review.is_published ? 'rgba(60,180,60,0.15)' : 'rgba(255,255,255,0.05)', color: review.is_published ? '#6be06b' : '#4e3219' }}>
+                {review.is_published ? 'Published' : 'Hidden'}
+              </span>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => togglePublish(review.id, review.is_published)}
+                className="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
+                style={{ background: 'rgba(255,255,255,0.04)', color: '#6b5238', border: '1px solid rgba(212,168,39,0.1)' }}
+              >
+                {review.is_published ? 'Hide' : 'Publish'}
+              </button>
+              <button
+                onClick={() => deleteReview(review.id)}
+                className="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
+                style={{ background: 'rgba(200,60,60,0.1)', color: 'rgba(200,80,80,0.8)', border: '1px solid rgba(200,60,60,0.15)' }}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        ))
+      )}
+    </div>
+  );
+}

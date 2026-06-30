@@ -1,0 +1,126 @@
+import { useEffect, useState } from 'react';
+import { Menu, X, Calendar } from 'lucide-react';
+
+type Props = {
+  onNavigate: (page: string) => void;
+  currentPage: string;
+};
+
+const navLinks = [
+  { label: 'Home', page: 'home' },
+  { label: 'Services', page: 'services' },
+  { label: 'Gallery', page: 'gallery' },
+  { label: 'About', page: 'about' },
+  { label: 'Contact', page: 'contact' },
+];
+
+export default function Navbar({ onNavigate, currentPage }: Props) {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const handleNav = (page: string) => {
+    onNavigate(page);
+    setMobileOpen(false);
+  };
+
+  return (
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        scrolled ? 'py-3' : 'py-5'
+      }`}
+      style={{
+        background: scrolled
+          ? 'rgba(10,8,6,0.95)'
+          : 'transparent',
+        backdropFilter: scrolled ? 'blur(12px)' : 'none',
+        borderBottom: scrolled ? '1px solid rgba(212,168,39,0.1)' : 'none',
+      }}
+    >
+      <nav className="container-lux flex items-center justify-between">
+        {/* Logo */}
+        <button onClick={() => handleNav('home')} className="flex items-center gap-3 group">
+          <div className="w-11 h-11 rounded-full overflow-hidden transition-all duration-300" style={{ border: '1px solid rgba(212,168,39,0.15)' }}>
+            <img
+              src="/images/WhatsApp_Image_2026-06-30_at_2.12.44_PM.jpeg"
+              alt="LashifyAbuja"
+              className="w-full h-full object-cover"
+              style={{ filter: 'brightness(1.05) contrast(1.05)' }}
+            />
+          </div>
+          <div className="text-left leading-none">
+            <div className="font-serif text-xl tracking-wide" style={{ color: '#f9f1e8' }}>
+              Lashify<span style={{ color: '#d4a827' }}>Abuja</span>
+            </div>
+            <div className="text-[10px] uppercase tracking-[0.2em] mt-0.5" style={{ color: '#4e3219' }}>
+              Lash & Brow Studio
+            </div>
+          </div>
+        </button>
+
+        {/* Desktop nav */}
+        <div className="hidden md:flex items-center gap-1">
+          {navLinks.map((link) => (
+            <button
+              key={link.page}
+              onClick={() => handleNav(link.page)}
+              className="px-4 py-2 text-sm font-medium tracking-wide rounded-full transition-all duration-300"
+              style={{
+                color: currentPage === link.page ? '#d4a827' : '#a8896e',
+              }}
+              onMouseEnter={(e) => { if (currentPage !== link.page) (e.target as HTMLElement).style.color = '#d4a827'; }}
+              onMouseLeave={(e) => { if (currentPage !== link.page) (e.target as HTMLElement).style.color = '#a8896e'; }}
+            >
+              {link.label}
+            </button>
+          ))}
+          <button onClick={() => handleNav('book')} className="btn-gold ml-3 text-sm">
+            <Calendar className="w-4 h-4" />
+            Book Now
+          </button>
+        </div>
+
+        {/* Mobile toggle */}
+        <button
+          className="md:hidden p-2"
+          style={{ color: '#a8896e' }}
+          onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label="Toggle menu"
+        >
+          {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
+      </nav>
+
+      {/* Mobile menu */}
+      {mobileOpen && (
+        <div className="md:hidden absolute top-full left-0 right-0 border-t animate-fade-down"
+          style={{ background: 'rgba(10,8,6,0.98)', borderColor: 'rgba(212,168,39,0.1)', backdropFilter: 'blur(12px)' }}>
+          <div className="container-lux py-6 flex flex-col gap-1">
+            {navLinks.map((link) => (
+              <button
+                key={link.page}
+                onClick={() => handleNav(link.page)}
+                className="px-4 py-3 text-left text-base font-medium rounded-lg transition-colors"
+                style={{
+                  color: currentPage === link.page ? '#d4a827' : '#a8896e',
+                  background: currentPage === link.page ? 'rgba(212,168,39,0.08)' : 'transparent',
+                }}
+              >
+                {link.label}
+              </button>
+            ))}
+            <button onClick={() => handleNav('book')} className="btn-gold mt-3">
+              <Calendar className="w-4 h-4" />
+              Book Now
+            </button>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}

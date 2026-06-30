@@ -1,0 +1,161 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: #0a0806;
+    color: #f9f1e8;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::selection {
+    background-color: #e8c45a;
+    color: #0a0806;
+  }
+}
+
+@layer components {
+  .container-lux {
+    @apply max-w-7xl mx-auto px-6 md:px-10;
+  }
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 font-medium tracking-wide rounded-full transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0;
+    background: linear-gradient(135deg, #d4a827 0%, #e8c45a 50%, #d4a827 100%);
+    color: #0a0806;
+    box-shadow: 0 4px 20px rgba(212,168,39,0.3);
+  }
+  .btn-gold:hover {
+    box-shadow: 0 8px 30px rgba(212,168,39,0.5);
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 font-medium tracking-wide rounded-full transition-all duration-300 hover:-translate-y-0.5;
+    border: 1px solid rgba(212,168,39,0.4);
+    color: #e8c45a;
+  }
+  .btn-outline:hover {
+    border-color: #e8c45a;
+    background: rgba(212,168,39,0.08);
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 font-medium tracking-wide rounded-full transition-all duration-300;
+    color: #c9a98c;
+  }
+  .btn-ghost:hover {
+    background: rgba(255,255,255,0.06);
+    color: #e8c45a;
+  }
+  .section-label {
+    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.25em];
+    color: #d4a827;
+  }
+  .heading-serif {
+    @apply font-serif font-light tracking-tight;
+  }
+  .card-lux {
+    @apply rounded-2xl shadow-sm transition-all duration-500;
+    background: rgba(22,14,8,0.85);
+    border: 1px solid rgba(212,168,39,0.15);
+    backdrop-filter: blur(6px);
+  }
+  .card-lux:hover {
+    border-color: rgba(212,168,39,0.35);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,168,39,0.1);
+  }
+  .input-lux {
+    @apply w-full px-4 py-3 rounded-xl transition-colors duration-200 focus:outline-none;
+    background: rgba(16,10,6,0.8);
+    border: 1px solid rgba(212,168,39,0.2);
+    color: #f9f1e8;
+  }
+  .input-lux::placeholder {
+    color: #6b5238;
+  }
+  .input-lux:focus {
+    border-color: rgba(212,168,39,0.6);
+    background: rgba(16,10,6,0.95);
+  }
+  .label-lux {
+    @apply block text-sm font-medium mb-1.5;
+    color: #a8896e;
+  }
+  .section-dark {
+    background: #0a0806;
+  }
+  .section-brown {
+    background: #100d09;
+  }
+  .section-mid {
+    background: #160e08;
+  }
+  .divider-gold {
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(212,168,39,0.4), transparent);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .gold-gradient-text {
+    background: linear-gradient(135deg, #b8891a 0%, #e8c45a 40%, #d4a827 70%, #f0d98a 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  .magenta-gradient-text {
+    background: linear-gradient(135deg, #b8167a 0%, #e040a0 50%, #d4248c 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  .shimmer-dark {
+    background: linear-gradient(90deg, #160e08 0%, #2c2015 50%, #160e08 100%);
+    background-size: 1000px 100%;
+    animation: shimmer 2.5s linear infinite;
+  }
+  .shimmer-bg {
+    background: linear-gradient(90deg, #100d09 0%, #2e1c0d 50%, #100d09 100%);
+    background-size: 1000px 100%;
+  }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* 3D perspective for butterfly */
+  .perspective-500 { perspective: 500px; }
+  .perspective-300 { perspective: 300px; }
+  .transform-3d   { transform-style: preserve-3d; }
+
+  /* Glow effects */
+  .glow-gold {
+    box-shadow: 0 0 20px rgba(212,168,39,0.6), 0 0 60px rgba(212,168,39,0.3), 0 0 120px rgba(212,168,39,0.15);
+  }
+  .glow-warm {
+    box-shadow: 0 0 30px rgba(200,120,60,0.5), 0 0 80px rgba(200,120,60,0.2);
+  }
+  .text-cream { color: #f9f1e8; }
+  .text-gold-accent { color: #d4a827; }
+  .text-muted { color: #6b5238; }
+  .text-soft { color: #a8896e; }
+
+  /* Butterfly wing 3D flip */
+  @keyframes wingBeatLeft {
+    0%,100% { transform: rotateY(0deg) scaleX(1); }
+    50%      { transform: rotateY(-75deg) scaleX(0.3); }
+  }
+  @keyframes wingBeatRight {
+    0%,100% { transform: rotateY(0deg) scaleX(1); }
+    50%      { transform: rotateY(75deg) scaleX(0.3); }
+  }
+  .wing-beat-left  { animation: wingBeatLeft  0.7s ease-in-out infinite; }
+  .wing-beat-right { animation: wingBeatRight 0.7s ease-in-out infinite; }
+  .wing-beat-left-slow  { animation: wingBeatLeft  1.8s ease-in-out infinite; }
+  .wing-beat-right-slow { animation: wingBeatRight 1.8s ease-in-out infinite; }
+}
