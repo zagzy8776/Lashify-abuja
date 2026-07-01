@@ -110,28 +110,6 @@ export default function About({ onNavigate }: Props) {
       </div>
 
       <style>{`
-        @keyframes halopulse {
-          0%, 100% { opacity: 0.55; transform: scale(1); }
-          50%       { opacity: 0.85; transform: scale(1.04); }
-        }
-        @keyframes haloinner {
-          0%, 100% { opacity: 0.4; transform: scale(1); }
-          50%       { opacity: 0.7; transform: scale(1.025); }
-        }
-        @keyframes spinring {
-          from { transform: rotate(0deg); }
-          to   { transform: rotate(360deg); }
-        }
-        @keyframes sparkle1 {
-          0%   { transform: rotate(0deg)   translateX(0); opacity: 0; }
-          10%  { opacity: 1; }
-          90%  { opacity: 1; }
-          100% { transform: rotate(360deg) translateX(0); opacity: 0; }
-        }
-        @keyframes dot-orbit {
-          from { transform: rotate(var(--start)) translateX(var(--r)) scale(1); opacity: var(--op); }
-          to   { transform: rotate(calc(var(--start) + 360deg)) translateX(var(--r)) scale(1); opacity: var(--op); }
-        }
         @keyframes imagePop {
           from { opacity: 0; transform: scale(0.93); }
           to   { opacity: 1; transform: scale(1); }
@@ -144,117 +122,37 @@ export default function About({ onNavigate }: Props) {
 function GlowCircle() {
   const SIZE = 380;
 
-  // 8 orbiting light dots
-  const dots = [
-    { r: '196px', start: '0deg',   dur: '9s',  op: '0.8',  sz: 5 },
-    { r: '200px', start: '45deg',  dur: '11s', op: '0.5',  sz: 3 },
-    { r: '194px', start: '110deg', dur: '14s', op: '0.9',  sz: 6 },
-    { r: '198px', start: '180deg', dur: '10s', op: '0.6',  sz: 4 },
-    { r: '202px', start: '225deg', dur: '13s', op: '0.7',  sz: 3.5 },
-    { r: '195px', start: '290deg', dur: '8s',  op: '0.85', sz: 4.5 },
-    { r: '199px', start: '330deg', dur: '16s', op: '0.5',  sz: 3 },
-    { r: '197px', start: '60deg',  dur: '12s', op: '0.75', sz: 5 },
-  ];
-
   return (
     <div
       className="relative scale-[0.75] sm:scale-90 md:scale-100 origin-center transition-transform duration-500"
       style={{ width: `${SIZE}px`, height: `${SIZE}px` }}
     >
-      {/* ── Layer 1: Wide soft halo (outermost) ── */}
+      {/* Subtle background glow */}
       <div
         className="absolute rounded-full pointer-events-none"
         style={{
-          inset: '-70px',
+          inset: '-40px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(212,168,39,0.22) 0%, rgba(180,100,20,0.12) 45%, transparent 70%)',
-          animation: 'halopulse 3.5s ease-in-out infinite',
+          background: 'radial-gradient(circle, rgba(212,168,39,0.12) 0%, transparent 70%)',
         }}
       />
 
-      {/* ── Layer 2: Medium amber ring ── */}
+      {/* Elegant thin golden border ring */}
       <div
         className="absolute rounded-full pointer-events-none"
         style={{
-          inset: '-30px',
+          inset: '-8px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, transparent 55%, rgba(212,168,39,0.28) 70%, rgba(180,90,10,0.15) 82%, transparent 92%)',
-          animation: 'haloinner 2.8s ease-in-out infinite',
-          animationDelay: '0.4s',
+          border: '1px solid rgba(212,168,39,0.25)',
         }}
       />
 
-      {/* ── Layer 3: Tight bright ring right at edge ── */}
-      <div
-        className="absolute rounded-full pointer-events-none"
-        style={{
-          inset: '-12px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, transparent 72%, rgba(230,185,60,0.5) 80%, rgba(212,140,20,0.3) 87%, transparent 94%)',
-          animation: 'haloinner 2.2s ease-in-out infinite',
-          animationDelay: '0.8s',
-        }}
-      />
-
-      {/* ── Layer 4: Spinning arc ring ── */}
-      <div
-        className="absolute rounded-full pointer-events-none"
-        style={{
-          inset: '-16px',
-          borderRadius: '50%',
-          border: '1.5px solid transparent',
-          backgroundImage:
-            'conic-gradient(from 0deg, transparent 0%, rgba(212,168,39,0.7) 15%, rgba(230,200,80,0.9) 22%, rgba(212,168,39,0.5) 30%, transparent 50%, rgba(180,120,30,0.3) 75%, rgba(212,168,39,0.6) 88%, transparent 100%)',
-          backgroundOrigin: 'border-box',
-          WebkitMask: 'linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)',
-          WebkitMaskComposite: 'destination-out',
-          maskComposite: 'exclude',
-          animation: 'spinring 8s linear infinite',
-        }}
-      />
-
-      {/* ── Layer 5: Counter-spinning faint arc ── */}
-      <div
-        className="absolute rounded-full pointer-events-none"
-        style={{
-          inset: '-20px',
-          borderRadius: '50%',
-          backgroundImage:
-            'conic-gradient(from 180deg, transparent 0%, rgba(212,168,39,0.2) 20%, rgba(255,220,80,0.35) 35%, transparent 55%, rgba(212,168,39,0.15) 80%, transparent 100%)',
-          animation: 'spinring 14s linear infinite reverse',
-        }}
-      />
-
-      {/* ── Layer 6: Orbiting light dots ── */}
-      {dots.map((dot, i) => (
-        <div
-          key={i}
-          className="absolute pointer-events-none"
-          style={{
-            top: '50%',
-            left: '50%',
-            width: `${dot.sz}px`,
-            height: `${dot.sz}px`,
-            marginTop: `-${dot.sz / 2}px`,
-            marginLeft: `-${dot.sz / 2}px`,
-            borderRadius: '50%',
-            background: `radial-gradient(circle, rgba(255,220,80,0.95) 0%, rgba(212,168,39,0.6) 60%, transparent 100%)`,
-            boxShadow: `0 0 ${dot.sz * 3}px rgba(212,168,39,0.8)`,
-            transformOrigin: 'center center',
-            animation: `dot-orbit ${dot.dur} linear infinite`,
-            '--start': dot.start,
-            '--r': dot.r,
-            '--op': dot.op,
-          } as React.CSSProperties & { [key: string]: string | number }}
-        />
-      ))}
-
-      {/* ── The circle image itself ── */}
+      {/* The circle image itself */}
       <div
         className="absolute inset-0 rounded-full overflow-hidden"
         style={{
           animation: 'imagePop 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both',
-          boxShadow: 'inset 0 0 40px rgba(0,0,0,0.5)',
+          boxShadow: 'inset 0 0 40px rgba(0,0,0,0.5), 0 10px 40px rgba(0,0,0,0.5)',
         }}
       >
         <img
