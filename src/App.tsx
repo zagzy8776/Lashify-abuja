@@ -78,7 +78,7 @@ function App() {
 
       {page === 'admin' && <Admin onNavigate={navigate} />}
 
-      {!isAdmin && <Footer onNavigate={navigate} />}
+      {!isAdmin && <Footer />}
     </div>
   );
 }
