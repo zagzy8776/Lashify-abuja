@@ -26,7 +26,11 @@ app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // Admin credentials (in production, store in database)
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@lashifyabuja.com';
-const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH || bcrypt.hashSync('admin123', 10);
+let ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH;
+if (!ADMIN_PASSWORD_HASH) {
+  const plainPassword = process.env.ADMIN_PASSWORD || 'admin123';
+  ADMIN_PASSWORD_HASH = bcrypt.hashSync(plainPassword, 10);
+}
 
 // Middleware to verify admin token
 const verifyAdmin = (req, res, next) => {
