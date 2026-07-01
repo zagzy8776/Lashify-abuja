@@ -105,7 +105,7 @@ export default function Footer({ onNavigate }: Props) {
             <div className="space-y-3">
               <p className="flex items-start gap-2 text-sm" style={{ color: '#4e3219' }}>
                 <MapPin className="w-4 h-4 mt-0.5 shrink-0" style={{ color: '#b8891a' }} />
-                <span>Abuja, Nigeria<br />By appointment only</span>
+                <span>Life Camp/Gwarimpa<br />Abuja, Nigeria</span>
               </p>
               <p className="flex items-start gap-2 text-sm">
                 <Mail className="w-4 h-4 mt-0.5 shrink-0" style={{ color: '#b8891a' }} />

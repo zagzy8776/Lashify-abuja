@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS appointments (
 -- Time slots table (working hours per day of week)
 CREATE TABLE IF NOT EXISTS time_slots (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  day_of_week int NOT NULL CHECK (day_of_week BETWEEN 0 AND 6),
+  day_of_week int NOT NULL UNIQUE CHECK (day_of_week BETWEEN 0 AND 6),
   start_time time NOT NULL DEFAULT '09:00',
   end_time time NOT NULL DEFAULT '18:00',
   is_active boolean NOT NULL DEFAULT true,
@@ -168,3 +168,36 @@ DROP TRIGGER IF EXISTS update_appointments_updated_at ON appointments;
 CREATE TRIGGER update_appointments_updated_at
   BEFORE UPDATE ON appointments
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- Ensure time_slots has a UNIQUE constraint on day_of_week for existing tables
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 
+        FROM pg_constraint 
+        WHERE conname = 'time_slots_day_of_week_key'
+    ) THEN
+        ALTER TABLE time_slots ADD CONSTRAINT time_slots_day_of_week_key UNIQUE (day_of_week);
+    END IF;
+END $$;
+
+-- Seed default services
+INSERT INTO services (name, slug, description, price, duration_minutes, category, is_active, sort_order) VALUES
+  ('Classic Lash Extensions', 'classic-lashes', 'A natural, mascara-like look. One extension is applied to each natural lash.', 15000, 90, 'lashes', true, 1),
+  ('Hybrid Lash Extensions', 'hybrid-lashes', 'A perfect blend of classic and volume lashes for textured, fluffy results.', 20000, 105, 'lashes', true, 2),
+  ('Volume Lash Extensions', 'volume-lashes', 'Fuller, denser lashes. Custom fans of 3-6 extensions are applied to each lash.', 25000, 120, 'lashes', true, 3),
+  ('Mega Volume Extensions', 'mega-volume-lashes', 'Our ultimate full and dramatic look using ultra-lightweight fans.', 30000, 135, 'lashes', true, 4),
+  ('Brow Shaping & Styling', 'brow-shaping', 'Professional shaping, mapping, and tweezing/waxing for perfect brows.', 8000, 45, 'brows', true, 5),
+  ('Brow Lamination & Tint', 'brow-lamination', 'Relocate brow hairs for a fuller, brushed-up look including custom tinting.', 15000, 60, 'brows', true, 6),
+  ('Lash Lift & Tint', 'lash-lift', 'Perm and tint your natural lashes for a beautiful, low-maintenance curl.', 12000, 60, 'other', true, 7)
+ON CONFLICT (slug) DO NOTHING;
+
+-- Seed default time slots (Monday - Saturday)
+INSERT INTO time_slots (day_of_week, start_time, end_time, is_active) VALUES
+  (1, '09:00:00', '18:00:00', true),
+  (2, '09:00:00', '18:00:00', true),
+  (3, '09:00:00', '18:00:00', true),
+  (4, '09:00:00', '18:00:00', true),
+  (5, '09:00:00', '18:00:00', true),
+  (6, '10:00:00', '17:00:00', true)
+ON CONFLICT (day_of_week) DO NOTHING;

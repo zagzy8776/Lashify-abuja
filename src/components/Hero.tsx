@@ -54,12 +54,12 @@ export default function Hero({ onNavigate }: Props) {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-14">
-              <button onClick={() => onNavigate('book')} className="btn-gold group text-sm">
+              <button onClick={() => onNavigate('book')} className="btn-gold group text-sm py-4">
                 <Calendar className="w-4 h-4" />
                 Book Now
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
-              <button onClick={() => onNavigate('services')} className="btn-outline text-sm">
+              <button onClick={() => onNavigate('services')} className="btn-outline text-sm py-4">
                 Our Services
               </button>
             </div>
@@ -108,7 +108,7 @@ function HeroLogoGlow() {
   const SIZE = 320;
 
   return (
-    <div className="relative" style={{ width: `${SIZE}px`, height: `${SIZE}px` }}>
+    <div className="relative scale-[0.8] sm:scale-100 origin-center transition-transform duration-500" style={{ width: `${SIZE}px`, height: `${SIZE}px` }}>
       {/* The image */}
       <div className="absolute inset-0 rounded-full overflow-hidden" style={{
         animation: 'hero-pop 1.2s cubic-bezier(0.16,1,0.3,1) 0.2s both',

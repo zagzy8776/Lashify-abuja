@@ -35,10 +35,10 @@ export default function Contact({ onNavigate }: Props) {
                 <div>
                   <h3 className="font-serif text-xl mb-2" style={{ color: '#f9f1e8' }}>Location</h3>
                   <p className="leading-relaxed" style={{ color: '#6b5238' }}>
-                    Abuja, Federal Capital Territory, Nigeria
+                    Life Camp/Gwarimpa, Abuja
                   </p>
                   <p className="text-sm mt-1" style={{ color: '#4e3219' }}>
-                    Exact address shared upon booking confirmation
+                    Federal Capital Territory, Nigeria
                   </p>
                 </div>
               </div>
@@ -91,10 +91,10 @@ export default function Contact({ onNavigate }: Props) {
                   handle: 'Tushaesthetic@gmail.com',
                 },
                 {
-                  href: 'https://wa.me/2348000000000',
+                  href: 'https://wa.me/2348087026970',
                   Icon: MessageCircle,
                   label: 'WhatsApp',
-                  handle: 'Message us directly',
+                  handle: '+234 808 702 6970',
                 },
               ].map((item) => (
                 <a

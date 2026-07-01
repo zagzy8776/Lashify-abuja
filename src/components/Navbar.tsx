@@ -87,7 +87,7 @@ export default function Navbar({ onNavigate, currentPage }: Props) {
 
         {/* Mobile toggle */}
         <button
-          className="md:hidden p-2"
+          className="md:hidden p-3"
           style={{ color: '#a8896e' }}
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
@@ -100,12 +100,12 @@ export default function Navbar({ onNavigate, currentPage }: Props) {
       {mobileOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 border-t animate-fade-down"
           style={{ background: 'rgba(10,8,6,0.98)', borderColor: 'rgba(212,168,39,0.1)', backdropFilter: 'blur(12px)' }}>
-          <div className="container-lux py-6 flex flex-col gap-1">
+          <div className="container-lux py-6 flex flex-col gap-2">
             {navLinks.map((link) => (
               <button
                 key={link.page}
                 onClick={() => handleNav(link.page)}
-                className="px-4 py-3 text-left text-base font-medium rounded-lg transition-colors"
+                className="px-4 py-4 text-left text-base font-medium rounded-lg transition-colors"
                 style={{
                   color: currentPage === link.page ? '#d4a827' : '#a8896e',
                   background: currentPage === link.page ? 'rgba(212,168,39,0.08)' : 'transparent',
@@ -114,7 +114,7 @@ export default function Navbar({ onNavigate, currentPage }: Props) {
                 {link.label}
               </button>
             ))}
-            <button onClick={() => handleNav('book')} className="btn-gold mt-3">
+            <button onClick={() => handleNav('book')} className="btn-gold mt-4 py-4">
               <Calendar className="w-4 h-4" />
               Book Now
             </button>

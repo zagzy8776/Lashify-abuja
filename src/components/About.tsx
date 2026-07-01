@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react';
 import { Award, Heart, Leaf, Sparkles } from 'lucide-react';
 
 type Props = {
@@ -21,7 +20,7 @@ export default function About({ onNavigate }: Props) {
         <div className="grid lg:grid-cols-2 gap-16 items-center mb-20">
 
           {/* Image side — glowing circle */}
-          <div className="relative flex items-center justify-center" style={{ minHeight: '520px' }}>
+          <div className="relative flex items-center justify-center min-h-[380px] sm:min-h-[520px]">
             <GlowCircle />
 
             {/* Stat card — bottom right */}
@@ -144,7 +143,6 @@ export default function About({ onNavigate }: Props) {
 
 function GlowCircle() {
   const SIZE = 380;
-  const HALF = SIZE / 2;
 
   // 8 orbiting light dots
   const dots = [
@@ -160,7 +158,7 @@ function GlowCircle() {
 
   return (
     <div
-      className="relative"
+      className="relative scale-[0.75] sm:scale-90 md:scale-100 origin-center transition-transform duration-500"
       style={{ width: `${SIZE}px`, height: `${SIZE}px` }}
     >
       {/* ── Layer 1: Wide soft halo (outermost) ── */}
@@ -244,11 +242,10 @@ function GlowCircle() {
             boxShadow: `0 0 ${dot.sz * 3}px rgba(212,168,39,0.8)`,
             transformOrigin: 'center center',
             animation: `dot-orbit ${dot.dur} linear infinite`,
-            // @ts-ignore
             '--start': dot.start,
             '--r': dot.r,
             '--op': dot.op,
-          } as React.CSSProperties}
+          } as React.CSSProperties & { [key: string]: string | number }}
         />
       ))}
 

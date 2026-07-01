@@ -466,6 +466,8 @@ function GalleryManager() {
   const [items, setItems] = useState<{ id: string; title: string; category: string; image_url: string }[]>([]);
   const [loading, setLoading] = useState(true);
   const [newItem, setNewItem] = useState({ title: '', category: 'lashes', image_url: '' });
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   useEffect(() => {
     const fetch = async () => {
@@ -479,6 +481,53 @@ function GalleryManager() {
     };
     fetch();
   }, []);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    setUploadProgress(0);
+
+    try {
+      // Convert file to base64
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const base64String = reader.result as string;
+        
+        const token = localStorage.getItem('admin_token');
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/admin/upload`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({ file: base64String }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Upload failed');
+        }
+
+        const data = await response.json();
+        setNewItem({ ...newItem, image_url: data.url });
+        setUploadProgress(100);
+      };
+      
+      reader.onprogress = (e) => {
+        if (e.lengthComputable) {
+          setUploadProgress(Math.round((e.loaded / e.total) * 100));
+        }
+      };
+      
+      reader.readAsDataURL(file);
+    } catch (err) {
+      console.error('Failed to upload image:', err);
+      alert('Failed to upload image. Please try again.');
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const addItem = async () => {
     if (!newItem.title.trim() || !newItem.image_url.trim()) return;
@@ -510,34 +559,52 @@ function GalleryManager() {
     <div className="space-y-6">
       <div className="rounded-2xl p-6" style={{ background: 'rgba(16,10,6,0.7)', border: '1px solid rgba(212,168,39,0.12)' }}>
         <h3 className="font-serif text-xl mb-5" style={{ color: '#f9f1e8' }}>Add Gallery Item</h3>
-        <div className="grid sm:grid-cols-3 gap-3">
-          <input
-            type="text"
-            placeholder="Title"
-            value={newItem.title}
-            onChange={(e) => setNewItem({ ...newItem, title: e.target.value })}
-            className="input-lux"
-          />
-          <select
-            value={newItem.category}
-            onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
-            className="input-lux"
-          >
-            <option value="lashes">Lashes</option>
-            <option value="brows">Brows</option>
-            <option value="other">Other</option>
-          </select>
-          <input
-            type="text"
-            placeholder="Image URL"
-            value={newItem.image_url}
-            onChange={(e) => setNewItem({ ...newItem, image_url: e.target.value })}
-            className="input-lux"
-          />
+        <div className="space-y-4">
+          <div className="grid sm:grid-cols-2 gap-3">
+            <input
+              type="text"
+              placeholder="Title"
+              value={newItem.title}
+              onChange={(e) => setNewItem({ ...newItem, title: e.target.value })}
+              className="input-lux"
+            />
+            <select
+              value={newItem.category}
+              onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
+              className="input-lux"
+            >
+              <option value="lashes">Lashes</option>
+              <option value="brows">Brows</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          
+          <div>
+            <label className="label-lux">Upload Image</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              disabled={uploading}
+              className="input-lux"
+            />
+            {uploading && (
+              <div className="mt-2 text-sm" style={{ color: '#d4a827' }}>
+                Uploading... {uploadProgress}%
+              </div>
+            )}
+          </div>
+
+          {newItem.image_url && (
+            <div className="relative aspect-square max-w-xs rounded-xl overflow-hidden" style={{ border: '1px solid rgba(212,168,39,0.2)' }}>
+              <img src={newItem.image_url} alt="Preview" className="w-full h-full object-cover" />
+            </div>
+          )}
+
+          <button onClick={addItem} disabled={!newItem.title.trim() || !newItem.image_url.trim()} className="btn-gold text-sm disabled:opacity-50">
+            Add to Gallery
+          </button>
         </div>
-        <button onClick={addItem} className="btn-gold mt-4 text-sm">
-          Add to Gallery
-        </button>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

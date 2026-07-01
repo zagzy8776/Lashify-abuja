@@ -145,7 +145,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
       const data = await createAppointment(appointmentData);
       setConfirmedAppointment(data);
       setStep('success');
-    } catch (err) {
+    } catch {
       setError('Unable to book your appointment. Please try again or contact us directly.');
     }
     setSubmitting(false);
@@ -268,7 +268,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
                 </span>
               </div>
               {idx < steps.length - 1 && (
-                <div className="w-12 md:w-20 h-px mx-2 transition-colors"
+                <div className="w-8 sm:w-12 md:w-20 h-px mx-2 transition-colors"
                   style={{ background: idx < currentStepIndex ? '#d4a827' : 'rgba(212,168,39,0.1)' }} />
               )}
             </div>
@@ -443,7 +443,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
                 setError('');
                 setStep('confirm');
               }}
-              className="btn-gold w-full mt-6"
+              className="btn-gold w-full mt-6 py-4"
             >
               Continue <ChevronRight className="w-4 h-4" />
             </button>
@@ -504,7 +504,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
               </p>
             )}
 
-            <button onClick={handleSubmit} disabled={submitting} className="btn-gold w-full disabled:opacity-60">
+            <button onClick={handleSubmit} disabled={submitting} className="btn-gold w-full disabled:opacity-60 py-4">
               {submitting ? (
                 <><Loader2 className="w-5 h-5 animate-spin" /> Booking...</>
               ) : (

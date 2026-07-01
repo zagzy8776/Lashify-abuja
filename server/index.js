@@ -4,15 +4,25 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import pool from './db.js';
+import { v2 as cloudinary } from 'cloudinary';
 
 dotenv.config();
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+  secure: true,
+});
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // Admin credentials (in production, store in database)
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@lashifyabuja.com';
@@ -308,9 +318,56 @@ app.post('/api/admin/gallery', verifyAdmin, async (req, res) => {
   }
 });
 
+// POST /api/admin/upload - Cloudinary signed upload
+app.post('/api/admin/upload', verifyAdmin, async (req, res) => {
+  try {
+    const { file } = req.body;
+    
+    if (!file) {
+      return res.status(400).json({ error: 'No file provided' });
+    }
+
+    // Upload to Cloudinary
+    const result = await cloudinary.uploader.upload(file, {
+      folder: 'lashify-abuja',
+      allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+      max_file_size: 5000000, // 5MB
+      transformation: [
+        { quality: 'auto', fetch_format: 'auto' },
+        { width: 1200, height: 1200, crop: 'limit' }
+      ]
+    });
+
+    res.json({
+      url: result.secure_url,
+      public_id: result.public_id
+    });
+  } catch (error) {
+    console.error('Error uploading to Cloudinary:', error);
+    res.status(500).json({ error: 'Failed to upload image' });
+  }
+});
+
 // DELETE /api/admin/gallery/:id
 app.delete('/api/admin/gallery/:id', verifyAdmin, async (req, res) => {
   try {
+    // Get the gallery item to delete the image from Cloudinary
+    const itemResult = await pool.query('SELECT * FROM gallery_items WHERE id = $1', [req.params.id]);
+    
+    if (itemResult.rows.length > 0) {
+      const item = itemResult.rows[0];
+      // Extract public_id from image_url if it's a Cloudinary URL
+      if (item.image_url.includes('cloudinary.com')) {
+        const publicId = item.image_url.split('/').pop().split('.')[0];
+        try {
+          await cloudinary.uploader.destroy(`lashify-abuja/${publicId}`);
+        } catch (cloudinaryError) {
+          console.error('Error deleting from Cloudinary:', cloudinaryError);
+          // Continue with database deletion even if Cloudinary delete fails
+        }
+      }
+    }
+    
     await pool.query('DELETE FROM gallery_items WHERE id = $1', [req.params.id]);
     res.json({ success: true });
   } catch (error) {

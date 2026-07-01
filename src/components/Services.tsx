@@ -125,7 +125,7 @@ export default function Services({ onNavigate, onBookService, compact }: Props) 
                     <button className="flex items-center justify-between text-sm font-medium transition-colors"
                       style={{ color: '#6b5238' }}
                     >
-                      <span className="group-hover:text-gold-400 transition-colors" style={{ color: 'inherit' }}>
+                      <span className="group-hover:text-gold-400 transition-colors">
                         Book this service
                       </span>
                       <span className="w-9 h-9 rounded-full flex items-center justify-center transition-all"

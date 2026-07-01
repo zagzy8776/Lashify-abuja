@@ -28,6 +28,8 @@
     background: linear-gradient(135deg, #d4a827 0%, #e8c45a 50%, #d4a827 100%);
     color: #0a0806;
     box-shadow: 0 4px 20px rgba(212,168,39,0.3);
+    min-height: 48px;
+    min-width: 48px;
   }
   .btn-gold:hover {
     box-shadow: 0 8px 30px rgba(212,168,39,0.5);
@@ -36,6 +38,8 @@
     @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 font-medium tracking-wide rounded-full transition-all duration-300 hover:-translate-y-0.5;
     border: 1px solid rgba(212,168,39,0.4);
     color: #e8c45a;
+    min-height: 48px;
+    min-width: 48px;
   }
   .btn-outline:hover {
     border-color: #e8c45a;
