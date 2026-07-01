@@ -49,7 +49,10 @@ npm run dev
 - `POST /api/admin/login` - Admin login
 - `GET /api/admin/appointments` - Get all appointments
 - `GET /api/admin/services` - Get all services
+- `POST /api/admin/services` - Create new service
 - `PATCH /api/admin/services/:id` - Update service
+- `DELETE /api/admin/services/:id` - Delete service
+- `POST /api/admin/upload` - Upload image to Cloudinary
 - `GET /api/admin/gallery` - Get all gallery items
 - `POST /api/admin/gallery` - Add gallery item
 - `DELETE /api/admin/gallery/:id` - Delete gallery item
