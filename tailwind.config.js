@@ -53,11 +53,6 @@ export default {
           900: '#402c06',
           950: '#231805',
         },
-        magenta: {
-          400: '#e040a0',
-          500: '#d4248c',
-          600: '#b8167a',
-        },
       },
       fontFamily: {
         serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
@@ -70,9 +65,6 @@ export default {
         'fade-down':  'fadeDown 0.8s ease-out forwards',
         'scale-in':   'scaleIn 0.6s ease-out forwards',
         'shimmer':    'shimmer 2.5s linear infinite',
-        'float':      'float 6s ease-in-out infinite',
-        'wing-left':  'wingLeft 0.6s ease-in-out',
-        'wing-right': 'wingRight 0.6s ease-in-out',
         'glow-pulse': 'glowPulse 2s ease-in-out infinite',
         'light-on':   'lightOn 0.4s ease-out forwards',
         'light-off':  'lightOff 0.4s ease-out forwards',
@@ -85,16 +77,6 @@ export default {
         scaleIn: { '0%': { opacity: '0', transform: 'scale(0.95)' }, '100%': { opacity: '1', transform: 'scale(1)' } },
         shimmer: { '0%': { backgroundPosition: '-1000px 0' }, '100%': { backgroundPosition: '1000px 0' } },
         float:   { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-12px)' } },
-        wingLeft: {
-          '0%':   { transform: 'rotateY(0deg)' },
-          '50%':  { transform: 'rotateY(-70deg)' },
-          '100%': { transform: 'rotateY(0deg)' },
-        },
-        wingRight: {
-          '0%':   { transform: 'rotateY(0deg)' },
-          '50%':  { transform: 'rotateY(70deg)' },
-          '100%': { transform: 'rotateY(0deg)' },
-        },
         glowPulse: {
           '0%,100%': { opacity: '0.5', transform: 'scale(1)' },
           '50%':     { opacity: '1',   transform: 'scale(1.15)' },

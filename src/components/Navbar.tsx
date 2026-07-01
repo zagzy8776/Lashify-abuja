@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Menu, X, Calendar } from 'lucide-react';
 
 type Props = {
@@ -17,12 +17,29 @@ const navLinks = [
 export default function Navbar({ onNavigate, currentPage }: Props) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  // Close menu when tapping outside
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const handleClickOutside = (e: MouseEvent | TouchEvent) => {
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
+        setMobileOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [mobileOpen]);
 
   const handleNav = (page: string) => {
     onNavigate(page);
@@ -31,6 +48,7 @@ export default function Navbar({ onNavigate, currentPage }: Props) {
 
   return (
     <header
+      ref={headerRef}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled ? 'py-3' : 'py-5'
       }`}
@@ -58,7 +76,7 @@ export default function Navbar({ onNavigate, currentPage }: Props) {
               Lashify<span style={{ color: '#d4a827' }}>Abuja</span>
             </div>
             <div className="text-[10px] uppercase tracking-[0.2em] mt-0.5" style={{ color: '#4e3219' }}>
-              Lash & Brow Studio
+              Lash &amp; Brow Studio
             </div>
           </div>
         </button>

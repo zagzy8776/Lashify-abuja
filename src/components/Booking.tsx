@@ -263,7 +263,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
                   }}>
                   {idx < currentStepIndex ? <Check className="w-5 h-5" /> : idx + 1}
                 </div>
-                <span className="text-xs font-medium hidden md:block" style={{ color: idx === currentStepIndex ? '#d4a827' : '#3d2612' }}>
+                <span className="text-[10px] sm:text-xs font-medium" style={{ color: idx === currentStepIndex ? '#d4a827' : '#3d2612' }}>
                   {s.label}
                 </span>
               </div>
@@ -547,7 +547,7 @@ function DatePicker({
   today.setHours(0, 0, 0, 0);
 
   return (
-    <div className="rounded-2xl p-5" style={{ background: 'rgba(10,8,6,0.6)', border: '1px solid rgba(212,168,39,0.1)' }}>
+    <div className="rounded-2xl p-3 sm:p-5" style={{ background: 'rgba(10,8,6,0.6)', border: '1px solid rgba(212,168,39,0.1)' }}>
       <div className="flex items-center justify-between mb-5">
         <button
           onClick={() => setViewMonth(new Date(year, month - 1, 1))}
@@ -593,7 +593,7 @@ function DatePicker({
               key={idx}
               disabled={isDisabled}
               onClick={() => onSelect(date)}
-              className="aspect-square rounded-lg text-sm font-medium transition-all duration-200"
+              className="aspect-square min-h-[40px] rounded-lg text-sm font-medium transition-all duration-200"
               style={{
                 background: isSelected ? '#d4a827' : 'transparent',
                 color: isSelected ? '#0a0806'

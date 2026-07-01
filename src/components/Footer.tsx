@@ -118,7 +118,8 @@ export default function Footer({ onNavigate }: Props) {
                 </a>
               </p>
               <p className="text-xs pt-2" style={{ color: '#2e1c0d' }}>
-                Mon – Sat: 9:00 AM – 7:00 PM<br />
+                Mon – Fri: 9:00 AM – 7:00 PM<br />
+                Sat: 10:00 AM – 5:00 PM<br />
                 Sun: By special request
               </p>
             </div>

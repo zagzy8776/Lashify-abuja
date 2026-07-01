@@ -113,13 +113,6 @@
     -webkit-text-fill-color: transparent;
     color: transparent;
   }
-  .magenta-gradient-text {
-    background: linear-gradient(135deg, #b8167a 0%, #e040a0 50%, #d4248c 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-  }
   .shimmer-dark {
     background: linear-gradient(90deg, #160e08 0%, #2c2015 50%, #160e08 100%);
     background-size: 1000px 100%;
@@ -131,35 +124,4 @@
   }
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-
-  /* 3D perspective for butterfly */
-  .perspective-500 { perspective: 500px; }
-  .perspective-300 { perspective: 300px; }
-  .transform-3d   { transform-style: preserve-3d; }
-
-  /* Glow effects */
-  .glow-gold {
-    box-shadow: 0 0 20px rgba(212,168,39,0.6), 0 0 60px rgba(212,168,39,0.3), 0 0 120px rgba(212,168,39,0.15);
-  }
-  .glow-warm {
-    box-shadow: 0 0 30px rgba(200,120,60,0.5), 0 0 80px rgba(200,120,60,0.2);
-  }
-  .text-cream { color: #f9f1e8; }
-  .text-gold-accent { color: #d4a827; }
-  .text-muted { color: #6b5238; }
-  .text-soft { color: #a8896e; }
-
-  /* Butterfly wing 3D flip */
-  @keyframes wingBeatLeft {
-    0%,100% { transform: rotateY(0deg) scaleX(1); }
-    50%      { transform: rotateY(-75deg) scaleX(0.3); }
-  }
-  @keyframes wingBeatRight {
-    0%,100% { transform: rotateY(0deg) scaleX(1); }
-    50%      { transform: rotateY(75deg) scaleX(0.3); }
-  }
-  .wing-beat-left  { animation: wingBeatLeft  0.7s ease-in-out infinite; }
-  .wing-beat-right { animation: wingBeatRight 0.7s ease-in-out infinite; }
-  .wing-beat-left-slow  { animation: wingBeatLeft  1.8s ease-in-out infinite; }
-  .wing-beat-right-slow { animation: wingBeatRight 1.8s ease-in-out infinite; }
 }

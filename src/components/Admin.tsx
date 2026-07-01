@@ -52,6 +52,14 @@ export default function Admin({ onNavigate }: Props) {
     onNavigate('home');
   };
 
+  const handleAuthError = (err: unknown) => {
+    const msg = err instanceof Error ? err.message : String(err);
+    if (msg.includes('401') || msg.toLowerCase().includes('unauthorized')) {
+      adminLogout();
+      setSession(false);
+    }
+  };
+
   if (session === null) {
     return (
       <div className="pt-32 pb-24 min-h-screen section-dark flex items-center justify-center">
@@ -127,6 +135,11 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const checkAuth = (err: unknown) => {
+    const msg = err instanceof Error ? err.message : String(err);
+    if (msg.includes('401') || msg.toLowerCase().includes('unauthorized')) onLogout();
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -138,10 +151,12 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
         setServices(svcData);
       } catch (err) {
         console.error('Failed to fetch dashboard data:', err);
+        checkAuth(err);
       }
       setLoading(false);
     };
     fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const refreshAppointments = async () => {
@@ -150,6 +165,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
       setAppointments(data);
     } catch (err) {
       console.error('Failed to refresh appointments:', err);
+      checkAuth(err);
     }
   };
 

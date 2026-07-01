@@ -20,16 +20,16 @@ export default function About({ onNavigate }: Props) {
         <div className="grid lg:grid-cols-2 gap-16 items-center mb-20">
 
           {/* Image side — glowing circle */}
-          <div className="relative flex items-center justify-center min-h-[380px] sm:min-h-[520px]">
+          <div className="relative flex items-center justify-center min-h-[300px] sm:min-h-[520px]">
             <GlowCircle />
 
             {/* Stat card — bottom right */}
             <div
               className="absolute z-20"
               style={{
-                bottom: '20px',
-                right: '-10px',
-                padding: '18px 22px',
+                bottom: '16px',
+                right: '0',
+                padding: '16px 20px',
                 borderRadius: '16px',
                 background: 'rgba(10,7,4,0.92)',
                 border: '1px solid rgba(212,168,39,0.35)',
@@ -38,7 +38,7 @@ export default function About({ onNavigate }: Props) {
                 animation: 'fadeUp 1s ease-out 0.6s both',
               }}
             >
-              <div className="font-serif" style={{ fontSize: '2.8rem', lineHeight: 1, color: '#d4a827' }}>3+</div>
+              <div className="font-serif" style={{ fontSize: '2.4rem', lineHeight: 1, color: '#d4a827' }}>3+</div>
               <div className="text-xs mt-1 uppercase tracking-[0.15em]" style={{ color: '#6b5238' }}>Years in Abuja</div>
             </div>
 
@@ -46,10 +46,10 @@ export default function About({ onNavigate }: Props) {
             <div
               className="absolute z-20"
               style={{
-                top: '20px',
-                left: '-10px',
-                width: '72px',
-                height: '72px',
+                top: '16px',
+                left: '0',
+                width: '68px',
+                height: '68px',
                 borderRadius: '50%',
                 overflow: 'hidden',
                 border: '2px solid rgba(212,168,39,0.4)',
@@ -124,7 +124,7 @@ function GlowCircle() {
 
   return (
     <div
-      className="relative scale-[0.75] sm:scale-90 md:scale-100 origin-center transition-transform duration-500"
+      className="relative scale-[0.7] sm:scale-90 md:scale-100 origin-center transition-transform duration-500"
       style={{ width: `${SIZE}px`, height: `${SIZE}px` }}
     >
       {/* Subtle background glow */}

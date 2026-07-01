@@ -135,17 +135,17 @@ export default function Gallery() {
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 style={{ filter: 'brightness(0.8) saturate(0.9)' }}
               />
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                style={{ background: 'linear-gradient(to top, rgba(10,8,6,0.9) 0%, rgba(10,8,6,0.2) 60%, transparent 100%)' }} />
-              <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
+              <div className="absolute inset-0 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-500"
+                style={{ background: 'linear-gradient(to top, rgba(10,8,6,0.85) 0%, rgba(10,8,6,0.1) 60%, transparent 100%)' }} />
+              <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-5 sm:translate-y-4 sm:group-hover:translate-y-0 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-500">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="font-serif text-lg" style={{ color: '#f9f1e8' }}>{item.title}</h4>
+                    <h4 className="font-serif text-base sm:text-lg" style={{ color: '#f9f1e8' }}>{item.title}</h4>
                     <span className="text-xs uppercase tracking-wider" style={{ color: '#d4a827' }}>
                       {categoryLabels[item.category] || item.category}
                     </span>
                   </div>
-                  <div className="w-9 h-9 rounded-full flex items-center justify-center"
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center"
                     style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(4px)' }}>
                     <ZoomIn className="w-4 h-4" style={{ color: '#f9f1e8' }} />
                   </div>

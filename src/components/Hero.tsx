@@ -20,7 +20,7 @@ export default function Hero({ onNavigate }: Props) {
           style={{ background: 'radial-gradient(circle, rgba(212,168,39,0.05) 0%, transparent 70%)' }} />
       </div>
 
-      <div className="container-lux relative z-10 pt-28 pb-20">
+      <div className="container-lux relative z-10 pt-24 lg:pt-28 pb-20">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
 
           {/* Left — text */}
@@ -73,9 +73,9 @@ export default function Hero({ onNavigate }: Props) {
 
           </div>
 
-          {/* Right — logo with living glow */}
+          {/* Right — logo (desktop only) */}
           <div
-            className={`flex items-center justify-center transition-all duration-1000 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+            className={`hidden lg:flex items-center justify-center transition-all duration-1000 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
             style={{ transitionDelay: '0.25s' }}
           >
             <HeroLogoGlow />
