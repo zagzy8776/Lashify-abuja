@@ -188,6 +188,29 @@ export async function adminUpdateService(id: string, data: Partial<Service>): Pr
   if (!res.ok) throw new Error('Failed to update service');
 }
 
+export async function adminCreateService(data: Partial<Service>): Promise<Service> {
+  const token = localStorage.getItem('admin_token');
+  const res = await fetch(`${API_URL}/api/admin/services`, {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error('Failed to create service');
+  return res.json();
+}
+
+export async function adminDeleteService(id: string): Promise<void> {
+  const token = localStorage.getItem('admin_token');
+  const res = await fetch(`${API_URL}/api/admin/services/${id}`, {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error('Failed to delete service');
+}
+
 export async function adminFetchGallery(): Promise<GalleryItem[]> {
   const token = localStorage.getItem('admin_token');
   const res = await fetch(`${API_URL}/api/admin/gallery`, {

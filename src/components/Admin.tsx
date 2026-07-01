@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import {
   Lock, Loader2, Calendar, Users, DollarSign, TrendingUp,
   Clock, Check, X, Phone, Mail, ChevronRight, LogOut,
-  Scissors, Star, Image as ImageIcon
+  Scissors, Star, Image as ImageIcon, Plus, Pencil, Trash2
 } from 'lucide-react';
 import {
   adminLogin, adminLogout, isAdminAuthenticated,
   adminFetchAllAppointments, adminFetchAllServices,
-  adminUpdateService, updateAppointmentStatus,
+  adminUpdateService, adminCreateService, adminDeleteService, updateAppointmentStatus,
   adminFetchGallery, adminAddGalleryItem, adminDeleteGalleryItem,
   adminFetchReviews, adminUpdateReview, adminDeleteReview,
   type Service, type Appointment, type AppointmentStatus
@@ -181,14 +181,6 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
     }
   };
 
-  const updateServicePrice = async (id: string, price: number) => {
-    try {
-      await adminUpdateService(id, { price });
-    } catch (err) {
-      console.error('Failed to update service price:', err);
-    }
-  };
-
   const tabs: { key: Tab; label: string; icon: typeof Calendar }[] = [
     { key: 'overview', label: 'Overview', icon: TrendingUp },
     { key: 'appointments', label: 'Appointments', icon: Calendar },
@@ -299,49 +291,12 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
         )}
 
         {tab === 'services' && (
-          <div className="rounded-2xl p-6" style={{ background: 'rgba(16,10,6,0.7)', border: '1px solid rgba(212,168,39,0.12)' }}>
-            <h3 className="font-serif text-xl mb-5" style={{ color: '#f9f1e8' }}>Manage Services</h3>
-            <div className="space-y-3">
-              {services.map((svc) => (
-                <div key={svc.id} className="flex items-center justify-between p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(212,168,39,0.1)' }}>
-                  <div className="flex-grow">
-                    <div className="flex items-center gap-3 mb-1">
-                      <h4 className="font-medium" style={{ color: '#f9f1e8' }}>{svc.name}</h4>
-                      <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: svc.is_active ? 'rgba(60,180,60,0.15)' : 'rgba(255,255,255,0.05)', color: svc.is_active ? '#6be06b' : '#4e3219' }}>
-                        {svc.is_active ? 'Active' : 'Inactive'}
-                      </span>
-                    </div>
-                    <p className="text-sm" style={{ color: '#4e3219' }}>{formatDuration(svc.duration_minutes)}</p>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-1">
-                      <span className="text-xs" style={{ color: '#4e3219' }}>₦</span>
-                      <input
-                        type="number"
-                        defaultValue={svc.price}
-                        onBlur={(e) => {
-                          const val = Number(e.target.value);
-                          if (val !== svc.price && val > 0) {
-                            updateServicePrice(svc.id, val);
-                            setServices(services.map((s) => s.id === svc.id ? { ...s, price: val } : s));
-                          }
-                        }}
-                        className="w-24 px-2 py-1.5 rounded-lg text-sm text-right focus:outline-none"
-                        style={{ background: 'rgba(10,8,6,0.8)', border: '1px solid rgba(212,168,39,0.2)', color: '#f9f1e8' }}
-                      />
-                    </div>
-                    <button
-                      onClick={() => toggleServiceActive(svc.id, svc.is_active)}
-                      className="relative w-11 h-6 rounded-full transition-colors"
-                      style={{ background: svc.is_active ? '#d4a827' : 'rgba(255,255,255,0.1)' }}
-                    >
-                      <span className="absolute top-0.5 w-5 h-5 rounded-full transition-transform" style={{ background: '#f9f1e8', transform: svc.is_active ? 'translateX(20px)' : 'translateX(2px)' }} />
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <ServicesManager
+            services={services}
+            setServices={setServices}
+            toggleServiceActive={toggleServiceActive}
+            checkAuth={checkAuth}
+          />
         )}
 
         {tab === 'gallery' && <GalleryManager />}
@@ -634,6 +589,203 @@ function GalleryManager() {
         ))}
       </div>
     </div>
+  );
+}
+
+function ServicesManager({ services, setServices, toggleServiceActive, checkAuth }: {
+  services: Service[];
+  setServices: (services: Service[]) => void;
+  toggleServiceActive: (id: string, isActive: boolean) => void;
+  checkAuth: (err: unknown) => void;
+}) {
+  const [editingService, setEditingService] = useState<Service | null>(null);
+  const [editForm, setEditForm] = useState<Partial<Service>>({});
+  const [saving, setSaving] = useState(false);
+
+  const handleEdit = (service: Service) => {
+    setEditingService(service);
+    setEditForm({
+      name: service.name,
+      description: service.description,
+      price: service.price,
+      duration_minutes: service.duration_minutes,
+      category: service.category,
+    });
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editingService) return;
+    
+    setSaving(true);
+    try {
+      await adminUpdateService(editingService.id, editForm);
+      setServices(services.map((s) => 
+        s.id === editingService.id ? { ...s, ...editForm } : s
+      ));
+      setEditingService(null);
+      setEditForm({});
+    } catch (err) {
+      console.error('Failed to update service:', err);
+      checkAuth(err);
+      alert('Failed to update service. Please try again.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDelete = async (id: string, name: string) => {
+    if (!confirm(`Are you sure you want to delete "${name}"? This action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      await adminDeleteService(id);
+      setServices(services.filter((s) => s.id !== id));
+    } catch (err) {
+      console.error('Failed to delete service:', err);
+      checkAuth(err);
+      alert('Failed to delete service. Please try again.');
+    }
+  };
+
+  return (
+    <>
+      <div className="rounded-2xl p-6" style={{ background: 'rgba(16,10,6,0.7)', border: '1px solid rgba(212,168,39,0.12)' }}>
+        <h3 className="font-serif text-xl mb-5" style={{ color: '#f9f1e8' }}>Manage Services</h3>
+        <div className="space-y-3">
+          {services.map((svc) => (
+            <div key={svc.id} className="flex items-center justify-between p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(212,168,39,0.1)' }}>
+              <div className="flex-grow">
+                <div className="flex items-center gap-3 mb-1">
+                  <h4 className="font-medium" style={{ color: '#f9f1e8' }}>{svc.name}</h4>
+                  <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: svc.is_active ? 'rgba(60,180,60,0.15)' : 'rgba(255,255,255,0.05)', color: svc.is_active ? '#6be06b' : '#4e3219' }}>
+                    {svc.is_active ? 'Active' : 'Inactive'}
+                  </span>
+                </div>
+                <p className="text-sm" style={{ color: '#4e3219' }}>{svc.description}</p>
+                <p className="text-sm mt-1" style={{ color: '#4e3219' }}>{formatDuration(svc.duration_minutes)} • {formatNaira(svc.price)}</p>
+              </div>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => handleEdit(svc)}
+                  className="p-2 rounded-lg transition-colors hover:bg-opacity-80"
+                  style={{ background: 'rgba(212,168,39,0.15)', color: '#d4a827' }}
+                  title="Edit service"
+                >
+                  <Pencil className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => handleDelete(svc.id, svc.name)}
+                  className="p-2 rounded-lg transition-colors hover:bg-opacity-80"
+                  style={{ background: 'rgba(200,60,60,0.1)', color: 'rgba(200,80,80,0.8)' }}
+                  title="Delete service"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => toggleServiceActive(svc.id, svc.is_active)}
+                  className="relative w-11 h-6 rounded-full transition-colors"
+                  style={{ background: svc.is_active ? '#d4a827' : 'rgba(255,255,255,0.1)' }}
+                  title={svc.is_active ? 'Deactivate' : 'Activate'}
+                >
+                  <span className="absolute top-0.5 w-5 h-5 rounded-full transition-transform" style={{ background: '#f9f1e8', transform: svc.is_active ? 'translateX(20px)' : 'translateX(2px)' }} />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Edit Modal */}
+      {editingService && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(10,8,6,0.85)' }}>
+          <div className="w-full max-w-2xl rounded-2xl p-6" style={{ background: 'rgba(16,10,6,0.98)', border: '1px solid rgba(212,168,39,0.2)' }}>
+            <h3 className="font-serif text-2xl mb-6" style={{ color: '#f9f1e8' }}>Edit Service</h3>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2" style={{ color: '#6b5238' }}>Service Name</label>
+                <input
+                  type="text"
+                  value={editForm.name || ''}
+                  onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                  className="input-lux"
+                  placeholder="e.g., Classic Lashes"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2" style={{ color: '#6b5238' }}>Description</label>
+                <textarea
+                  value={editForm.description || ''}
+                  onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
+                  className="input-lux min-h-[100px]"
+                  placeholder="Describe this service..."
+                />
+              </div>
+
+              <div className="grid sm:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2" style={{ color: '#6b5238' }}>Price (₦)</label>
+                  <input
+                    type="number"
+                    value={editForm.price || ''}
+                    onChange={(e) => setEditForm({ ...editForm, price: Number(e.target.value) })}
+                    className="input-lux"
+                    placeholder="e.g., 25000"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2" style={{ color: '#6b5238' }}>Duration (min)</label>
+                  <input
+                    type="number"
+                    value={editForm.duration_minutes || ''}
+                    onChange={(e) => setEditForm({ ...editForm, duration_minutes: Number(e.target.value) })}
+                    className="input-lux"
+                    placeholder="e.g., 120"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2" style={{ color: '#6b5238' }}>Category</label>
+                  <select
+                    value={editForm.category || 'lashes'}
+                    onChange={(e) => setEditForm({ ...editForm, category: e.target.value })}
+                    className="input-lux"
+                  >
+                    <option value="lashes">Lashes</option>
+                    <option value="brows">Brows</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={handleSaveEdit}
+                disabled={saving || !editForm.name?.trim()}
+                className="flex-1 btn-gold disabled:opacity-50"
+              >
+                {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Save Changes'}
+              </button>
+              <button
+                onClick={() => {
+                  setEditingService(null);
+                  setEditForm({});
+                }}
+                disabled={saving}
+                className="flex-1 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors"
+                style={{ background: 'rgba(255,255,255,0.04)', color: '#6b5238', border: '1px solid rgba(212,168,39,0.1)' }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

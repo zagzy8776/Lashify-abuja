@@ -262,10 +262,46 @@ app.get('/api/admin/services', verifyAdmin, async (req, res) => {
 // PATCH /api/admin/services/:id
 app.patch('/api/admin/services/:id', verifyAdmin, async (req, res) => {
   try {
-    const { is_active, price } = req.body;
+    const { name, description, price, duration_minutes, category, is_active, sort_order } = req.body;
     const updates = [];
     const values = [];
     let paramCount = 1;
+    
+    if (name !== undefined) {
+      updates.push(`name = $${paramCount}`);
+      values.push(name);
+      paramCount++;
+      
+      // Auto-generate slug from name
+      const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+      updates.push(`slug = $${paramCount}`);
+      values.push(slug);
+      paramCount++;
+    }
+    
+    if (description !== undefined) {
+      updates.push(`description = $${paramCount}`);
+      values.push(description);
+      paramCount++;
+    }
+    
+    if (price !== undefined) {
+      updates.push(`price = $${paramCount}`);
+      values.push(price);
+      paramCount++;
+    }
+    
+    if (duration_minutes !== undefined) {
+      updates.push(`duration_minutes = $${paramCount}`);
+      values.push(duration_minutes);
+      paramCount++;
+    }
+    
+    if (category !== undefined) {
+      updates.push(`category = $${paramCount}`);
+      values.push(category);
+      paramCount++;
+    }
     
     if (is_active !== undefined) {
       updates.push(`is_active = $${paramCount}`);
@@ -273,9 +309,9 @@ app.patch('/api/admin/services/:id', verifyAdmin, async (req, res) => {
       paramCount++;
     }
     
-    if (price !== undefined) {
-      updates.push(`price = $${paramCount}`);
-      values.push(price);
+    if (sort_order !== undefined) {
+      updates.push(`sort_order = $${paramCount}`);
+      values.push(sort_order);
       paramCount++;
     }
     
@@ -291,6 +327,39 @@ app.patch('/api/admin/services/:id', verifyAdmin, async (req, res) => {
   } catch (error) {
     console.error('Error updating service:', error);
     res.status(500).json({ error: 'Failed to update service' });
+  }
+});
+
+// POST /api/admin/services
+app.post('/api/admin/services', verifyAdmin, async (req, res) => {
+  try {
+    const { name, description, price, duration_minutes, category } = req.body;
+    if (!name || !price || !duration_minutes || !category) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    
+    const query = `
+      INSERT INTO services (name, slug, description, price, duration_minutes, category)
+      VALUES ($1, $2, $3, $4, $5, $6)
+      RETURNING *
+    `;
+    const result = await pool.query(query, [name, slug, description || '', price, duration_minutes, category]);
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error('Error creating service:', error);
+    res.status(500).json({ error: 'Failed to create service' });
+  }
+});
+
+// DELETE /api/admin/services/:id
+app.delete('/api/admin/services/:id', verifyAdmin, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM services WHERE id = $1', [req.params.id]);
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error deleting service:', error);
+    res.status(500).json({ error: 'Failed to delete service' });
   }
 });
 
