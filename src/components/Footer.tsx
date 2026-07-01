@@ -128,19 +128,10 @@ export default function Footer({ onNavigate }: Props) {
 
         <div className="divider-gold mb-8" />
 
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="text-center">
           <p className="text-sm" style={{ color: '#2e1c0d' }}>
             © {new Date().getFullYear()} LashifyAbuja. All rights reserved.
           </p>
-          <button
-            onClick={() => onNavigate('admin')}
-            className="text-xs transition-colors"
-            style={{ color: '#2e1c0d' }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = '#d4a827')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = '#2e1c0d')}
-          >
-            Admin Portal
-          </button>
         </div>
       </div>
     </footer>

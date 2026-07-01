@@ -43,7 +43,7 @@ function App() {
           <About onNavigate={navigate} />
           <Gallery />
           <Reviews />
-          <Contact onNavigate={navigate} />
+          <Contact />
         </>
       )}
 
@@ -68,7 +68,7 @@ function App() {
 
       {page === 'contact' && (
         <div className="pt-20">
-          <Contact onNavigate={navigate} />
+          <Contact />
         </div>
       )}
 

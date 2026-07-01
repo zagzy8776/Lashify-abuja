@@ -18,6 +18,8 @@ export default function Navbar({ onNavigate, currentPage }: Props) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
+  const tapCount = useRef(0);
+  const tapTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -46,6 +48,20 @@ export default function Navbar({ onNavigate, currentPage }: Props) {
     setMobileOpen(false);
   };
 
+  // Secret triple-tap on logo → admin
+  const handleLogoTap = () => {
+    tapCount.current += 1;
+    if (tapTimer.current) clearTimeout(tapTimer.current);
+    if (tapCount.current >= 3) {
+      tapCount.current = 0;
+      onNavigate('admin');
+      setMobileOpen(false);
+      return;
+    }
+    tapTimer.current = setTimeout(() => { tapCount.current = 0; }, 1500);
+    handleNav('home');
+  };
+
   return (
     <header
       ref={headerRef}
@@ -61,8 +77,7 @@ export default function Navbar({ onNavigate, currentPage }: Props) {
       }}
     >
       <nav className="container-lux flex items-center justify-between">
-        {/* Logo */}
-        <button onClick={() => handleNav('home')} className="flex items-center gap-3 group">
+        <button onClick={handleLogoTap} className="flex items-center gap-3 group">
           <div className="w-11 h-11 rounded-full overflow-hidden transition-all duration-300" style={{ border: '1px solid rgba(212,168,39,0.15)' }}>
             <img
               src="/images/WhatsApp_Image_2026-06-30_at_2.12.44_PM.jpeg"

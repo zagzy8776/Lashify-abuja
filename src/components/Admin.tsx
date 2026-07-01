@@ -52,13 +52,7 @@ export default function Admin({ onNavigate }: Props) {
     onNavigate('home');
   };
 
-  const handleAuthError = (err: unknown) => {
-    const msg = err instanceof Error ? err.message : String(err);
-    if (msg.includes('401') || msg.toLowerCase().includes('unauthorized')) {
-      adminLogout();
-      setSession(false);
-    }
-  };
+
 
   if (session === null) {
     return (

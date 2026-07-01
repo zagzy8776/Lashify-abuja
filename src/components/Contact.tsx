@@ -1,11 +1,7 @@
 import { Instagram, Mail, MapPin, Clock, MessageCircle } from 'lucide-react';
 import { TikTokIcon } from './TikTokIcon';
 
-type Props = {
-  onNavigate: (page: string) => void;
-};
-
-export default function Contact({ onNavigate }: Props) {
+export default function Contact() {
   return (
     <section className="py-24 section-dark">
       <div className="container-lux">
