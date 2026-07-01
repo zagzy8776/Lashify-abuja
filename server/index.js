@@ -216,7 +216,7 @@ app.post('/api/admin/login', async (req, res) => {
   try {
     const { email, password } = req.body;
     
-    if (email !== ADMIN_EMAIL) {
+    if (!email || !ADMIN_EMAIL || email.toLowerCase().trim() !== ADMIN_EMAIL.toLowerCase().trim()) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
     
