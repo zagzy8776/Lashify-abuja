@@ -212,7 +212,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="font-serif text-3xl" style={{ color: '#f9f1e8' }}>Dashboard</h1>
-            <p className="text-sm mt-1" style={{ color: '#4e3219' }}>Welcome back, Tusha</p>
+            <p className="text-sm mt-1" style={{ color: '#4e3219' }}>Welcome back, Lashify</p>
           </div>
           <button
             onClick={onLogout}

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Calendar, ArrowRight, Star } from 'lucide-react';
+import { Calendar, ArrowRight } from 'lucide-react';
 
 type Props = {
   onNavigate: (page: string) => void;
@@ -26,11 +26,6 @@ export default function Hero({ onNavigate }: Props) {
           {/* Left — text */}
           <div className={`transition-all duration-1000 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <div className="flex items-center gap-2 mb-7">
-              <div className="flex gap-0.5">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-3.5 h-3.5" style={{ fill: '#d4a827', color: '#d4a827' }} />
-                ))}
-              </div>
               <span className="text-xs tracking-[0.2em] uppercase" style={{ color: '#6b5238' }}>
                 Abuja's #1 Lash Studio
               </span>
@@ -50,7 +45,7 @@ export default function Hero({ onNavigate }: Props) {
             </h1>
 
             <p style={{ fontSize: '1rem', color: '#6b5238', lineHeight: 1.7, maxWidth: '420px' }} className="mb-10">
-              Luxury lash extensions & brow artistry by Tusha — Abuja's most trusted specialist.
+              Luxury lash extensions & brow artistry by Lashify — Abuja's most trusted specialist.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-14">
@@ -67,7 +62,6 @@ export default function Hero({ onNavigate }: Props) {
             <div className="flex gap-10">
               {[
                 { v: '500+', l: 'Clients' },
-                { v: '4.9★', l: 'Rating' },
                 { v: '3+ yrs', l: 'Experience' },
               ].map((s) => (
                 <div key={s.l}>
@@ -76,6 +70,7 @@ export default function Hero({ onNavigate }: Props) {
                 </div>
               ))}
             </div>
+
           </div>
 
           {/* Right — logo with living glow */}

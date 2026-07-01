@@ -69,7 +69,7 @@ export default function About({ onNavigate }: Props) {
           <div>
             <span className="section-label">
               <span className="w-8 h-px" style={{ background: 'rgba(212,168,39,0.5)' }} />
-              Meet Tusha
+              Meet Lashify
             </span>
             <h2 className="heading-serif text-4xl md:text-5xl mt-4 mb-6" style={{ color: '#f9f1e8' }}>
               The Artist Behind
@@ -84,13 +84,13 @@ export default function About({ onNavigate }: Props) {
               Every set is custom-crafted to your features and lifestyle. Your appointment
               is a personal experience, not a transaction.
             </p>
-            <span className="font-script text-3xl block mt-8" style={{ color: '#d4a827' }}>Tusha</span>
+            <span className="font-script text-3xl block mt-8" style={{ color: '#d4a827' }}>Lashify</span>
             <span className="text-xs uppercase tracking-widest" style={{ color: '#3d2612' }}>
               Founder & Lead Artist
             </span>
             <br />
             <button onClick={() => onNavigate('book')} className="btn-gold mt-6">
-              Book With Tusha
+              Book Now
             </button>
           </div>
         </div>
@@ -157,7 +157,7 @@ function GlowCircle() {
       >
         <img
           src="/images/download_(1).jpg"
-          alt="Tusha — LashifyAbuja"
+          alt="LashifyAbuja"
           className="w-full h-full object-cover"
           style={{
             filter: 'brightness(0.9) contrast(1.08) saturate(0.9)',

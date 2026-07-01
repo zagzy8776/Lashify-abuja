@@ -18,13 +18,14 @@ export default function Contact({ onNavigate }: Props) {
             <span className="w-8 h-px" style={{ background: 'rgba(212,168,39,0.5)' }} />
           </span>
           <h2 className="heading-serif text-4xl md:text-5xl mt-4" style={{ color: '#f9f1e8' }}>
-            Find
-            <span className="italic" style={{ color: '#d4a827' }}> Us</span>
+            Find{' '}
+            <span className="italic" style={{ color: '#d4a827' }}>Us</span>
           </h2>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
-          <div className="space-y-6">
+        <div className="max-w-3xl mx-auto space-y-6">
+          {/* Location + Hours row */}
+          <div className="grid sm:grid-cols-2 gap-6">
             {/* Location card */}
             <div className="card-lux p-7">
               <div className="flex items-start gap-4">
@@ -68,71 +69,53 @@ export default function Contact({ onNavigate }: Props) {
                 </div>
               </div>
             </div>
-
-            {/* Social grid */}
-            <div className="grid sm:grid-cols-2 gap-4">
-              {[
-                {
-                  href: 'https://www.instagram.com/lashifyabuja.ng?igsh=ajEyb3BuZDZnemlq',
-                  Icon: Instagram,
-                  label: 'Instagram',
-                  handle: '@lashifyabuja.ng',
-                },
-                {
-                  href: 'https://www.tiktok.com/@lashifyabuja?_r=1&_t=ZS-97dsNqcq5Si',
-                  Icon: TikTokIcon as typeof Instagram,
-                  label: 'TikTok',
-                  handle: '@lashifyabuja',
-                },
-                {
-                  href: 'mailto:Tushaesthetic@gmail.com',
-                  Icon: Mail,
-                  label: 'Email',
-                  handle: 'Tushaesthetic@gmail.com',
-                },
-                {
-                  href: 'https://wa.me/2348087026970',
-                  Icon: MessageCircle,
-                  label: 'WhatsApp',
-                  handle: '+234 808 702 6970',
-                },
-              ].map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  target={item.href.startsWith('http') ? '_blank' : undefined}
-                  rel="noopener noreferrer"
-                  className="card-lux p-6 hover:-translate-y-1 group block"
-                >
-                  <item.Icon className="w-7 h-7 mb-3 transition-transform group-hover:scale-110"
-                    style={{ color: '#d4a827' }} />
-                  <h4 className="font-medium mb-1" style={{ color: '#f9f1e8' }}>{item.label}</h4>
-                  <p className="text-sm break-all" style={{ color: '#4e3219' }}>{item.handle}</p>
-                </a>
-              ))}
-            </div>
-
-            <button onClick={() => onNavigate('book')} className="btn-gold w-full">
-              Book Your Appointment
-            </button>
           </div>
 
-          {/* Map */}
-          <div className="rounded-3xl overflow-hidden min-h-[500px]"
-            style={{ border: '1px solid rgba(212,168,39,0.15)' }}>
-            <iframe
-              title="LashifyAbuja Location"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31536.344!2d7.4893!3d9.0579!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x104e745f8e3f3a3b%3A0x0!2sAbuja%2C%20Nigeria!5e0!3m2!1sen!2sus!4v1700000000000"
-              width="100%"
-              height="100%"
-              style={{ border: 0, minHeight: '500px', filter: 'invert(90%) hue-rotate(180deg) saturate(0.3) brightness(0.85)' }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
+          {/* Social grid */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              {
+                href: 'https://www.instagram.com/lashifyabuja.ng?igsh=ajEyb3BuZDZnemlq',
+                Icon: Instagram,
+                label: 'Instagram',
+                handle: '@lashifyabuja.ng',
+              },
+              {
+                href: 'https://www.tiktok.com/@lashifyabuja?_r=1&_t=ZS-97dsNqcq5Si',
+                Icon: TikTokIcon as typeof Instagram,
+                label: 'TikTok',
+                handle: '@lashifyabuja',
+              },
+              {
+                href: 'mailto:Tushaesthetic@gmail.com',
+                Icon: Mail,
+                label: 'Email',
+                handle: 'Tushaesthetic@gmail.com',
+              },
+              {
+                href: 'https://wa.me/2348087026970',
+                Icon: MessageCircle,
+                label: 'WhatsApp',
+                handle: '+234 808 702 6970',
+              },
+            ].map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                target={item.href.startsWith('http') ? '_blank' : undefined}
+                rel="noopener noreferrer"
+                className="card-lux p-6 hover:-translate-y-1 group block"
+              >
+                <item.Icon className="w-7 h-7 mb-3 transition-transform group-hover:scale-110"
+                  style={{ color: '#d4a827' }} />
+                <h4 className="font-medium mb-1" style={{ color: '#f9f1e8' }}>{item.label}</h4>
+                <p className="text-sm break-all" style={{ color: '#4e3219' }}>{item.handle}</p>
+              </a>
+            ))}
           </div>
         </div>
       </div>
     </section>
   );
 }
+
