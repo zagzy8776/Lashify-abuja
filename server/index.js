@@ -6,6 +6,9 @@ import dotenv from 'dotenv';
 import pool from './db.js';
 import { v2 as cloudinary } from 'cloudinary';
 import nodemailer from 'nodemailer';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import xssClean from 'xss-clean';
 
 dotenv.config();
 
@@ -21,9 +24,19 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
+app.use(helmet());
+app.use(xssClean());
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
+
+// Rate limiting for the booking API specifically to prevent spam
+const bookingLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // Limit each IP to 5 booking requests per windowMs
+  message: { error: 'Too many booking requests from this IP, please try again after 15 minutes' }
+});
+app.use('/api/appointments', bookingLimiter);
 
 // Configure Nodemailer Transport (using Resend SMTP)
 const transporter = nodemailer.createTransport({

@@ -195,8 +195,8 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
               Appointment Requested!
             </h2>
             <p className="leading-relaxed mb-8" style={{ color: '#6a686c' }}>
-              Thank you, {confirmedAppointment.client_name}! Your booking request has been received.
-              We'll confirm your appointment via WhatsApp or phone shortly.
+              Thank you so much, {confirmedAppointment.client_name}! I have received your booking request.
+              I will personally confirm your appointment with you via WhatsApp or phone shortly. I can't wait to see you!
             </p>
 
             <div className="rounded-2xl p-6 text-left space-y-3 mb-8"
@@ -515,8 +515,8 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
               style={{ background: 'rgba(197,179,88,0.04)', border: '1px solid rgba(197,179,88,0.12)' }}>
               <Sparkles className="w-5 h-5 shrink-0 mt-0.5" style={{ color: '#c5b358' }} />
               <p className="text-sm" style={{ color: '#6a686c' }}>
-                Payment is due at the studio after your appointment. You'll receive a
-                confirmation message via WhatsApp shortly after booking.
+                Payment is due at the studio after your appointment. I will personally send you a
+                confirmation message via WhatsApp shortly after you book.
               </p>
             </div>
 

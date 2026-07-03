@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import {
   Lock, Loader2, Calendar, Users, DollarSign, TrendingUp,
   Clock, Check, X, Phone, Mail, ChevronRight, LogOut,
-  Scissors, Star, Image as ImageIcon, Plus, Pencil, Trash2
+  Scissors, Star, Image as ImageIcon, Plus, Pencil, Trash2, MessageSquare
 } from 'lucide-react';
 import {
   adminLogin, adminLogout, isAdminAuthenticated,
@@ -20,7 +20,7 @@ type Props = {
   onNavigate: (page: string) => void;
 };
 
-type Tab = 'overview' | 'appointments' | 'services' | 'gallery' | 'reviews';
+type Tab = 'overview' | 'appointments' | 'inbox' | 'services' | 'gallery' | 'reviews';
 
 export default function Admin({ onNavigate }: Props) {
   const [session, setSession] = useState<boolean | null>(null);
@@ -184,6 +184,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   const tabs: { key: Tab; label: string; icon: typeof Calendar }[] = [
     { key: 'overview', label: 'Overview', icon: TrendingUp },
     { key: 'appointments', label: 'Appointments', icon: Calendar },
+    { key: 'inbox', label: 'Inbox', icon: MessageSquare },
     { key: 'services', label: 'Services', icon: Scissors },
     { key: 'gallery', label: 'Gallery', icon: ImageIcon },
     { key: 'reviews', label: 'Reviews', icon: Star },
@@ -229,7 +230,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
             <button
               key={t.key}
               onClick={() => setTab(t.key)}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all relative"
               style={{
                 background: tab === t.key ? '#c5b358' : 'rgba(255,255,255,0.03)',
                 color: tab === t.key ? '#151416' : '#6a686c',
@@ -238,6 +239,11 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
             >
               <t.icon className="w-4 h-4" />
               {t.label}
+              {(t.key === 'appointments' || t.key === 'inbox') && pendingCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white text-[10px] flex items-center justify-center font-bold border-2 border-[#F9F6F0]">
+                  {pendingCount}
+                </span>
+              )}
             </button>
           ))}
         </div>
@@ -284,6 +290,55 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
                     apt={apt}
                     onStatusChange={handleUpdateAppointmentStatus}
                   />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {tab === 'inbox' && (
+          <div className="rounded-2xl p-6" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(197,179,88,0.12)' }}>
+            <h3 className="font-serif text-xl mb-5" style={{ color: '#371c14' }}>Client Messages</h3>
+            {appointments.filter(a => a.notes).length === 0 ? (
+              <p className="text-sm py-8 text-center" style={{ color: '#39383b' }}>No messages yet.</p>
+            ) : (
+              <div className="space-y-4">
+                {appointments.filter(a => a.notes).map((apt) => (
+                  <div key={apt.id} className="p-5 rounded-xl border relative" style={{ background: 'rgba(255,255,255,0.03)', borderColor: apt.status === 'pending' ? 'rgba(197,179,88,0.5)' : 'rgba(197,179,88,0.1)' }}>
+                    {apt.status === 'pending' && (
+                      <span className="absolute top-4 right-4 w-2 h-2 rounded-full bg-red-500"></span>
+                    )}
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ background: 'rgba(197,179,88,0.1)' }}>
+                        <span className="font-serif text-lg text-ink-900">{apt.client_name.charAt(0).toUpperCase()}</span>
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-ink-900">{apt.client_name}</h4>
+                        <p className="text-xs" style={{ color: '#6a686c' }}>{apt.client_email || apt.client_phone} · For {apt.service_name}</p>
+                      </div>
+                    </div>
+                    <div className="p-4 rounded-lg text-sm text-ink-800 leading-relaxed mb-4" style={{ background: 'rgba(255,255,255,0.6)' }}>
+                      "{apt.notes}"
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs mr-auto" style={{ color: '#6a686c' }}>Booking Date: {new Date(apt.appointment_date).toLocaleDateString()}</span>
+                      {apt.status === 'pending' && (
+                        <>
+                          <button onClick={() => handleUpdateAppointmentStatus(apt.id, 'confirmed')} className="px-4 py-1.5 rounded-lg text-xs font-medium bg-blue-50 text-blue-600 border border-blue-200 hover:bg-blue-100 transition-colors">
+                            Accept Booking
+                          </button>
+                          <button onClick={() => handleUpdateAppointmentStatus(apt.id, 'cancelled')} className="px-4 py-1.5 rounded-lg text-xs font-medium bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 transition-colors">
+                            Decline
+                          </button>
+                        </>
+                      )}
+                      {apt.status !== 'pending' && (
+                        <span className="text-xs px-3 py-1 rounded-full bg-gray-100 text-gray-600 border border-gray-200">
+                          {apt.status.replace('_', ' ')}
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 ))}
               </div>
             )}
@@ -388,7 +443,7 @@ function AppointmentRow({ apt, onStatusChange, compact }: {
               className="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
                 style={{ background: 'rgba(200,60,60,0.1)', color: 'rgba(200,80,80,0.8)', border: '1px solid rgba(200,60,60,0.15)' }}
             >
-              <X className="w-3.5 h-3.5 inline" />
+              <X className="w-3.5 h-3.5 inline mr-1" /> Decline
             </button>
           )}
           {!compact && (
