@@ -208,12 +208,22 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <button onClick={resetBooking} className="btn-outline text-sm">
-                Book Another
-              </button>
-              <button onClick={() => onNavigate('home')} className="btn-gold text-sm">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">
+              <a 
+                href="https://www.google.com/maps/search/?api=1&query=Plot+2079+Nonso+Benson+Udeh+Street+Abuja+Nigeria" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="btn-gold text-sm text-center flex-1"
+              >
+                Get Directions to Studio
+              </a>
+              <button onClick={() => onNavigate('home')} className="btn-outline text-sm flex-1">
                 Back to Home
+              </button>
+            </div>
+            <div className="mt-4 text-center">
+              <button onClick={resetBooking} className="btn-ghost text-xs">
+                Book Another Appointment
               </button>
             </div>
           </div>
