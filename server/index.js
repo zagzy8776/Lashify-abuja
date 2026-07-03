@@ -25,12 +25,14 @@ app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
-// Configure Nodemailer Transport
+// Configure Nodemailer Transport (using Resend SMTP)
 const transporter = nodemailer.createTransport({
-  service: 'gmail', // You can change this to another provider
+  host: 'smtp.resend.com',
+  port: 465,
+  secure: true,
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+    user: 'resend',
+    pass: process.env.RESEND_API_KEY,
   },
 });
 
@@ -171,11 +173,13 @@ app.post('/api/appointments', async (req, res) => {
     res.json(newAppointment);
 
     // Send Emails asynchronously
-    if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+    if (process.env.RESEND_API_KEY) {
       try {
+        const EMAIL_FROM = process.env.EMAIL_FROM || 'onboarding@resend.dev';
+        
         // Notify Owner
         await transporter.sendMail({
-          from: `"LashifyAbuja Booking" <${process.env.EMAIL_USER}>`,
+          from: `"LashifyAbuja Booking" <${EMAIL_FROM}>`,
           to: ADMIN_EMAIL,
           subject: `New Appointment: ${client_name} - ${service_name}`,
           text: `You have a new booking request!\nName: ${client_name}\nPhone: ${client_phone}\nEmail: ${client_email || 'N/A'}\nService: ${service_name} (${service_duration} mins)\nDate: ${appointment_date}\nTime: ${start_time} - ${end_time}\nNotes: ${notes || 'None'}\n\nPlease log in to the admin dashboard to confirm or cancel.`
@@ -184,7 +188,7 @@ app.post('/api/appointments', async (req, res) => {
         // Notify Client (if email provided)
         if (client_email) {
           await transporter.sendMail({
-            from: `"LashifyAbuja" <${process.env.EMAIL_USER}>`,
+            from: `"LashifyAbuja" <${EMAIL_FROM}>`,
             to: client_email,
             subject: `Booking Request Received - LashifyAbuja`,
             text: `Hi ${client_name},\n\nThank you for your booking request! We have received it and will confirm shortly via WhatsApp or email.\n\nService: ${service_name}\nDate: ${appointment_date}\nTime: ${start_time} - ${end_time}\n\nBest regards,\nLashifyAbuja`
