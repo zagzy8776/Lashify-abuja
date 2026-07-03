@@ -32,13 +32,13 @@ export default function About({ onNavigate }: Props) {
                 padding: '16px 20px',
                 borderRadius: '16px',
                 background: 'rgba(10,7,4,0.92)',
-                border: '1px solid rgba(205,115,141,0.35)',
+                border: '1px solid rgba(197,179,88,0.35)',
                 backdropFilter: 'blur(12px)',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.6), 0 0 20px rgba(205,115,141,0.1)',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.6), 0 0 20px rgba(197,179,88,0.1)',
                 animation: 'fadeUp 1s ease-out 0.6s both',
               }}
             >
-              <div className="font-serif" style={{ fontSize: '2.4rem', lineHeight: 1, color: '#cd738d' }}>3+</div>
+              <div className="font-serif" style={{ fontSize: '2.4rem', lineHeight: 1, color: '#c5b358' }}>3+</div>
               <div className="text-xs mt-1 uppercase tracking-[0.15em]" style={{ color: '#6a686c' }}>Years in Abuja</div>
             </div>
 
@@ -52,8 +52,8 @@ export default function About({ onNavigate }: Props) {
                 height: '68px',
                 borderRadius: '50%',
                 overflow: 'hidden',
-                border: '2px solid rgba(205,115,141,0.4)',
-                boxShadow: '0 0 20px rgba(205,115,141,0.25)',
+                border: '2px solid rgba(197,179,88,0.4)',
+                boxShadow: '0 0 20px rgba(197,179,88,0.25)',
                 animation: 'fadeUp 1s ease-out 0.3s both',
               }}
             >
@@ -68,13 +68,13 @@ export default function About({ onNavigate }: Props) {
           {/* Text side */}
           <div>
             <span className="section-label">
-              <span className="w-8 h-px" style={{ background: 'rgba(205,115,141,0.5)' }} />
+              <span className="w-8 h-px" style={{ background: 'rgba(197,179,88,0.5)' }} />
               Meet Lashify
             </span>
             <h2 className="heading-serif text-4xl md:text-5xl mt-4 mb-6" style={{ color: '#371c14' }}>
               The Artist Behind
               <br />
-              <span className="italic" style={{ color: '#cd738d' }}>LashifyAbuja</span>
+              <span className="italic" style={{ color: '#c5b358' }}>LashifyAbuja</span>
             </h2>
             <p className="leading-relaxed mb-3" style={{ color: '#6a686c', lineHeight: 1.8 }}>
               Abuja's trusted lash and brow specialist — known for precision,
@@ -84,7 +84,7 @@ export default function About({ onNavigate }: Props) {
               Every set is custom-crafted to your features and lifestyle. Your appointment
               is a personal experience, not a transaction.
             </p>
-            <span className="font-script text-3xl block mt-8" style={{ color: '#cd738d' }}>Lashify</span>
+            <span className="font-script text-3xl block mt-8" style={{ color: '#c5b358' }}>Lashify</span>
             <span className="text-xs uppercase tracking-widest" style={{ color: '#2d2c2f' }}>
               Founder & Lead Artist
             </span>
@@ -99,8 +99,8 @@ export default function About({ onNavigate }: Props) {
           {values.map((v) => (
             <div key={v.title} className="card-lux p-6 text-center hover:-translate-y-1">
               <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4"
-                style={{ background: 'rgba(205,115,141,0.08)', border: '1px solid rgba(205,115,141,0.2)' }}>
-                <v.icon className="w-6 h-6" style={{ color: '#cd738d' }} />
+                style={{ background: 'rgba(197,179,88,0.08)', border: '1px solid rgba(197,179,88,0.2)' }}>
+                <v.icon className="w-6 h-6" style={{ color: '#c5b358' }} />
               </div>
               <h3 className="font-serif text-lg mb-2" style={{ color: '#371c14' }}>{v.title}</h3>
               <p className="text-xs leading-relaxed" style={{ color: '#6a686c' }}>{v.desc}</p>
@@ -133,7 +133,7 @@ function GlowCircle() {
         style={{
           inset: '-40px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(205,115,141,0.12) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(197,179,88,0.12) 0%, transparent 70%)',
         }}
       />
 
@@ -143,7 +143,7 @@ function GlowCircle() {
         style={{
           inset: '-8px',
           borderRadius: '50%',
-          border: '1px solid rgba(205,115,141,0.25)',
+          border: '1px solid rgba(197,179,88,0.25)',
         }}
       />
 

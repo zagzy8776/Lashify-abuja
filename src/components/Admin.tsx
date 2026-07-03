@@ -57,7 +57,7 @@ export default function Admin({ onNavigate }: Props) {
   if (session === null) {
     return (
       <div className="pt-32 pb-24 min-h-screen section-light flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#cd738d' }} />
+        <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#c5b358' }} />
       </div>
     );
   }
@@ -67,14 +67,14 @@ export default function Admin({ onNavigate }: Props) {
       <div className="pt-32 pb-24 min-h-screen section-light flex items-center justify-center px-6">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
-            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 overflow-hidden" style={{ border: '1px solid rgba(205,115,141,0.3)', background: 'rgba(205,115,141,0.08)' }}>
-              <Lock className="w-8 h-8" style={{ color: '#cd738d' }} />
+            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 overflow-hidden" style={{ border: '1px solid rgba(197,179,88,0.3)', background: 'rgba(197,179,88,0.08)' }}>
+              <Lock className="w-8 h-8" style={{ color: '#c5b358' }} />
             </div>
             <h1 className="font-serif text-3xl" style={{ color: '#371c14' }}>Admin Portal</h1>
             <p className="text-sm mt-2" style={{ color: '#39383b' }}>Sign in to manage LashifyAbuja</p>
           </div>
 
-          <form onSubmit={handleLogin} className="rounded-2xl p-8" style={{ background: 'rgba(27,26,28,0.8)', border: '1px solid rgba(205,115,141,0.15)' }}>
+          <form onSubmit={handleLogin} className="rounded-2xl p-8" style={{ background: 'rgba(27,26,28,0.8)', border: '1px solid rgba(197,179,88,0.15)' }}>
             <div className="mb-5">
               <label className="block text-sm font-medium mb-2" style={{ color: '#6a686c' }}>Email</label>
               <input
@@ -111,7 +111,7 @@ export default function Admin({ onNavigate }: Props) {
 
           <button
             onClick={() => onNavigate('home')}
-            className="w-full text-center text-sm mt-6 transition-colors" style={{ color: '#2d2c2f' }} onMouseEnter={(e) => (e.currentTarget.style.color = '#cd738d')} onMouseLeave={(e) => (e.currentTarget.style.color = '#2d2c2f')}
+            className="w-full text-center text-sm mt-6 transition-colors" style={{ color: '#2d2c2f' }} onMouseEnter={(e) => (e.currentTarget.style.color = '#c5b358')} onMouseLeave={(e) => (e.currentTarget.style.color = '#2d2c2f')}
           >
             ← Back to website
           </button>
@@ -203,7 +203,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   if (loading) {
     return (
       <div className="pt-32 pb-24 min-h-screen section-light flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#cd738d' }} />
+        <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#c5b358' }} />
       </div>
     );
   }
@@ -231,9 +231,9 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
               onClick={() => setTab(t.key)}
               className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all"
               style={{
-                background: tab === t.key ? '#cd738d' : 'rgba(255,255,255,0.03)',
+                background: tab === t.key ? '#c5b358' : 'rgba(255,255,255,0.03)',
                 color: tab === t.key ? '#151416' : '#6a686c',
-                border: `1px solid ${tab === t.key ? '#cd738d' : 'rgba(205,115,141,0.1)'}`,
+                border: `1px solid ${tab === t.key ? '#c5b358' : 'rgba(197,179,88,0.1)'}`,
               }}
             >
               <t.icon className="w-4 h-4" />
@@ -251,7 +251,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
               <StatCard icon={DollarSign} label="Revenue (Completed)" value={formatNaira(totalRevenue)} color="green" />
             </div>
 
-            <div className="rounded-2xl p-6" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(205,115,141,0.12)' }}>
+            <div className="rounded-2xl p-6" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(197,179,88,0.12)' }}>
               <h3 className="font-serif text-xl mb-5" style={{ color: '#371c14' }}>Upcoming Appointments</h3>
               {upcomingAppointments.length === 0 ? (
                 <p className="text-sm py-8 text-center" style={{ color: '#39383b' }}>No upcoming appointments.</p>
@@ -272,7 +272,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
         )}
 
         {tab === 'appointments' && (
-          <div className="rounded-2xl p-6" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(205,115,141,0.12)' }}>
+          <div className="rounded-2xl p-6" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(197,179,88,0.12)' }}>
             <h3 className="font-serif text-xl mb-5" style={{ color: '#371c14' }}>All Appointments</h3>
             {appointments.length === 0 ? (
               <p className="text-sm py-8 text-center" style={{ color: '#39383b' }}>No appointments yet.</p>
@@ -312,11 +312,11 @@ function StatCard({ icon: Icon, label, value, color }: {
   value: string;
   color: 'gold' | 'rose' | 'ink' | 'green';
 }) {
-  const iconColors: Record<string, string> = { gold: '#cd738d', rose: 'rgba(200,80,80,0.8)', ink: '#989599', green: '#6be06b' };
+  const iconColors: Record<string, string> = { gold: '#c5b358', rose: 'rgba(200,80,80,0.8)', ink: '#989599', green: '#6be06b' };
   return (
-    <div className="bg-white rounded-2xl p-5" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(205,115,141,0.12)' }}>
+    <div className="bg-white rounded-2xl p-5" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(197,179,88,0.12)' }}>
       <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3`}
-        style={{ background: 'rgba(205,115,141,0.08)', border: '1px solid rgba(205,115,141,0.15)' }}>
+        style={{ background: 'rgba(197,179,88,0.08)', border: '1px solid rgba(197,179,88,0.15)' }}>
         <Icon className="w-5 h-5" style={{ color: iconColors[color] }} />
       </div>
       <div className="font-serif text-2xl" style={{ color: '#371c14' }}>{value}</div>
@@ -332,7 +332,7 @@ function AppointmentRow({ apt, onStatusChange, compact }: {
 }) {
   const [expanded, setExpanded] = useState(false);
   const statusColors: Record<string, { bg: string; color: string }> = {
-    pending:   { bg: 'rgba(205,115,141,0.1)',  color: '#cd738d' },
+    pending:   { bg: 'rgba(197,179,88,0.1)',  color: '#c5b358' },
     confirmed: { bg: 'rgba(60,120,200,0.1)',  color: '#7ab0f0' },
     completed: { bg: 'rgba(60,180,60,0.1)',   color: '#6be06b' },
     cancelled: { bg: 'rgba(200,60,60,0.1)',   color: 'rgba(200,80,80,0.8)' },
@@ -342,7 +342,7 @@ function AppointmentRow({ apt, onStatusChange, compact }: {
   const date = new Date(apt.appointment_date + 'T00:00:00');
 
   return (
-    <div className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(205,115,141,0.08)' }}>
+    <div className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(197,179,88,0.08)' }}>
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-4 flex-grow">
           <div className="text-center shrink-0">
@@ -403,13 +403,13 @@ function AppointmentRow({ apt, onStatusChange, compact }: {
         </div>
       </div>
       {expanded && !compact && (
-        <div className="mt-4 pt-4 grid sm:grid-cols-2 gap-3 text-sm" style={{ borderTop: '1px solid rgba(205,115,141,0.08)' }}>
+        <div className="mt-4 pt-4 grid sm:grid-cols-2 gap-3 text-sm" style={{ borderTop: '1px solid rgba(197,179,88,0.08)' }}>
           <div className="flex items-center gap-2 text-ink-600">
-            <Phone className="w-4 h-4" style={{ color: '#cd738d' }} /> <span style={{ color: '#6a686c' }}>{apt.client_phone}</span>
+            <Phone className="w-4 h-4" style={{ color: '#c5b358' }} /> <span style={{ color: '#6a686c' }}>{apt.client_phone}</span>
           </div>
           {apt.client_email && (
             <div className="flex items-center gap-2 text-ink-600">
-              <Mail className="w-4 h-4" style={{ color: '#cd738d' }} /> <span style={{ color: '#6a686c' }}>{apt.client_email}</span>
+              <Mail className="w-4 h-4" style={{ color: '#c5b358' }} /> <span style={{ color: '#6a686c' }}>{apt.client_email}</span>
             </div>
           )}
           <div className="text-ink-600">
@@ -518,11 +518,11 @@ function GalleryManager() {
     }
   };
 
-  if (loading) return <Loader2 className="w-6 h-6 animate-spin" style={{ color: '#cd738d' }} />;
+  if (loading) return <Loader2 className="w-6 h-6 animate-spin" style={{ color: '#c5b358' }} />;
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl p-6" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(205,115,141,0.12)' }}>
+      <div className="rounded-2xl p-6" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(197,179,88,0.12)' }}>
         <h3 className="font-serif text-xl mb-5" style={{ color: '#371c14' }}>Add Gallery Item</h3>
         <div className="space-y-4">
           <div className="grid sm:grid-cols-2 gap-3">
@@ -554,14 +554,14 @@ function GalleryManager() {
               className="input-lux"
             />
             {uploading && (
-              <div className="mt-2 text-sm" style={{ color: '#cd738d' }}>
+              <div className="mt-2 text-sm" style={{ color: '#c5b358' }}>
                 Uploading... {uploadProgress}%
               </div>
             )}
           </div>
 
           {newItem.image_url && (
-            <div className="relative aspect-square max-w-xs rounded-xl overflow-hidden" style={{ border: '1px solid rgba(205,115,141,0.2)' }}>
+            <div className="relative aspect-square max-w-xs rounded-xl overflow-hidden" style={{ border: '1px solid rgba(197,179,88,0.2)' }}>
               <img src={newItem.image_url} alt="Preview" className="w-full h-full object-cover" />
             </div>
           )}
@@ -710,7 +710,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
   return (
     <div className="space-y-6">
       {/* Add Service Section */}
-      <div className="rounded-2xl p-6" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(205,115,141,0.12)' }}>
+      <div className="rounded-2xl p-6" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(197,179,88,0.12)' }}>
         <h3 className="font-serif text-xl mb-5" style={{ color: '#371c14' }}>Add New Service</h3>
         <div className="space-y-4">
           <div className="grid sm:grid-cols-2 gap-4">
@@ -744,10 +744,10 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
           <div>
             <label className="block text-sm font-medium mb-1" style={{ color: '#6a686c' }}>Upload Image</label>
             <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, false)} disabled={uploading} className="input-lux" />
-            {uploading && <div className="mt-2 text-sm" style={{ color: '#cd738d' }}>Uploading... {uploadProgress}%</div>}
+            {uploading && <div className="mt-2 text-sm" style={{ color: '#c5b358' }}>Uploading... {uploadProgress}%</div>}
           </div>
           {newItem.image_url && (
-            <div className="relative aspect-video max-w-xs rounded-xl overflow-hidden" style={{ border: '1px solid rgba(205,115,141,0.2)' }}>
+            <div className="relative aspect-video max-w-xs rounded-xl overflow-hidden" style={{ border: '1px solid rgba(197,179,88,0.2)' }}>
               <img src={newItem.image_url} alt="Preview" className="w-full h-full object-cover" />
             </div>
           )}
@@ -758,14 +758,14 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
       </div>
 
       {/* List Services Section */}
-      <div className="rounded-2xl p-6" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(205,115,141,0.12)' }}>
+      <div className="rounded-2xl p-6" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(197,179,88,0.12)' }}>
         <h3 className="font-serif text-xl mb-5" style={{ color: '#371c14' }}>Manage Services</h3>
         <div className="space-y-3">
           {services.map((svc) => (
-            <div key={svc.id} className="flex items-center justify-between p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(205,115,141,0.1)' }}>
+            <div key={svc.id} className="flex items-center justify-between p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(197,179,88,0.1)' }}>
               <div className="flex-grow flex items-center gap-4">
                 {svc.image_url && (
-                  <img src={svc.image_url} alt={svc.name} className="w-16 h-16 object-cover rounded-lg" style={{ border: '1px solid rgba(205,115,141,0.2)' }} />
+                  <img src={svc.image_url} alt={svc.name} className="w-16 h-16 object-cover rounded-lg" style={{ border: '1px solid rgba(197,179,88,0.2)' }} />
                 )}
                 <div>
                   <div className="flex items-center gap-3 mb-1">
@@ -779,9 +779,9 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <button onClick={() => handleEdit(svc)} className="p-2 rounded-lg transition-colors hover:bg-opacity-80" style={{ background: 'rgba(205,115,141,0.15)', color: '#cd738d' }} title="Edit service"><Pencil className="w-4 h-4" /></button>
+                <button onClick={() => handleEdit(svc)} className="p-2 rounded-lg transition-colors hover:bg-opacity-80" style={{ background: 'rgba(197,179,88,0.15)', color: '#c5b358' }} title="Edit service"><Pencil className="w-4 h-4" /></button>
                 <button onClick={() => handleDelete(svc.id, svc.name)} className="p-2 rounded-lg transition-colors hover:bg-opacity-80" style={{ background: 'rgba(200,60,60,0.1)', color: 'rgba(200,80,80,0.8)' }} title="Delete service"><Trash2 className="w-4 h-4" /></button>
-                <button onClick={() => toggleServiceActive(svc.id, svc.is_active)} className="relative w-11 h-6 rounded-full transition-colors" style={{ background: svc.is_active ? '#cd738d' : 'rgba(255,255,255,0.1)' }} title={svc.is_active ? 'Deactivate' : 'Activate'}>
+                <button onClick={() => toggleServiceActive(svc.id, svc.is_active)} className="relative w-11 h-6 rounded-full transition-colors" style={{ background: svc.is_active ? '#c5b358' : 'rgba(255,255,255,0.1)' }} title={svc.is_active ? 'Deactivate' : 'Activate'}>
                   <span className="absolute top-0.5 w-5 h-5 rounded-full transition-transform" style={{ background: '#371c14', transform: svc.is_active ? 'translateX(20px)' : 'translateX(2px)' }} />
                 </button>
               </div>
@@ -793,7 +793,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
       {/* Edit Modal */}
       {editingService && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(10,8,6,0.85)' }}>
-          <div className="w-full max-w-2xl rounded-2xl p-6" style={{ background: 'rgba(27,26,28,0.98)', border: '1px solid rgba(205,115,141,0.2)' }}>
+          <div className="w-full max-w-2xl rounded-2xl p-6" style={{ background: 'rgba(27,26,28,0.98)', border: '1px solid rgba(197,179,88,0.2)' }}>
             <h3 className="font-serif text-2xl mb-6" style={{ color: '#371c14' }}>Edit Service</h3>
             <div className="space-y-4">
               <div>
@@ -825,10 +825,10 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
               <div>
                 <label className="block text-sm font-medium mb-2" style={{ color: '#6a686c' }}>Upload Image (Optional)</label>
                 <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, true)} disabled={uploading} className="input-lux" />
-                {uploading && <div className="mt-2 text-sm" style={{ color: '#cd738d' }}>Uploading... {uploadProgress}%</div>}
+                {uploading && <div className="mt-2 text-sm" style={{ color: '#c5b358' }}>Uploading... {uploadProgress}%</div>}
               </div>
               {editForm.image_url && (
-                <div className="relative aspect-video max-w-xs rounded-xl overflow-hidden" style={{ border: '1px solid rgba(205,115,141,0.2)' }}>
+                <div className="relative aspect-video max-w-xs rounded-xl overflow-hidden" style={{ border: '1px solid rgba(197,179,88,0.2)' }}>
                   <img src={editForm.image_url} alt="Preview" className="w-full h-full object-cover" />
                 </div>
               )}
@@ -837,7 +837,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
               <button onClick={handleSaveEdit} disabled={saving || !editForm.name?.trim()} className="flex-1 btn-gold disabled:opacity-50">
                 {saving ? <Loader2 className="w-5 h-5 animate-spin inline" /> : 'Save Changes'}
               </button>
-              <button onClick={() => { setEditingService(null); setEditForm({}); }} disabled={saving} className="flex-1 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors" style={{ background: 'rgba(255,255,255,0.04)', color: '#6a686c', border: '1px solid rgba(205,115,141,0.1)' }}>Cancel</button>
+              <button onClick={() => { setEditingService(null); setEditForm({}); }} disabled={saving} className="flex-1 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors" style={{ background: 'rgba(255,255,255,0.04)', color: '#6a686c', border: '1px solid rgba(197,179,88,0.1)' }}>Cancel</button>
             </div>
           </div>
         </div>
@@ -881,7 +881,7 @@ function ReviewsManager() {
     }
   };
 
-  if (loading) return <Loader2 className="w-6 h-6 animate-spin" style={{ color: '#cd738d' }} />;
+  if (loading) return <Loader2 className="w-6 h-6 animate-spin" style={{ color: '#c5b358' }} />;
 
   return (
     <div className="space-y-3">
@@ -889,14 +889,14 @@ function ReviewsManager() {
         <p className="text-center py-8" style={{ color: '#39383b' }}>No reviews yet.</p>
       ) : (
         reviews.map((review) => (
-          <div key={review.id} className="rounded-2xl p-5" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(205,115,141,0.12)' }}>
+          <div key={review.id} className="rounded-2xl p-5" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(197,179,88,0.12)' }}>
             <div className="flex items-start justify-between mb-3">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <h4 className="font-medium" style={{ color: '#371c14' }}>{review.client_name}</h4>
                   <div className="flex gap-0.5">
                     {[...Array(review.rating)].map((_, i) => (
-                      <Star key={i} className="w-3.5 h-3.5" style={{ fill: '#cd738d', color: '#cd738d' }} />
+                      <Star key={i} className="w-3.5 h-3.5" style={{ fill: '#c5b358', color: '#c5b358' }} />
                     ))}
                   </div>
                 </div>
@@ -910,7 +910,7 @@ function ReviewsManager() {
               <button
                 onClick={() => togglePublish(review.id, review.is_published)}
                 className="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
-                style={{ background: 'rgba(255,255,255,0.04)', color: '#6a686c', border: '1px solid rgba(205,115,141,0.1)' }}
+                style={{ background: 'rgba(255,255,255,0.04)', color: '#6a686c', border: '1px solid rgba(197,179,88,0.1)' }}
               >
                 {review.is_published ? 'Hide' : 'Publish'}
               </button>

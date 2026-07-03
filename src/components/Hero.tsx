@@ -17,7 +17,7 @@ export default function Hero({ onNavigate }: Props) {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full"
           style={{ background: 'radial-gradient(circle, rgba(80,40,10,0.2) 0%, transparent 70%)' }} />
         <div className="absolute bottom-0 right-0 w-80 h-80 rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(205,115,141,0.05) 0%, transparent 70%)' }} />
+          style={{ background: 'radial-gradient(circle, rgba(197,179,88,0.05) 0%, transparent 70%)' }} />
       </div>
 
       <div className="container-lux relative z-10 pt-24 lg:pt-28 pb-20">
@@ -36,7 +36,7 @@ export default function Hero({ onNavigate }: Props) {
               Where Your Eyes
               <br />
               <span className="italic" style={{
-                background: 'linear-gradient(135deg, #b2506e 0%, #df9db1 40%, #cd738d 100%)',
+                background: 'linear-gradient(135deg, #b89f5d 0%, #e6d795 40%, #c5b358 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
               }}>
@@ -65,7 +65,7 @@ export default function Hero({ onNavigate }: Props) {
                 { v: '3+ yrs', l: 'Experience' },
               ].map((s) => (
                 <div key={s.l}>
-                  <div className="font-serif text-3xl" style={{ color: '#cd738d' }}>{s.v}</div>
+                  <div className="font-serif text-3xl" style={{ color: '#c5b358' }}>{s.v}</div>
                   <div className="text-xs uppercase tracking-[0.15em] mt-1" style={{ color: '#2d2c2f' }}>{s.l}</div>
                 </div>
               ))}
@@ -86,7 +86,7 @@ export default function Hero({ onNavigate }: Props) {
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2"
         style={{ opacity: 0.3 }}>
         <span className="text-xs uppercase tracking-[0.2em]" style={{ color: '#6a686c' }}>Scroll</span>
-        <div className="w-px h-8" style={{ background: 'linear-gradient(to bottom, rgba(205,115,141,0.5), transparent)' }} />
+        <div className="w-px h-8" style={{ background: 'linear-gradient(to bottom, rgba(197,179,88,0.5), transparent)' }} />
       </div>
 
       <style>{`

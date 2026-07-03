@@ -9,13 +9,13 @@ export default function Contact() {
 
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="section-label">
-            <span className="w-8 h-px" style={{ background: 'rgba(205,115,141,0.5)' }} />
+            <span className="w-8 h-px" style={{ background: 'rgba(197,179,88,0.5)' }} />
             Get In Touch
-            <span className="w-8 h-px" style={{ background: 'rgba(205,115,141,0.5)' }} />
+            <span className="w-8 h-px" style={{ background: 'rgba(197,179,88,0.5)' }} />
           </span>
           <h2 className="heading-serif text-4xl md:text-5xl mt-4" style={{ color: '#371c14' }}>
             Find{' '}
-            <span className="italic" style={{ color: '#cd738d' }}>Us</span>
+            <span className="italic" style={{ color: '#c5b358' }}>Us</span>
           </h2>
         </div>
 
@@ -26,8 +26,8 @@ export default function Contact() {
             <div className="card-lux p-7">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0"
-                  style={{ background: 'rgba(205,115,141,0.08)', border: '1px solid rgba(205,115,141,0.2)' }}>
-                  <MapPin className="w-6 h-6" style={{ color: '#cd738d' }} />
+                  style={{ background: 'rgba(197,179,88,0.08)', border: '1px solid rgba(197,179,88,0.2)' }}>
+                  <MapPin className="w-6 h-6" style={{ color: '#c5b358' }} />
                 </div>
                 <div>
                   <h3 className="font-serif text-xl mb-2" style={{ color: '#371c14' }}>Location</h3>
@@ -53,8 +53,8 @@ export default function Contact() {
             <div className="card-lux p-7">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0"
-                  style={{ background: 'rgba(205,115,141,0.08)', border: '1px solid rgba(205,115,141,0.2)' }}>
-                  <Clock className="w-6 h-6" style={{ color: '#cd738d' }} />
+                  style={{ background: 'rgba(197,179,88,0.08)', border: '1px solid rgba(197,179,88,0.2)' }}>
+                  <Clock className="w-6 h-6" style={{ color: '#c5b358' }} />
                 </div>
                 <div className="flex-grow">
                   <h3 className="font-serif text-xl mb-3" style={{ color: '#371c14' }}>Operating Hours</h3>
@@ -111,7 +111,7 @@ export default function Contact() {
                 className="card-lux p-6 hover:-translate-y-1 group block"
               >
                 <item.Icon className="w-7 h-7 mb-3 transition-transform group-hover:scale-110"
-                  style={{ color: '#cd738d' }} />
+                  style={{ color: '#c5b358' }} />
                 <h4 className="font-medium mb-1" style={{ color: '#371c14' }}>{item.label}</h4>
                 <p className="text-sm break-all" style={{ color: '#39383b' }}>{item.handle}</p>
               </a>
