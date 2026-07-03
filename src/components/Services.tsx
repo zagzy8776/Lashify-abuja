@@ -37,7 +37,7 @@ export default function Services({ onNavigate, onBookService, compact }: Props) 
 
   if (loading) {
     return (
-      <section className="py-24 section-brown">
+      <section className="py-24 section-cream">
         <div className="container-lux">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(6)].map((_, i) => (
@@ -50,7 +50,7 @@ export default function Services({ onNavigate, onBookService, compact }: Props) 
   }
 
   return (
-    <section className="py-24 section-brown">
+    <section className="py-24 section-cream">
       <div className="container-lux">
         {/* Divider */}
         <div className="divider-gold mb-16" />
@@ -61,7 +61,7 @@ export default function Services({ onNavigate, onBookService, compact }: Props) 
             Our Services
             <span className="w-8 h-px" style={{ background: 'rgba(205,115,141,0.5)' }} />
           </span>
-          <h2 className="heading-serif text-4xl md:text-5xl mt-4 mb-4" style={{ color: '#f9f1e8' }}>
+          <h2 className="heading-serif text-4xl md:text-5xl mt-4 mb-4" style={{ color: '#371c14' }}>
             Services &
             <br />
             <span className="italic" style={{ color: '#cd738d' }}>Pricing</span>
@@ -87,19 +87,25 @@ export default function Services({ onNavigate, onBookService, compact }: Props) 
                 {shown.map((service, idx) => (
                   <div
                     key={service.id}
-                    className="card-lux p-7 hover:shadow-xl cursor-pointer flex flex-col group"
+                    className="card-lux hover:shadow-xl cursor-pointer flex flex-col group overflow-hidden"
                     style={{ animationDelay: `${idx * 0.05}s` }}
                     onClick={() => onBookService ? onBookService(service) : onNavigate('book')}
                   >
-                    <div className="flex items-start justify-between mb-4">
-                      <h4 className="font-serif text-xl transition-colors"
-                        style={{ color: '#f9f1e8' }}
-                        onMouseEnter={(e) => (e.currentTarget.style.color = '#cd738d')}
-                        onMouseLeave={(e) => (e.currentTarget.style.color = '#f9f1e8')}
-                      >
-                        {service.name}
-                      </h4>
-                      <div className="text-right shrink-0 ml-3">
+                    {service.image_url && (
+                      <div className="w-full h-48 bg-gray-100 overflow-hidden" style={{ borderBottom: '1px solid rgba(205,115,141,0.1)' }}>
+                        <img src={service.image_url} alt={service.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                      </div>
+                    )}
+                    <div className="p-7 flex flex-col flex-grow">
+                      <div className="flex items-start justify-between mb-4">
+                        <h4 className="font-serif text-xl transition-colors"
+                          style={{ color: '#371c14' }}
+                          onMouseEnter={(e) => (e.currentTarget.style.color = '#cd738d')}
+                          onMouseLeave={(e) => (e.currentTarget.style.color = '#371c14')}
+                        >
+                          {service.name}
+                        </h4>
+                        <div className="text-right shrink-0 ml-3">
                         <div className="font-serif text-2xl" style={{ color: '#cd738d' }}>
                           {formatNaira(service.price)}
                         </div>
@@ -133,6 +139,7 @@ export default function Services({ onNavigate, onBookService, compact }: Props) 
                         <ArrowRight className="w-4 h-4" />
                       </span>
                     </button>
+                    </div>
                   </div>
                 ))}
               </div>

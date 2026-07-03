@@ -262,7 +262,7 @@ app.get('/api/admin/services', verifyAdmin, async (req, res) => {
 // PATCH /api/admin/services/:id
 app.patch('/api/admin/services/:id', verifyAdmin, async (req, res) => {
   try {
-    const { name, description, price, duration_minutes, category, is_active, sort_order } = req.body;
+    const { name, description, price, duration_minutes, category, is_active, sort_order, image_url } = req.body;
     const updates = [];
     const values = [];
     let paramCount = 1;
@@ -315,6 +315,12 @@ app.patch('/api/admin/services/:id', verifyAdmin, async (req, res) => {
       paramCount++;
     }
     
+    if (image_url !== undefined) {
+      updates.push(`image_url = $${paramCount}`);
+      values.push(image_url);
+      paramCount++;
+    }
+    
     if (updates.length === 0) {
       return res.status(400).json({ error: 'No updates provided' });
     }
@@ -333,18 +339,18 @@ app.patch('/api/admin/services/:id', verifyAdmin, async (req, res) => {
 // POST /api/admin/services
 app.post('/api/admin/services', verifyAdmin, async (req, res) => {
   try {
-    const { name, description, price, duration_minutes, category } = req.body;
+    const { name, description, price, duration_minutes, category, image_url } = req.body;
     if (!name || !price || !duration_minutes || !category) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
     const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
     
     const query = `
-      INSERT INTO services (name, slug, description, price, duration_minutes, category)
-      VALUES ($1, $2, $3, $4, $5, $6)
+      INSERT INTO services (name, slug, description, price, duration_minutes, category, image_url)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING *
     `;
-    const result = await pool.query(query, [name, slug, description || '', price, duration_minutes, category]);
+    const result = await pool.query(query, [name, slug, description || '', price, duration_minutes, category, image_url || null]);
     res.status(201).json(result.rows[0]);
   } catch (error) {
     console.error('Error creating service:', error);

@@ -13,7 +13,7 @@ export default function About({ onNavigate }: Props) {
   ];
 
   return (
-    <section className="py-24 section-dark">
+    <section className="py-24 section-light">
       <div className="container-lux">
         <div className="divider-gold mb-16" />
 
@@ -71,7 +71,7 @@ export default function About({ onNavigate }: Props) {
               <span className="w-8 h-px" style={{ background: 'rgba(205,115,141,0.5)' }} />
               Meet Lashify
             </span>
-            <h2 className="heading-serif text-4xl md:text-5xl mt-4 mb-6" style={{ color: '#f9f1e8' }}>
+            <h2 className="heading-serif text-4xl md:text-5xl mt-4 mb-6" style={{ color: '#371c14' }}>
               The Artist Behind
               <br />
               <span className="italic" style={{ color: '#cd738d' }}>LashifyAbuja</span>
@@ -102,7 +102,7 @@ export default function About({ onNavigate }: Props) {
                 style={{ background: 'rgba(205,115,141,0.08)', border: '1px solid rgba(205,115,141,0.2)' }}>
                 <v.icon className="w-6 h-6" style={{ color: '#cd738d' }} />
               </div>
-              <h3 className="font-serif text-lg mb-2" style={{ color: '#f9f1e8' }}>{v.title}</h3>
+              <h3 className="font-serif text-lg mb-2" style={{ color: '#371c14' }}>{v.title}</h3>
               <p className="text-xs leading-relaxed" style={{ color: '#6a686c' }}>{v.desc}</p>
             </div>
           ))}

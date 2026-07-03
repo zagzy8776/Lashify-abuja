@@ -7,15 +7,15 @@
     scroll-behavior: smooth;
   }
   body {
-    background-color: #151416;
-    color: #f8f1ee;
+    background-color: #fcf9f8;
+    color: #371c14;
     font-family: 'Inter', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
   ::selection {
     background-color: #df9db1;
-    color: #151416;
+    color: #fcf9f8;
   }
 }
 
@@ -47,11 +47,11 @@
   }
   .btn-ghost {
     @apply inline-flex items-center justify-center gap-2 px-6 py-3 font-medium tracking-wide rounded-full transition-all duration-300;
-    color: #e1c4b7;
+    color: #864e39;
   }
   .btn-ghost:hover {
-    background: rgba(255,255,255,0.06);
-    color: #df9db1;
+    background: rgba(0,0,0,0.04);
+    color: #cd738d;
   }
   .section-label {
     @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.25em];
@@ -62,39 +62,39 @@
   }
   .card-lux {
     @apply rounded-2xl shadow-sm transition-all duration-500;
-    background: rgba(35,34,37,0.85);
+    background: rgba(255,255,255,0.7);
     border: 1px solid rgba(205,115,141,0.15);
     backdrop-filter: blur(6px);
   }
   .card-lux:hover {
     border-color: rgba(205,115,141,0.35);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(205,115,141,0.1);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.08), 0 0 0 1px rgba(205,115,141,0.1);
   }
   .input-lux {
     @apply w-full px-4 py-3 rounded-xl transition-colors duration-200 focus:outline-none;
-    background: rgba(27,26,28,0.8);
+    background: rgba(255,255,255,0.8);
     border: 1px solid rgba(205,115,141,0.2);
-    color: #f8f1ee;
+    color: #371c14;
   }
   .input-lux::placeholder {
-    color: #6a686c;
+    color: #807d81;
   }
   .input-lux:focus {
     border-color: rgba(205,115,141,0.6);
-    background: rgba(27,26,28,0.95);
+    background: rgba(255,255,255,1);
   }
   .label-lux {
     @apply block text-sm font-medium mb-1.5;
-    color: #989599;
+    color: #693a2c;
   }
-  .section-dark {
-    background: #151416;
+  .section-light {
+    background: #fcf9f8;
   }
-  .section-brown {
-    background: #1b1a1c;
+  .section-cream {
+    background: #f8f1ee;
   }
-  .section-mid {
-    background: #232225;
+  .section-blush {
+    background: #eeded5;
   }
   .divider-gold {
     height: 1px;
@@ -114,12 +114,12 @@
     color: transparent;
   }
   .shimmer-dark {
-    background: linear-gradient(90deg, #232225 0%, #2d2c2f 50%, #232225 100%);
+    background: linear-gradient(90deg, #f8f1ee 0%, #eeded5 50%, #f8f1ee 100%);
     background-size: 1000px 100%;
     animation: shimmer 2.5s linear infinite;
   }
   .shimmer-bg {
-    background: linear-gradient(90deg, #1b1a1c 0%, #39383b 50%, #1b1a1c 100%);
+    background: linear-gradient(90deg, #fcf9f8 0%, #f8f1ee 50%, #fcf9f8 100%);
     background-size: 1000px 100%;
   }
   .scrollbar-hide::-webkit-scrollbar { display: none; }

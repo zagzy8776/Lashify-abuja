@@ -33,7 +33,7 @@ function App() {
   const isAdmin = page === 'admin';
 
   return (
-    <div className="min-h-screen" style={{ background: '#151416' }}>
+    <div className="min-h-screen" style={{ background: '#fcf9f8' }}>
       {!isAdmin && <Navbar onNavigate={navigate} currentPage={page} />}
 
       {page === 'home' && (

@@ -3,7 +3,7 @@ import { TikTokIcon } from './TikTokIcon';
 
 export default function Contact() {
   return (
-    <section className="py-24 section-dark">
+    <section className="py-24 section-light">
       <div className="container-lux">
         <div className="divider-gold mb-16" />
 
@@ -13,7 +13,7 @@ export default function Contact() {
             Get In Touch
             <span className="w-8 h-px" style={{ background: 'rgba(205,115,141,0.5)' }} />
           </span>
-          <h2 className="heading-serif text-4xl md:text-5xl mt-4" style={{ color: '#f9f1e8' }}>
+          <h2 className="heading-serif text-4xl md:text-5xl mt-4" style={{ color: '#371c14' }}>
             Find{' '}
             <span className="italic" style={{ color: '#cd738d' }}>Us</span>
           </h2>
@@ -30,7 +30,7 @@ export default function Contact() {
                   <MapPin className="w-6 h-6" style={{ color: '#cd738d' }} />
                 </div>
                 <div>
-                  <h3 className="font-serif text-xl mb-2" style={{ color: '#f9f1e8' }}>Location</h3>
+                  <h3 className="font-serif text-xl mb-2" style={{ color: '#371c14' }}>Location</h3>
                   <a 
                     href="https://www.google.com/maps/search/?api=1&query=Plot+2079+Nonso+Benson+Udeh+Street+Abuja+Nigeria" 
                     target="_blank" 
@@ -56,7 +56,7 @@ export default function Contact() {
                   <Clock className="w-6 h-6" style={{ color: '#cd738d' }} />
                 </div>
                 <div className="flex-grow">
-                  <h3 className="font-serif text-xl mb-3" style={{ color: '#f9f1e8' }}>Operating Hours</h3>
+                  <h3 className="font-serif text-xl mb-3" style={{ color: '#371c14' }}>Operating Hours</h3>
                   <div className="space-y-2 text-sm">
                     {[
                       { day: 'Monday – Friday', hours: '9:00 AM – 7:00 PM' },
@@ -111,7 +111,7 @@ export default function Contact() {
               >
                 <item.Icon className="w-7 h-7 mb-3 transition-transform group-hover:scale-110"
                   style={{ color: '#cd738d' }} />
-                <h4 className="font-medium mb-1" style={{ color: '#f9f1e8' }}>{item.label}</h4>
+                <h4 className="font-medium mb-1" style={{ color: '#371c14' }}>{item.label}</h4>
                 <p className="text-sm break-all" style={{ color: '#39383b' }}>{item.handle}</p>
               </a>
             ))}

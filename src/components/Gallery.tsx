@@ -69,7 +69,7 @@ export default function Gallery() {
 
   if (loading) {
     return (
-      <section className="py-24 section-mid">
+      <section className="py-24 section-blush">
         <div className="container-lux">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {[...Array(8)].map((_, i) => (
@@ -82,7 +82,7 @@ export default function Gallery() {
   }
 
   return (
-    <section className="py-24 section-mid">
+    <section className="py-24 section-blush">
       <div className="container-lux">
         <div className="divider-gold mb-16" />
 
@@ -92,7 +92,7 @@ export default function Gallery() {
             Portfolio
             <span className="w-8 h-px" style={{ background: 'rgba(205,115,141,0.5)' }} />
           </span>
-          <h2 className="heading-serif text-4xl md:text-5xl mt-4 mb-5" style={{ color: '#f9f1e8' }}>
+          <h2 className="heading-serif text-4xl md:text-5xl mt-4 mb-5" style={{ color: '#371c14' }}>
             The
             <br />
             <span className="italic" style={{ color: '#cd738d' }}>Gallery</span>
@@ -140,14 +140,14 @@ export default function Gallery() {
               <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-5 sm:translate-y-4 sm:group-hover:translate-y-0 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-500">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="font-serif text-base sm:text-lg" style={{ color: '#f9f1e8' }}>{item.title}</h4>
+                    <h4 className="font-serif text-base sm:text-lg" style={{ color: '#371c14' }}>{item.title}</h4>
                     <span className="text-xs uppercase tracking-wider" style={{ color: '#cd738d' }}>
                       {categoryLabels[item.category] || item.category}
                     </span>
                   </div>
                   <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center"
                     style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(4px)' }}>
-                    <ZoomIn className="w-4 h-4" style={{ color: '#f9f1e8' }} />
+                    <ZoomIn className="w-4 h-4" style={{ color: '#371c14' }} />
                   </div>
                 </div>
               </div>
@@ -168,7 +168,7 @@ export default function Gallery() {
             style={{ background: 'rgba(255,255,255,0.08)' }}
             onClick={() => setLightbox(null)}
           >
-            <X className="w-6 h-6" style={{ color: '#f9f1e8' }} />
+            <X className="w-6 h-6" style={{ color: '#371c14' }} />
           </button>
           <div className="max-w-4xl w-full" onClick={(e) => e.stopPropagation()}>
             <img
@@ -177,7 +177,7 @@ export default function Gallery() {
               className="w-full max-h-[80vh] object-contain rounded-2xl"
             />
             <div className="text-center mt-6">
-              <h3 className="font-serif text-2xl" style={{ color: '#f9f1e8' }}>{lightbox.title}</h3>
+              <h3 className="font-serif text-2xl" style={{ color: '#371c14' }}>{lightbox.title}</h3>
               {lightbox.description && (
                 <p className="mt-2" style={{ color: '#6a686c' }}>{lightbox.description}</p>
               )}

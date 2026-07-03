@@ -22,7 +22,7 @@ export default function Reviews() {
   if (loading || reviews.length === 0) return null;
 
   return (
-    <section className="py-24 section-brown relative overflow-hidden">
+    <section className="py-24 section-cream relative overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full pointer-events-none"
         style={{ background: 'radial-gradient(ellipse, rgba(205,115,141,0.04) 0%, transparent 70%)' }} />
 
@@ -34,7 +34,7 @@ export default function Reviews() {
             Client Love
             <span className="w-8 h-px" style={{ background: 'rgba(205,115,141,0.5)' }} />
           </span>
-          <h2 className="heading-serif text-4xl md:text-5xl mt-4" style={{ color: '#f9f1e8' }}>
+          <h2 className="heading-serif text-4xl md:text-5xl mt-4" style={{ color: '#371c14' }}>
             Words From Our
             <br />
             <span className="italic" style={{ color: '#cd738d' }}>Clients</span>
@@ -62,7 +62,7 @@ export default function Reviews() {
                   </span>
                 </div>
                 <div>
-                  <div className="font-medium text-sm" style={{ color: '#f9f1e8' }}>{review.client_name}</div>
+                  <div className="font-medium text-sm" style={{ color: '#371c14' }}>{review.client_name}</div>
                   <div className="text-xs" style={{ color: '#39383b' }}>Verified Client</div>
                 </div>
               </div>

@@ -163,7 +163,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
 
   if (loading) {
     return (
-      <section className="pt-32 pb-24 min-h-screen section-dark flex items-center justify-center">
+      <section className="pt-32 pb-24 min-h-screen section-light flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#cd738d' }} />
       </section>
     );
@@ -171,7 +171,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
 
   if (step === 'success' && confirmedAppointment) {
     return (
-      <section className="pt-32 pb-24 min-h-screen section-dark flex items-center">
+      <section className="pt-32 pb-24 min-h-screen section-light flex items-center">
         <div className="container-lux max-w-2xl">
           <div className="card-lux p-10 md:p-14 text-center animate-scale-in"
             style={{ boxShadow: '0 20px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(205,115,141,0.2)' }}>
@@ -179,7 +179,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
               style={{ background: 'rgba(205,115,141,0.1)', border: '1px solid rgba(205,115,141,0.3)' }}>
               <PartyPopper className="w-10 h-10" style={{ color: '#cd738d' }} />
             </div>
-            <h2 className="heading-serif text-4xl mb-4" style={{ color: '#f9f1e8' }}>
+            <h2 className="heading-serif text-4xl mb-4" style={{ color: '#371c14' }}>
               Appointment Requested!
             </h2>
             <p className="leading-relaxed mb-8" style={{ color: '#6a686c' }}>
@@ -197,7 +197,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
                 <div key={row.l} className="flex justify-between items-center pb-3"
                   style={{ borderBottom: '1px solid rgba(205,115,141,0.08)' }}>
                   <span className="text-sm" style={{ color: '#39383b' }}>{row.l}</span>
-                  <span className="font-medium text-sm" style={{ color: '#f9f1e8' }}>{row.v}</span>
+                  <span className="font-medium text-sm" style={{ color: '#371c14' }}>{row.v}</span>
                 </div>
               ))}
               <div className="flex justify-between items-center pt-1">
@@ -241,7 +241,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
   const currentStepIndex = steps.findIndex((s) => s.key === step);
 
   return (
-    <section className="pt-32 pb-24 min-h-screen section-dark">
+    <section className="pt-32 pb-24 min-h-screen section-light">
       <div className="container-lux max-w-4xl">
         {/* Header */}
         <div className="text-center mb-10">
@@ -250,7 +250,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
             Book Your Visit
             <span className="w-8 h-px" style={{ background: 'rgba(205,115,141,0.5)' }} />
           </span>
-          <h1 className="heading-serif text-4xl md:text-5xl mt-4" style={{ color: '#f9f1e8' }}>
+          <h1 className="heading-serif text-4xl md:text-5xl mt-4" style={{ color: '#371c14' }}>
             Reserve Your <span className="italic" style={{ color: '#cd738d' }}>Moment</span>
           </h1>
         </div>
@@ -298,9 +298,9 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
                 className="card-lux p-6 text-left hover:shadow-xl group"
               >
                 <div className="flex items-start justify-between mb-3">
-                  <h3 className="font-serif text-xl transition-colors" style={{ color: '#f9f1e8' }}
+                  <h3 className="font-serif text-xl transition-colors" style={{ color: '#371c14' }}
                     onMouseEnter={(e) => (e.currentTarget.style.color = '#cd738d')}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = '#f9f1e8')}>
+                    onMouseLeave={(e) => (e.currentTarget.style.color = '#371c14')}>
                     {service.name}
                   </h3>
                   <span className="font-serif text-xl shrink-0 ml-3" style={{ color: '#cd738d' }}>
@@ -324,7 +324,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
           <div className="card-lux p-8 md:p-10 animate-fade-up">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h3 className="font-serif text-2xl" style={{ color: '#f9f1e8' }}>{selectedService.name}</h3>
+                <h3 className="font-serif text-2xl" style={{ color: '#371c14' }}>{selectedService.name}</h3>
                 <p className="text-sm" style={{ color: '#39383b' }}>
                   {formatNaira(selectedService.price)} · {formatDuration(selectedService.duration_minutes)}
                 </p>
@@ -389,7 +389,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
         {step === 'details' && selectedService && selectedDate && selectedTime && (
           <div className="card-lux p-8 md:p-10 animate-fade-up">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="font-serif text-2xl" style={{ color: '#f9f1e8' }}>Your Details</h3>
+              <h3 className="font-serif text-2xl" style={{ color: '#371c14' }}>Your Details</h3>
               <button onClick={() => setStep('datetime')} className="btn-ghost text-sm">
                 <ChevronLeft className="w-4 h-4" /> Back
               </button>
@@ -399,7 +399,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
               style={{ background: 'rgba(205,115,141,0.06)', border: '1px solid rgba(205,115,141,0.15)' }}>
               <Calendar className="w-5 h-5 shrink-0" style={{ color: '#cd738d' }} />
               <div className="text-sm" style={{ color: '#989599' }}>
-                <span className="font-medium" style={{ color: '#f9f1e8' }}>{selectedService.name}</span>
+                <span className="font-medium" style={{ color: '#371c14' }}>{selectedService.name}</span>
                 {' · '}
                 {selectedDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
                 {' at '}
@@ -470,7 +470,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
         {step === 'confirm' && selectedService && selectedDate && selectedTime && (
           <div className="card-lux p-8 md:p-10 animate-fade-up">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="font-serif text-2xl" style={{ color: '#f9f1e8' }}>Confirm Your Booking</h3>
+              <h3 className="font-serif text-2xl" style={{ color: '#371c14' }}>Confirm Your Booking</h3>
               <button onClick={() => setStep('details')} className="btn-ghost text-sm">
                 <ChevronLeft className="w-4 h-4" /> Back
               </button>
@@ -488,7 +488,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
                 <div key={row.l} className="flex justify-between items-center py-3"
                   style={{ borderBottom: '1px solid rgba(205,115,141,0.08)' }}>
                   <span className="text-sm" style={{ color: '#39383b' }}>{row.l}</span>
-                  <span className="font-medium text-sm" style={{ color: '#f9f1e8' }}>{row.v}</span>
+                  <span className="font-medium text-sm" style={{ color: '#371c14' }}>{row.v}</span>
                 </div>
               ))}
               <div className="flex justify-between items-center py-3">
@@ -568,7 +568,7 @@ function DatePicker({
         >
           <ChevronLeft className="w-5 h-5" style={{ color: '#6a686c' }} />
         </button>
-        <h4 className="font-serif text-lg" style={{ color: '#f9f1e8' }}>
+        <h4 className="font-serif text-lg" style={{ color: '#371c14' }}>
           {monthNames[month]} {year}
         </h4>
         <button

@@ -87,7 +87,7 @@ export default function Navbar({ onNavigate, currentPage }: Props) {
             />
           </div>
           <div className="text-left leading-none">
-            <div className="font-serif text-xl tracking-wide" style={{ color: '#f9f1e8' }}>
+            <div className="font-serif text-xl tracking-wide" style={{ color: '#371c14' }}>
               Lashify<span style={{ color: '#cd738d' }}>Abuja</span>
             </div>
             <div className="text-[10px] uppercase tracking-[0.2em] mt-0.5" style={{ color: '#39383b' }}>

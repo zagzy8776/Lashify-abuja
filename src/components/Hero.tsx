@@ -11,7 +11,7 @@ export default function Hero({ onNavigate }: Props) {
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden"
-      style={{ background: 'radial-gradient(ellipse 120% 100% at 50% 0%, #1e1b1d 0%, #151416 70%)' }}>
+      style={{ background: 'radial-gradient(ellipse 120% 100% at 50% 0%, #f8f1ee 0%, #fcf9f8 70%)' }}>
 
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full"
@@ -32,7 +32,7 @@ export default function Hero({ onNavigate }: Props) {
             </div>
 
             <h1 className="font-serif font-light leading-[1.05] mb-6"
-              style={{ fontSize: 'clamp(3rem, 6vw, 5rem)', color: '#f9f1e8' }}>
+              style={{ fontSize: 'clamp(3rem, 6vw, 5rem)', color: '#371c14' }}>
               Where Your Eyes
               <br />
               <span className="italic" style={{
@@ -44,7 +44,7 @@ export default function Hero({ onNavigate }: Props) {
               </span>
             </h1>
 
-            <p style={{ fontSize: '1rem', color: '#6a686c', lineHeight: 1.7, maxWidth: '420px' }} className="mb-10">
+            <p style={{ fontSize: '1rem', color: '#693a2c', lineHeight: 1.7, maxWidth: '420px' }} className="mb-10">
               Luxury lash extensions & brow artistry by Lashify — Abuja's most trusted specialist.
             </p>
 
