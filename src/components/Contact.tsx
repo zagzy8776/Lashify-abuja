@@ -45,6 +45,7 @@ export default function Contact() {
                       Federal Capital Territory, Nigeria
                     </p>
                   </a>
+                </div>
               </div>
             </div>
 
