@@ -167,6 +167,29 @@ export async function adminFetchAllAppointments(): Promise<Appointment[]> {
   return res.json();
 }
 
+export async function adminDeleteAppointment(id: string): Promise<void> {
+  const token = localStorage.getItem('admin_token');
+  const res = await fetch(`${API_URL}/api/admin/appointments/${id}`, {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error('Failed to delete appointment');
+}
+
+export async function adminUpdateAppointmentDetails(id: string, data: Partial<Appointment>): Promise<Appointment> {
+  const token = localStorage.getItem('admin_token');
+  const res = await fetch(`${API_URL}/api/admin/appointments/${id}`, {
+    method: 'PUT',
+    headers: { 
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error('Failed to update appointment');
+  return res.json();
+}
+
 export async function adminFetchAllServices(): Promise<Service[]> {
   const token = localStorage.getItem('admin_token');
   const res = await fetch(`${API_URL}/api/admin/services`, {

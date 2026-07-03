@@ -8,6 +8,7 @@ import {
   adminLogin, adminLogout, isAdminAuthenticated,
   adminFetchAllAppointments, adminFetchAllServices,
   adminUpdateService, adminCreateService, adminDeleteService, updateAppointmentStatus,
+  adminDeleteAppointment, adminUpdateAppointmentDetails,
   adminFetchGallery, adminAddGalleryItem, adminDeleteGalleryItem,
   adminFetchReviews, adminUpdateReview, adminDeleteReview,
   type Service, type Appointment, type AppointmentStatus
@@ -129,6 +130,10 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const [editingAppointment, setEditingAppointment] = useState<Appointment | null>(null);
+  const [editApptForm, setEditApptForm] = useState<Partial<Appointment>>({});
+  const [savingAppt, setSavingAppt] = useState(false);
+
   const checkAuth = (err: unknown) => {
     const msg = err instanceof Error ? err.message : String(err);
     if (msg.includes('401') || msg.toLowerCase().includes('unauthorized')) onLogout();
@@ -169,6 +174,54 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
       refreshAppointments();
     } catch (err) {
       console.error('Failed to update appointment status:', err);
+    }
+  };
+
+  const handleDeleteAppointment = async (id: string, name: string) => {
+    if (!confirm(`Are you sure you want to completely delete ${name}'s appointment? This cannot be undone.`)) return;
+    try {
+      await adminDeleteAppointment(id);
+      setAppointments(appointments.filter(a => a.id !== id));
+    } catch (err) {
+      console.error('Failed to delete appointment:', err);
+      checkAuth(err);
+      alert('Failed to delete appointment.');
+    }
+  };
+
+  const handleEditAppointment = (apt: Appointment) => {
+    setEditingAppointment(apt);
+    setEditApptForm({
+      client_name: apt.client_name,
+      client_phone: apt.client_phone,
+      client_email: apt.client_email,
+      appointment_date: apt.appointment_date,
+      start_time: apt.start_time,
+      notes: apt.notes,
+    });
+  };
+
+  const handleSaveEditAppointment = async () => {
+    if (!editingAppointment) return;
+    setSavingAppt(true);
+    try {
+      const endTime = addMinutesToTime(
+        editApptForm.start_time || editingAppointment.start_time,
+        editingAppointment.service_duration
+      );
+      const updated = await adminUpdateAppointmentDetails(editingAppointment.id, { 
+        ...editApptForm, 
+        end_time: endTime 
+      });
+      setAppointments(appointments.map(a => a.id === updated.id ? updated : a));
+      setEditingAppointment(null);
+      setEditApptForm({});
+    } catch (err) {
+      console.error('Failed to edit appointment:', err);
+      checkAuth(err);
+      alert('Failed to update appointment details.');
+    } finally {
+      setSavingAppt(false);
     }
   };
 
@@ -272,6 +325,8 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
                       key={apt.id}
                       apt={apt}
                       onStatusChange={handleUpdateAppointmentStatus}
+                      onEdit={handleEditAppointment}
+                      onDelete={handleDeleteAppointment}
                       compact
                     />
                   ))}
@@ -293,7 +348,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
               ) : (
                 <div className="space-y-4">
                   {todayAppointments.map((apt) => (
-                    <AppointmentRow key={apt.id} apt={apt} onStatusChange={handleUpdateAppointmentStatus} />
+                    <AppointmentRow key={apt.id} apt={apt} onStatusChange={handleUpdateAppointmentStatus} onEdit={handleEditAppointment} onDelete={handleDeleteAppointment} />
                   ))}
                 </div>
               )}
@@ -306,7 +361,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
               ) : (
                 <div className="space-y-4">
                   {upcomingAppointments.map((apt) => (
-                    <AppointmentRow key={apt.id} apt={apt} onStatusChange={handleUpdateAppointmentStatus} />
+                    <AppointmentRow key={apt.id} apt={apt} onStatusChange={handleUpdateAppointmentStatus} onEdit={handleEditAppointment} onDelete={handleDeleteAppointment} />
                   ))}
                 </div>
               )}
@@ -319,7 +374,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
               ) : (
                 <div className="space-y-4 opacity-75 hover:opacity-100 transition-opacity">
                   {pastAppointments.slice(0, 10).map((apt) => (
-                    <AppointmentRow key={apt.id} apt={apt} onStatusChange={handleUpdateAppointmentStatus} compact />
+                    <AppointmentRow key={apt.id} apt={apt} onStatusChange={handleUpdateAppointmentStatus} onEdit={handleEditAppointment} onDelete={handleDeleteAppointment} compact />
                   ))}
                 </div>
               )}
@@ -388,6 +443,53 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
         {tab === 'gallery' && <GalleryManager />}
         {tab === 'reviews' && <ReviewsManager />}
       </div>
+
+      {/* Edit Appointment Modal */}
+      {editingAppointment && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(203,164,149,0.85)' }}>
+          <div className="w-full max-w-xl rounded-2xl p-6 shadow-xl" style={{ background: 'rgba(223,191,174,0.98)', border: '1px solid rgba(74,35,17,0.2)' }}>
+            <h3 className="font-serif text-2xl mb-6" style={{ color: '#f4e6e0' }}>Edit Booking Details</h3>
+            <div className="space-y-4">
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1" style={{ color: '#7a4428' }}>Client Name</label>
+                  <input type="text" value={editApptForm.client_name || ''} onChange={(e) => setEditApptForm({ ...editApptForm, client_name: e.target.value })} className="input-lux" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1" style={{ color: '#7a4428' }}>Phone Number</label>
+                  <input type="text" value={editApptForm.client_phone || ''} onChange={(e) => setEditApptForm({ ...editApptForm, client_phone: e.target.value })} className="input-lux" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1" style={{ color: '#7a4428' }}>Email Address (Optional)</label>
+                <input type="email" value={editApptForm.client_email || ''} onChange={(e) => setEditApptForm({ ...editApptForm, client_email: e.target.value })} className="input-lux" />
+              </div>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1" style={{ color: '#7a4428' }}>Date</label>
+                  <input type="date" value={editApptForm.appointment_date || ''} onChange={(e) => setEditApptForm({ ...editApptForm, appointment_date: e.target.value })} className="input-lux" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1" style={{ color: '#7a4428' }}>Time</label>
+                  <input type="time" value={editApptForm.start_time || ''} onChange={(e) => setEditApptForm({ ...editApptForm, start_time: e.target.value })} className="input-lux" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1" style={{ color: '#7a4428' }}>Notes / Payment Ref</label>
+                <textarea value={editApptForm.notes || ''} onChange={(e) => setEditApptForm({ ...editApptForm, notes: e.target.value })} className="input-lux min-h-[80px]" />
+              </div>
+            </div>
+            <div className="flex gap-3 mt-6">
+              <button onClick={handleSaveEditAppointment} disabled={savingAppt} className="flex-1 btn-gold disabled:opacity-50">
+                {savingAppt ? <Loader2 className="w-5 h-5 animate-spin inline mr-2" /> : 'Save Changes'}
+              </button>
+              <button onClick={() => { setEditingAppointment(null); setEditApptForm({}); }} disabled={savingAppt} className="flex-1 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors" style={{ background: 'rgba(255,255,255,0.5)', color: '#7a4428', border: '1px solid rgba(74,35,17,0.1)' }}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -411,9 +513,11 @@ function StatCard({ icon: Icon, label, value, color }: {
   );
 }
 
-function AppointmentRow({ apt, onStatusChange, compact }: {
+function AppointmentRow({ apt, onStatusChange, onEdit, onDelete, compact }: {
   apt: Appointment;
   onStatusChange: (id: string, status: AppointmentStatus) => void;
+  onEdit?: (apt: Appointment) => void;
+  onDelete?: (id: string, name: string) => void;
   compact?: boolean;
 }) {
   const [expanded, setExpanded] = useState(false);
@@ -489,6 +593,26 @@ function AppointmentRow({ apt, onStatusChange, compact }: {
                 style={{ background: 'rgba(139,90,90,0.1)', color: '#8b5a5a' }}
             >
               <X className="w-4 h-4" />
+            </button>
+          )}
+          {onEdit && (
+            <button
+              onClick={() => onEdit(apt)}
+              title="Edit Details"
+              className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:-translate-y-0.5"
+                style={{ background: 'rgba(74,35,17,0.1)', color: '#4a2311' }}
+            >
+              <Pencil className="w-4 h-4" />
+            </button>
+          )}
+          {onDelete && (
+            <button
+              onClick={() => onDelete(apt.id, apt.client_name)}
+              title="Delete Forever"
+              className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:-translate-y-0.5"
+                style={{ background: 'rgba(200,60,60,0.1)', color: 'rgba(200,80,80,0.8)' }}
+            >
+              <Trash2 className="w-4 h-4" />
             </button>
           )}
           {!compact && (

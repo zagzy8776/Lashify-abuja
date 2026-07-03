@@ -335,6 +335,33 @@ app.get('/api/admin/appointments', verifyAdmin, async (req, res) => {
   }
 });
 
+// DELETE /api/admin/appointments/:id
+app.delete('/api/admin/appointments/:id', verifyAdmin, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM appointments WHERE id = $1', [req.params.id]);
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error deleting appointment:', error);
+    res.status(500).json({ error: 'Failed to delete appointment' });
+  }
+});
+
+// PUT /api/admin/appointments/:id
+app.put('/api/admin/appointments/:id', verifyAdmin, async (req, res) => {
+  try {
+    const { client_name, client_phone, client_email, appointment_date, start_time, end_time, notes } = req.body;
+    const result = await pool.query(
+      `UPDATE appointments 
+       SET client_name = $1, client_phone = $2, client_email = $3, appointment_date = $4, start_time = $5, end_time = $6, notes = $7, updated_at = NOW() 
+       WHERE id = $8 RETURNING *`,
+      [client_name, client_phone, client_email, appointment_date, start_time, end_time, notes, req.params.id]
+    );
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error('Error updating appointment:', error);
+    res.status(500).json({ error: 'Failed to update appointment' });
+  }
+});
 // GET /api/admin/services
 app.get('/api/admin/services', verifyAdmin, async (req, res) => {
   try {
