@@ -23,7 +23,23 @@ export default function Services({ onNavigate, onBookService, compact }: Props) 
     const loadServices = async () => {
       try {
         const data = await fetchServices();
-        setServices(data);
+        if (data && data.length > 0) {
+          setServices(data);
+        } else {
+          // Fallback placeholders for Lashes and Brows
+          setServices([
+            { id: 'p1', name: 'Classic Lashes', category: 'lashes', price: 20000, duration_minutes: 90, description: 'A single extension applied to each natural lash for a subtle, natural enhancement.', is_active: true, created_at: '' },
+            { id: 'p2', name: 'Hybrid Lashes', category: 'lashes', price: 25000, duration_minutes: 120, description: 'A perfect blend of Classic and Volume lashes for a textured, fuller look.', is_active: true, created_at: '' },
+            { id: 'p3', name: 'Russian Volume', category: 'lashes', price: 30000, duration_minutes: 150, description: 'Multiple lightweight extensions applied to each natural lash for dramatic fluff and volume.', is_active: true, created_at: '' },
+            { id: 'p4', name: 'Mega Volume', category: 'lashes', price: 35000, duration_minutes: 180, description: 'The most dramatic, dense, and dark lash look available. Maximum fullness.', is_active: true, created_at: '' },
+            { id: 'p5', name: 'Wispy Lashes', category: 'lashes', price: 28000, duration_minutes: 135, description: 'Spiky, textured, and customized styling for a trendy, wispy effect.', is_active: true, created_at: '' },
+            { id: 'p6', name: 'Microblading', category: 'brows', price: 50000, duration_minutes: 120, description: 'Semi-permanent brow tattoo using hair-like strokes for a natural, fuller brow.', is_active: true, created_at: '' },
+            { id: 'p7', name: 'Ombre Powder Brows', category: 'brows', price: 60000, duration_minutes: 150, description: 'A soft, shaded brow pencil look that is semi-permanent and heals beautifully.', is_active: true, created_at: '' },
+            { id: 'p8', name: 'Brow Lamination', category: 'brows', price: 25000, duration_minutes: 60, description: 'A perm for your brows that gives them a set, uniform shape for an extended period.', is_active: true, created_at: '' },
+            { id: 'p9', name: 'Brow Tinting', category: 'brows', price: 10000, duration_minutes: 30, description: 'Semi-permanent dye to enhance the color, shape, and thickness of your brows.', is_active: true, created_at: '' },
+            { id: 'p10', name: 'Brow Shaping', category: 'brows', price: 8000, duration_minutes: 30, description: 'Expert brow mapping and shaping using high-quality wax.', is_active: true, created_at: '' }
+          ]);
+        }
       } catch (err) {
         console.error('Failed to fetch services:', err);
       }

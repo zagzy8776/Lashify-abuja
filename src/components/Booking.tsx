@@ -12,6 +12,7 @@ import {
   addMinutesToTime, timeToMinutes, generateTimeSlots,
   toDateString, isPast, isToday
 } from '../lib/utils';
+import { usePaystackPayment } from 'react-paystack';
 
 type Props = {
   onNavigate: (page: string) => void;
@@ -34,6 +35,21 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [confirmedAppointment, setConfirmedAppointment] = useState<Appointment | null>(null);
+  const [paymentOption, setPaymentOption] = useState<'full' | 'half'>('full');
+
+  const amountToPay = selectedService 
+    ? (paymentOption === 'full' ? selectedService.price : selectedService.price / 2) 
+    : 0;
+
+  const paystackConfig = {
+    reference: (new Date()).getTime().toString(),
+    email: formData.email.trim() || 'guest@lashifyabuja.com',
+    amount: amountToPay * 100, // in kobo
+    publicKey: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY || 'pk_test_b8e5c1a70c0c6b1d441112bcf31668e1abec0f66',
+    currency: 'NGN',
+  };
+
+  const initializePayment = usePaystackPayment(paystackConfig);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -132,35 +148,44 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
     setSubmitting(true);
     setError('');
 
-    const endTime = addMinutesToTime(selectedTime, selectedService.duration_minutes);
-    const appointmentData = {
-      client_name: formData.name.trim(),
-      client_phone: formData.phone.trim(),
-      client_email: formData.email.trim() || null,
-      service_id: selectedService.id,
-      service_name: selectedService.name,
-      service_price: selectedService.price,
-      service_duration: selectedService.duration_minutes,
-      appointment_date: toDateString(selectedDate),
-      start_time: selectedTime,
-      end_time: endTime,
-      status: 'pending' as const,
-      notes: formData.notes.trim() || null,
+    const onSuccess = async (response: any) => {
+      const endTime = addMinutesToTime(selectedTime, selectedService.duration_minutes);
+      const appointmentData = {
+        client_name: formData.name.trim(),
+        client_phone: formData.phone.trim(),
+        client_email: formData.email.trim() || null,
+        service_id: selectedService.id,
+        service_name: selectedService.name,
+        service_price: selectedService.price,
+        service_duration: selectedService.duration_minutes,
+        appointment_date: toDateString(selectedDate),
+        start_time: selectedTime,
+        end_time: endTime,
+        status: 'pending' as const,
+        notes: (formData.notes.trim() ? formData.notes.trim() + '\n' : '') + `Payment Ref: ${response.reference} (${paymentOption === 'full' ? 'Full' : 'Half'} Payment)`,
+      };
+
+      try {
+        const data = await createAppointment(appointmentData);
+        setConfirmedAppointment(data);
+        setStep('success');
+      } catch (err: any) {
+        const msg = err?.message || '';
+        if (msg.includes('conflict') || msg.toLowerCase().includes('already booked')) {
+          setError('That time slot was just booked by someone else! Please select another time.');
+        } else {
+          setError(msg || 'Unable to book your appointment. Please try again or contact us directly.');
+        }
+      }
+      setSubmitting(false);
     };
 
-    try {
-      const data = await createAppointment(appointmentData);
-      setConfirmedAppointment(data);
-      setStep('success');
-    } catch (err: any) {
-      const msg = err?.message || '';
-      if (msg.includes('conflict') || msg.toLowerCase().includes('already booked')) {
-        setError('That time slot was just booked by someone else! Please select another time.');
-      } else {
-        setError(msg || 'Unable to book your appointment. Please try again or contact us directly.');
-      }
-    }
-    setSubmitting(false);
+    const onClose = () => {
+      setError('Payment was cancelled.');
+      setSubmitting(false);
+    };
+
+    initializePayment({ onSuccess, onClose });
   };
 
   const resetBooking = () => {
@@ -511,13 +536,49 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
               </div>
             </div>
 
-            <div className="rounded-xl p-4 mb-6 flex items-start gap-3"
+            <div className="rounded-xl p-5 mb-6 space-y-4"
               style={{ background: 'rgba(74,35,17,0.04)', border: '1px solid rgba(74,35,17,0.12)' }}>
-              <Sparkles className="w-5 h-5 shrink-0 mt-0.5" style={{ color: '#4a2311' }} />
-              <p className="text-sm" style={{ color: '#7a4428' }}>
-                Payment is due at the studio after your appointment. I will personally send you a
-                confirmation message via WhatsApp shortly after you book.
-              </p>
+              <div className="flex items-start gap-3">
+                <Sparkles className="w-5 h-5 shrink-0 mt-0.5" style={{ color: '#4a2311' }} />
+                <p className="text-sm font-medium" style={{ color: '#4a2311' }}>
+                  Choose your payment option to secure your spot
+                </p>
+              </div>
+              
+              <div className="flex flex-col gap-3">
+                <label className={`flex items-center justify-between p-4 rounded-xl cursor-pointer transition-all border ${paymentOption === 'full' ? 'border-[#4a2311] bg-white shadow-sm' : 'border-transparent hover:bg-white/50'}`}>
+                  <div className="flex items-center gap-3">
+                    <input 
+                      type="radio" 
+                      name="payment_option" 
+                      value="full" 
+                      checked={paymentOption === 'full'}
+                      onChange={() => setPaymentOption('full')}
+                      className="w-4 h-4 accent-[#4a2311]"
+                    />
+                    <span className="text-sm font-medium" style={{ color: '#3a1c0d' }}>Pay Full Amount</span>
+                  </div>
+                  <span className="font-serif text-lg" style={{ color: '#4a2311' }}>{formatNaira(selectedService.price)}</span>
+                </label>
+
+                <label className={`flex items-center justify-between p-4 rounded-xl cursor-pointer transition-all border ${paymentOption === 'half' ? 'border-[#4a2311] bg-white shadow-sm' : 'border-transparent hover:bg-white/50'}`}>
+                  <div className="flex items-center gap-3">
+                    <input 
+                      type="radio" 
+                      name="payment_option" 
+                      value="half" 
+                      checked={paymentOption === 'half'}
+                      onChange={() => setPaymentOption('half')}
+                      className="w-4 h-4 accent-[#4a2311]"
+                    />
+                    <div className="flex flex-col">
+                      <span className="text-sm font-medium" style={{ color: '#3a1c0d' }}>Pay 50% Deposit</span>
+                      <span className="text-xs" style={{ color: '#7a4428' }}>Balance due at studio</span>
+                    </div>
+                  </div>
+                  <span className="font-serif text-lg" style={{ color: '#4a2311' }}>{formatNaira(selectedService.price / 2)}</span>
+                </label>
+              </div>
             </div>
 
             {error && (
@@ -526,11 +587,11 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
               </p>
             )}
 
-            <button onClick={handleSubmit} disabled={submitting} className="btn-gold w-full disabled:opacity-60 py-4">
+            <button onClick={handleSubmit} disabled={submitting} className="btn-gold w-full disabled:opacity-60 py-4 flex items-center justify-center gap-2">
               {submitting ? (
-                <><Loader2 className="w-5 h-5 animate-spin" /> Booking...</>
+                <><Loader2 className="w-5 h-5 animate-spin" /> Processing...</>
               ) : (
-                <><Check className="w-5 h-5" /> Confirm Booking</>
+                <>Pay {formatNaira(amountToPay)} & Confirm</>
               )}
             </button>
           </div>
