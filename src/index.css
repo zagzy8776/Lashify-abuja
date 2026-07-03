@@ -10,7 +10,7 @@
     scroll-behavior: smooth;
   }
   body {
-    background-color: #fcf9f8;
+    background-color: #F9F6F0;
     color: #371c14;
     font-family: 'Inter', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -67,9 +67,9 @@
   }
   .card-lux {
     @apply rounded-2xl shadow-sm transition-all duration-500;
-    background: rgba(255,255,255,0.7);
-    border: 1px solid rgba(205,115,141,0.15);
-    backdrop-filter: blur(6px);
+    background: rgba(255,255,255,0.85);
+    border: 1px solid rgba(205,115,141,0.2);
+    backdrop-filter: blur(8px);
   }
   .card-lux:hover {
     border-color: rgba(205,115,141,0.35);
@@ -93,13 +93,13 @@
     color: #693a2c;
   }
   .section-light {
-    background: #fcf9f8;
+    background: #F9F6F0;
   }
   .section-cream {
-    background: #f8f1ee;
+    background: #F3EBE6;
   }
   .section-blush {
-    background: #eeded5;
+    background: #E8D8D0;
   }
   .divider-gold {
     height: 1px;
@@ -119,12 +119,12 @@
     color: transparent;
   }
   .shimmer-dark {
-    background: linear-gradient(90deg, #f8f1ee 0%, #eeded5 50%, #f8f1ee 100%);
+    background: linear-gradient(90deg, #F3EBE6 0%, #E8D8D0 50%, #F3EBE6 100%);
     background-size: 1000px 100%;
     animation: shimmer 2.5s linear infinite;
   }
   .shimmer-bg {
-    background: linear-gradient(90deg, #fcf9f8 0%, #f8f1ee 50%, #fcf9f8 100%);
+    background: linear-gradient(90deg, #F9F6F0 0%, #F3EBE6 50%, #F9F6F0 100%);
     background-size: 1000px 100%;
   }
   .scrollbar-hide::-webkit-scrollbar { display: none; }
