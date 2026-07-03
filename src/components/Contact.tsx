@@ -31,13 +31,20 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="font-serif text-xl mb-2" style={{ color: '#f9f1e8' }}>Location</h3>
-                  <p className="leading-relaxed" style={{ color: '#6a686c' }}>
-                    Life Camp/Gwarimpa, Abuja
-                  </p>
-                  <p className="text-sm mt-1" style={{ color: '#39383b' }}>
-                    Federal Capital Territory, Nigeria
-                  </p>
-                </div>
+                  <a 
+                    href="https://www.google.com/maps/search/?api=1&query=Plot+2079+Nonso+Benson+Udeh+Street+Abuja+Nigeria" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="block hover:opacity-75 transition-opacity"
+                  >
+                    <p className="leading-relaxed" style={{ color: '#6a686c' }}>
+                      Plot 2079 Nonso Benson<br />
+                      Udeh Street Abuja
+                    </p>
+                    <p className="text-sm mt-1" style={{ color: '#39383b' }}>
+                      Federal Capital Territory, Nigeria
+                    </p>
+                  </a>
               </div>
             </div>
 
