@@ -12,7 +12,6 @@ import {
   addMinutesToTime, timeToMinutes, generateTimeSlots,
   toDateString, isPast, isToday
 } from '../lib/utils';
-import { usePaystackPayment } from 'react-paystack';
 
 type Props = {
   onNavigate: (page: string) => void;
@@ -40,16 +39,6 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
   const amountToPay = selectedService 
     ? (paymentOption === 'full' ? selectedService.price : selectedService.price / 2) 
     : 0;
-
-  const paystackConfig = {
-    reference: (new Date()).getTime().toString(),
-    email: formData.email.trim() || 'guest@lashifyabuja.com',
-    amount: amountToPay * 100, // in kobo
-    publicKey: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY || 'pk_test_b8e5c1a70c0c6b1d441112bcf31668e1abec0f66',
-    currency: 'NGN',
-  };
-
-  const initializePayment = usePaystackPayment(paystackConfig);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -148,44 +137,35 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
     setSubmitting(true);
     setError('');
 
-    const onSuccess = async (response: any) => {
-      const endTime = addMinutesToTime(selectedTime, selectedService.duration_minutes);
-      const appointmentData = {
-        client_name: formData.name.trim(),
-        client_phone: formData.phone.trim(),
-        client_email: formData.email.trim() || null,
-        service_id: selectedService.id,
-        service_name: selectedService.name,
-        service_price: selectedService.price,
-        service_duration: selectedService.duration_minutes,
-        appointment_date: toDateString(selectedDate),
-        start_time: selectedTime,
-        end_time: endTime,
-        status: 'pending' as const,
-        notes: (formData.notes.trim() ? formData.notes.trim() + '\n' : '') + `Payment Ref: ${response.reference} (${paymentOption === 'full' ? 'Full' : 'Half'} Payment)`,
-      };
+    const endTime = addMinutesToTime(selectedTime, selectedService.duration_minutes);
+    const appointmentData = {
+      client_name: formData.name.trim(),
+      client_phone: formData.phone.trim(),
+      client_email: formData.email.trim() || null,
+      service_id: selectedService.id,
+      service_name: selectedService.name,
+      service_price: selectedService.price,
+      service_duration: selectedService.duration_minutes,
+      appointment_date: toDateString(selectedDate),
+      start_time: selectedTime,
+      end_time: endTime,
+      status: 'pending' as const,
+      notes: (formData.notes.trim() ? formData.notes.trim() + '\n' : '') + `Payment Method: Manual Transfer (${paymentOption === 'full' ? 'Full' : 'Half'} Payment)`,
+    };
 
-      try {
-        const data = await createAppointment(appointmentData);
-        setConfirmedAppointment(data);
-        setStep('success');
-      } catch (err: any) {
-        const msg = err?.message || '';
-        if (msg.includes('conflict') || msg.toLowerCase().includes('already booked')) {
-          setError('That time slot was just booked by someone else! Please select another time.');
-        } else {
-          setError(msg || 'Unable to book your appointment. Please try again or contact us directly.');
-        }
+    try {
+      const data = await createAppointment(appointmentData);
+      setConfirmedAppointment(data);
+      setStep('success');
+    } catch (err: any) {
+      const msg = err?.message || '';
+      if (msg.includes('conflict') || msg.toLowerCase().includes('already booked')) {
+        setError('That time slot was just booked by someone else! Please select another time.');
+      } else {
+        setError(msg || 'Unable to book your appointment. Please try again or contact us directly.');
       }
-      setSubmitting(false);
-    };
-
-    const onClose = () => {
-      setError('Payment was cancelled.');
-      setSubmitting(false);
-    };
-
-    initializePayment({ onSuccess, onClose });
+    }
+    setSubmitting(false);
   };
 
   const resetBooking = () => {
@@ -581,17 +561,34 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
               </div>
             </div>
 
+            <div className="rounded-xl p-5 mb-6 text-center space-y-3"
+              style={{ background: '#f4e6e0', border: '1px dashed #4a2311' }}>
+              <p className="text-sm font-medium" style={{ color: '#4a2311' }}>Please transfer exactly <span className="font-serif font-bold text-lg">{formatNaira(amountToPay)}</span> to:</p>
+              
+              <div className="bg-white rounded-lg p-4 inline-block text-left shadow-sm">
+                <p className="text-xs uppercase tracking-wider mb-1" style={{ color: '#965d3e' }}>Bank Name</p>
+                <p className="font-bold text-lg mb-3" style={{ color: '#3a1c0d' }}>OPay</p>
+                
+                <p className="text-xs uppercase tracking-wider mb-1" style={{ color: '#965d3e' }}>Account Number</p>
+                <p className="font-bold text-2xl tracking-widest mb-3" style={{ color: '#4a2311' }}>8087026970</p>
+                
+                <p className="text-xs uppercase tracking-wider mb-1" style={{ color: '#965d3e' }}>Account Name</p>
+                <p className="font-bold text-lg" style={{ color: '#3a1c0d' }}>Samaila Florence</p>
+              </div>
+              <p className="text-xs" style={{ color: '#7a4428' }}>I will verify your transfer and confirm your booking via WhatsApp.</p>
+            </div>
+
             {error && (
-              <p className="text-sm mb-4 flex items-center gap-1.5" style={{ color: 'rgba(200,80,80,0.8)' }}>
+              <p className="text-sm mb-4 text-center flex items-center justify-center gap-1.5" style={{ color: 'rgba(200,80,80,0.8)' }}>
                 <AlertCircle className="w-4 h-4" /> {error}
               </p>
             )}
 
             <button onClick={handleSubmit} disabled={submitting} className="btn-gold w-full disabled:opacity-60 py-4 flex items-center justify-center gap-2">
               {submitting ? (
-                <><Loader2 className="w-5 h-5 animate-spin" /> Processing...</>
+                <><Loader2 className="w-5 h-5 animate-spin" /> Submitting Booking...</>
               ) : (
-                <>Pay {formatNaira(amountToPay)} & Confirm</>
+                <><Check className="w-5 h-5" /> I Have Made The Transfer</>
               )}
             </button>
           </div>
