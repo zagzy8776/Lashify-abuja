@@ -229,7 +229,28 @@ app.patch('/api/appointments/:id/status', async (req, res) => {
       'UPDATE appointments SET status = $1, updated_at = NOW() WHERE id = $2 RETURNING *',
       [status, req.params.id]
     );
-    res.json(result.rows[0]);
+
+    const updatedAppointment = result.rows[0];
+
+    // Trigger Review Engine Email
+    if (status === 'completed' && process.env.RESEND_API_KEY && updatedAppointment.client_email) {
+      try {
+        const EMAIL_FROM = process.env.EMAIL_FROM || 'onboarding@resend.dev';
+        const GOOGLE_REVIEW_LINK = process.env.GOOGLE_REVIEW_LINK || 'https://g.page/r/your-google-link';
+        
+        await transporter.sendMail({
+          from: `"LashifyAbuja" <${EMAIL_FROM}>`,
+          to: updatedAppointment.client_email,
+          subject: `How were your ${updatedAppointment.service_name}? 💖`,
+          text: `Hi ${updatedAppointment.client_name},\n\nThank you for choosing LashifyAbuja today! We hope you love your ${updatedAppointment.service_name}.\n\nAs a growing local business, your feedback means everything to us. Could you take 60 seconds to leave us a Google Review?\n\nIt would be amazing if you could specifically mention your "${updatedAppointment.service_name}" in the review so others know what you got!\n\nLeave a review here: ${GOOGLE_REVIEW_LINK}\n\nBest,\nLashifyAbuja Team`
+        });
+        console.log(`Review email sent to ${updatedAppointment.client_email}`);
+      } catch (err) {
+        console.error('Failed to send review email:', err);
+      }
+    }
+
+    res.json(updatedAppointment);
   } catch (error) {
     console.error('Error updating appointment status:', error);
     res.status(500).json({ error: 'Failed to update appointment' });
@@ -468,19 +489,29 @@ app.post('/api/admin/gallery', verifyAdmin, async (req, res) => {
 // POST /api/admin/upload - Cloudinary signed upload
 app.post('/api/admin/upload', verifyAdmin, async (req, res) => {
   try {
-    const { file } = req.body;
+    const { file, serviceName, neighborhood } = req.body;
     
     if (!file) {
       return res.status(400).json({ error: 'No file provided' });
     }
 
+    let publicId = undefined;
+    if (serviceName) {
+       // Format: lashify-abuja-classic-lashes-wuse
+       const safeService = serviceName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+       const safeLoc = neighborhood ? neighborhood.toLowerCase().replace(/[^a-z0-9]+/g, '-') : 'abuja';
+       publicId = `lashify-abuja-${safeService}-${safeLoc}-${Date.now()}`;
+    }
+
     // Upload to Cloudinary
     const result = await cloudinary.uploader.upload(file, {
       folder: 'lashify-abuja',
-      allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+      allowed_formats: ['webp', 'jpg', 'jpeg', 'png'],
+      format: 'webp', // Force WebP conversion for Visual SEO
+      public_id: publicId,
       max_file_size: 5000000, // 5MB
       transformation: [
-        { quality: 'auto', fetch_format: 'auto' },
+        { quality: 'auto:best', fetch_format: 'webp' },
         { width: 1200, height: 1200, crop: 'limit' }
       ]
     });
