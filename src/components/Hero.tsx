@@ -11,13 +11,13 @@ export default function Hero({ onNavigate }: Props) {
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden"
-      style={{ background: 'radial-gradient(ellipse 120% 100% at 50% 0%, #1a0e06 0%, #0a0806 70%)' }}>
+      style={{ background: 'radial-gradient(ellipse 120% 100% at 50% 0%, #1e1b1d 0%, #151416 70%)' }}>
 
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full"
           style={{ background: 'radial-gradient(circle, rgba(80,40,10,0.2) 0%, transparent 70%)' }} />
         <div className="absolute bottom-0 right-0 w-80 h-80 rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(212,168,39,0.05) 0%, transparent 70%)' }} />
+          style={{ background: 'radial-gradient(circle, rgba(205,115,141,0.05) 0%, transparent 70%)' }} />
       </div>
 
       <div className="container-lux relative z-10 pt-24 lg:pt-28 pb-20">
@@ -26,7 +26,7 @@ export default function Hero({ onNavigate }: Props) {
           {/* Left — text */}
           <div className={`transition-all duration-1000 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <div className="flex items-center gap-2 mb-7">
-              <span className="text-xs tracking-[0.2em] uppercase" style={{ color: '#6b5238' }}>
+              <span className="text-xs tracking-[0.2em] uppercase" style={{ color: '#6a686c' }}>
                 Abuja's #1 Lash Studio
               </span>
             </div>
@@ -36,7 +36,7 @@ export default function Hero({ onNavigate }: Props) {
               Where Your Eyes
               <br />
               <span className="italic" style={{
-                background: 'linear-gradient(135deg, #b8891a 0%, #e8c45a 40%, #d4a827 100%)',
+                background: 'linear-gradient(135deg, #b2506e 0%, #df9db1 40%, #cd738d 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
               }}>
@@ -44,7 +44,7 @@ export default function Hero({ onNavigate }: Props) {
               </span>
             </h1>
 
-            <p style={{ fontSize: '1rem', color: '#6b5238', lineHeight: 1.7, maxWidth: '420px' }} className="mb-10">
+            <p style={{ fontSize: '1rem', color: '#6a686c', lineHeight: 1.7, maxWidth: '420px' }} className="mb-10">
               Luxury lash extensions & brow artistry by Lashify — Abuja's most trusted specialist.
             </p>
 
@@ -65,8 +65,8 @@ export default function Hero({ onNavigate }: Props) {
                 { v: '3+ yrs', l: 'Experience' },
               ].map((s) => (
                 <div key={s.l}>
-                  <div className="font-serif text-3xl" style={{ color: '#d4a827' }}>{s.v}</div>
-                  <div className="text-xs uppercase tracking-[0.15em] mt-1" style={{ color: '#3d2612' }}>{s.l}</div>
+                  <div className="font-serif text-3xl" style={{ color: '#cd738d' }}>{s.v}</div>
+                  <div className="text-xs uppercase tracking-[0.15em] mt-1" style={{ color: '#2d2c2f' }}>{s.l}</div>
                 </div>
               ))}
             </div>
@@ -85,8 +85,8 @@ export default function Hero({ onNavigate }: Props) {
 
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2"
         style={{ opacity: 0.3 }}>
-        <span className="text-xs uppercase tracking-[0.2em]" style={{ color: '#6b5238' }}>Scroll</span>
-        <div className="w-px h-8" style={{ background: 'linear-gradient(to bottom, rgba(212,168,39,0.5), transparent)' }} />
+        <span className="text-xs uppercase tracking-[0.2em]" style={{ color: '#6a686c' }}>Scroll</span>
+        <div className="w-px h-8" style={{ background: 'linear-gradient(to bottom, rgba(205,115,141,0.5), transparent)' }} />
       </div>
 
       <style>{`

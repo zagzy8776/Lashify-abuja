@@ -10,7 +10,7 @@ export default function Footer() {
         {/* Brand */}
         <div className="flex flex-col items-center gap-3 mb-6">
           <div className="w-12 h-12 rounded-full overflow-hidden"
-            style={{ border: '1px solid rgba(212,168,39,0.3)', boxShadow: '0 0 20px rgba(212,168,39,0.1)' }}>
+            style={{ border: '1px solid rgba(205,115,141,0.3)', boxShadow: '0 0 20px rgba(205,115,141,0.1)' }}>
             <img
               src="/images/WhatsApp_Image_2026-06-30_at_2.12.44_PM.jpeg"
               alt="LashifyAbuja"
@@ -19,15 +19,15 @@ export default function Footer() {
           </div>
           <div>
             <div className="font-serif text-xl" style={{ color: '#f9f1e8' }}>
-              Lashify<span style={{ color: '#d4a827' }}>Abuja</span>
+              Lashify<span style={{ color: '#cd738d' }}>Abuja</span>
             </div>
-            <div className="text-[9px] uppercase tracking-[0.2em] mt-0.5" style={{ color: '#4e3219' }}>
+            <div className="text-[9px] uppercase tracking-[0.2em] mt-0.5" style={{ color: '#39383b' }}>
               Lash &amp; Brow Studio
             </div>
           </div>
         </div>
 
-        <p className="leading-relaxed max-w-md mx-auto mb-8 text-sm" style={{ color: '#4e3219' }}>
+        <p className="leading-relaxed max-w-md mx-auto mb-8 text-sm" style={{ color: '#39383b' }}>
           Abuja's premier destination for luxury lash extensions and brow artistry.
           Where precision meets artistry to elevate your natural beauty.
         </p>
@@ -45,16 +45,16 @@ export default function Footer() {
               target={item.href.startsWith('http') ? '_blank' : undefined}
               rel="noopener noreferrer"
               className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
-              style={{ border: '1px solid rgba(212,168,39,0.2)', color: '#6b5238' }}
+              style={{ border: '1px solid rgba(205,115,141,0.2)', color: '#6a686c' }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.background = 'rgba(212,168,39,0.15)';
-                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(212,168,39,0.5)';
-                (e.currentTarget as HTMLElement).style.color = '#d4a827';
+                (e.currentTarget as HTMLElement).style.background = 'rgba(205,115,141,0.15)';
+                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(205,115,141,0.5)';
+                (e.currentTarget as HTMLElement).style.color = '#cd738d';
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLElement).style.background = 'transparent';
-                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(212,168,39,0.2)';
-                (e.currentTarget as HTMLElement).style.color = '#6b5238';
+                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(205,115,141,0.2)';
+                (e.currentTarget as HTMLElement).style.color = '#6a686c';
               }}
               aria-label={item.label}
             >

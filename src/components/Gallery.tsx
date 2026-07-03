@@ -88,16 +88,16 @@ export default function Gallery() {
 
         <div className="text-center max-w-2xl mx-auto mb-12">
           <span className="section-label">
-            <span className="w-8 h-px" style={{ background: 'rgba(212,168,39,0.5)' }} />
+            <span className="w-8 h-px" style={{ background: 'rgba(205,115,141,0.5)' }} />
             Portfolio
-            <span className="w-8 h-px" style={{ background: 'rgba(212,168,39,0.5)' }} />
+            <span className="w-8 h-px" style={{ background: 'rgba(205,115,141,0.5)' }} />
           </span>
           <h2 className="heading-serif text-4xl md:text-5xl mt-4 mb-5" style={{ color: '#f9f1e8' }}>
             The
             <br />
-            <span className="italic" style={{ color: '#d4a827' }}>Gallery</span>
+            <span className="italic" style={{ color: '#cd738d' }}>Gallery</span>
           </h2>
-          <p className="text-sm" style={{ color: '#6b5238' }}>Real results from real clients.</p>
+          <p className="text-sm" style={{ color: '#6a686c' }}>Real results from real clients.</p>
         </div>
 
         {/* Filter tabs */}
@@ -108,9 +108,9 @@ export default function Gallery() {
               onClick={() => setFilter(cat)}
               className="px-5 py-2 rounded-full text-sm font-medium tracking-wide transition-all duration-300"
               style={{
-                background: filter === cat ? '#d4a827' : 'rgba(255,255,255,0.04)',
-                color: filter === cat ? '#0a0806' : '#6b5238',
-                border: `1px solid ${filter === cat ? '#d4a827' : 'rgba(212,168,39,0.15)'}`,
+                background: filter === cat ? '#cd738d' : 'rgba(255,255,255,0.04)',
+                color: filter === cat ? '#151416' : '#6a686c',
+                border: `1px solid ${filter === cat ? '#cd738d' : 'rgba(205,115,141,0.15)'}`,
               }}
             >
               {categoryLabels[cat] || cat}
@@ -126,7 +126,7 @@ export default function Gallery() {
               className={`group relative overflow-hidden rounded-2xl cursor-pointer ${
                 idx % 5 === 0 ? 'md:col-span-2 md:row-span-2 aspect-square' : 'aspect-square'
               }`}
-              style={{ border: '1px solid rgba(212,168,39,0.08)' }}
+              style={{ border: '1px solid rgba(205,115,141,0.08)' }}
             >
               <img
                 src={item.image_url}
@@ -141,7 +141,7 @@ export default function Gallery() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-serif text-base sm:text-lg" style={{ color: '#f9f1e8' }}>{item.title}</h4>
-                    <span className="text-xs uppercase tracking-wider" style={{ color: '#d4a827' }}>
+                    <span className="text-xs uppercase tracking-wider" style={{ color: '#cd738d' }}>
                       {categoryLabels[item.category] || item.category}
                     </span>
                   </div>
@@ -179,7 +179,7 @@ export default function Gallery() {
             <div className="text-center mt-6">
               <h3 className="font-serif text-2xl" style={{ color: '#f9f1e8' }}>{lightbox.title}</h3>
               {lightbox.description && (
-                <p className="mt-2" style={{ color: '#6b5238' }}>{lightbox.description}</p>
+                <p className="mt-2" style={{ color: '#6a686c' }}>{lightbox.description}</p>
               )}
             </div>
           </div>

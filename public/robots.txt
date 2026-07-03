@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lashify-abuja.vercel.app/sitemap.xml

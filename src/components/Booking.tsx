@@ -164,7 +164,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
   if (loading) {
     return (
       <section className="pt-32 pb-24 min-h-screen section-dark flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#d4a827' }} />
+        <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#cd738d' }} />
       </section>
     );
   }
@@ -174,35 +174,35 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
       <section className="pt-32 pb-24 min-h-screen section-dark flex items-center">
         <div className="container-lux max-w-2xl">
           <div className="card-lux p-10 md:p-14 text-center animate-scale-in"
-            style={{ boxShadow: '0 20px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(212,168,39,0.2)' }}>
+            style={{ boxShadow: '0 20px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(205,115,141,0.2)' }}>
             <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
-              style={{ background: 'rgba(212,168,39,0.1)', border: '1px solid rgba(212,168,39,0.3)' }}>
-              <PartyPopper className="w-10 h-10" style={{ color: '#d4a827' }} />
+              style={{ background: 'rgba(205,115,141,0.1)', border: '1px solid rgba(205,115,141,0.3)' }}>
+              <PartyPopper className="w-10 h-10" style={{ color: '#cd738d' }} />
             </div>
             <h2 className="heading-serif text-4xl mb-4" style={{ color: '#f9f1e8' }}>
               Appointment Requested!
             </h2>
-            <p className="leading-relaxed mb-8" style={{ color: '#6b5238' }}>
+            <p className="leading-relaxed mb-8" style={{ color: '#6a686c' }}>
               Thank you, {confirmedAppointment.client_name}! Your booking request has been received.
               We'll confirm your appointment via WhatsApp or phone shortly.
             </p>
 
             <div className="rounded-2xl p-6 text-left space-y-3 mb-8"
-              style={{ background: 'rgba(10,8,6,0.6)', border: '1px solid rgba(212,168,39,0.1)' }}>
+              style={{ background: 'rgba(10,8,6,0.6)', border: '1px solid rgba(205,115,141,0.1)' }}>
               {[
                 { l: 'Service', v: confirmedAppointment.service_name },
                 { l: 'Date', v: new Date(confirmedAppointment.appointment_date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }) },
                 { l: 'Time', v: `${formatTime(confirmedAppointment.start_time)} – ${formatTime(confirmedAppointment.end_time)}` },
               ].map((row) => (
                 <div key={row.l} className="flex justify-between items-center pb-3"
-                  style={{ borderBottom: '1px solid rgba(212,168,39,0.08)' }}>
-                  <span className="text-sm" style={{ color: '#4e3219' }}>{row.l}</span>
+                  style={{ borderBottom: '1px solid rgba(205,115,141,0.08)' }}>
+                  <span className="text-sm" style={{ color: '#39383b' }}>{row.l}</span>
                   <span className="font-medium text-sm" style={{ color: '#f9f1e8' }}>{row.v}</span>
                 </div>
               ))}
               <div className="flex justify-between items-center pt-1">
-                <span className="text-sm" style={{ color: '#4e3219' }}>Price</span>
-                <span className="font-serif text-2xl" style={{ color: '#d4a827' }}>
+                <span className="text-sm" style={{ color: '#39383b' }}>Price</span>
+                <span className="font-serif text-2xl" style={{ color: '#cd738d' }}>
                   {formatNaira(confirmedAppointment.service_price)}
                 </span>
               </div>
@@ -236,12 +236,12 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
         {/* Header */}
         <div className="text-center mb-10">
           <span className="section-label">
-            <span className="w-8 h-px" style={{ background: 'rgba(212,168,39,0.5)' }} />
+            <span className="w-8 h-px" style={{ background: 'rgba(205,115,141,0.5)' }} />
             Book Your Visit
-            <span className="w-8 h-px" style={{ background: 'rgba(212,168,39,0.5)' }} />
+            <span className="w-8 h-px" style={{ background: 'rgba(205,115,141,0.5)' }} />
           </span>
           <h1 className="heading-serif text-4xl md:text-5xl mt-4" style={{ color: '#f9f1e8' }}>
-            Reserve Your <span className="italic" style={{ color: '#d4a827' }}>Moment</span>
+            Reserve Your <span className="italic" style={{ color: '#cd738d' }}>Moment</span>
           </h1>
         </div>
 
@@ -252,24 +252,24 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
               <div className={`flex flex-col items-center gap-2 ${idx <= currentStepIndex ? '' : 'opacity-30'}`}>
                 <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-300"
                   style={{
-                    background: idx < currentStepIndex ? '#d4a827'
-                      : idx === currentStepIndex ? 'rgba(212,168,39,0.15)'
+                    background: idx < currentStepIndex ? '#cd738d'
+                      : idx === currentStepIndex ? 'rgba(205,115,141,0.15)'
                       : 'rgba(255,255,255,0.04)',
-                    color: idx < currentStepIndex ? '#0a0806'
-                      : idx === currentStepIndex ? '#d4a827'
-                      : '#4e3219',
-                    border: idx === currentStepIndex ? '2px solid rgba(212,168,39,0.6)' : '1px solid rgba(212,168,39,0.15)',
-                    boxShadow: idx === currentStepIndex ? '0 0 20px rgba(212,168,39,0.2)' : 'none',
+                    color: idx < currentStepIndex ? '#151416'
+                      : idx === currentStepIndex ? '#cd738d'
+                      : '#39383b',
+                    border: idx === currentStepIndex ? '2px solid rgba(205,115,141,0.6)' : '1px solid rgba(205,115,141,0.15)',
+                    boxShadow: idx === currentStepIndex ? '0 0 20px rgba(205,115,141,0.2)' : 'none',
                   }}>
                   {idx < currentStepIndex ? <Check className="w-5 h-5" /> : idx + 1}
                 </div>
-                <span className="text-[10px] sm:text-xs font-medium" style={{ color: idx === currentStepIndex ? '#d4a827' : '#3d2612' }}>
+                <span className="text-[10px] sm:text-xs font-medium" style={{ color: idx === currentStepIndex ? '#cd738d' : '#2d2c2f' }}>
                   {s.label}
                 </span>
               </div>
               {idx < steps.length - 1 && (
                 <div className="w-8 sm:w-12 md:w-20 h-px mx-2 transition-colors"
-                  style={{ background: idx < currentStepIndex ? '#d4a827' : 'rgba(212,168,39,0.1)' }} />
+                  style={{ background: idx < currentStepIndex ? '#cd738d' : 'rgba(205,115,141,0.1)' }} />
               )}
             </div>
           ))}
@@ -289,19 +289,19 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
               >
                 <div className="flex items-start justify-between mb-3">
                   <h3 className="font-serif text-xl transition-colors" style={{ color: '#f9f1e8' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = '#d4a827')}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = '#cd738d')}
                     onMouseLeave={(e) => (e.currentTarget.style.color = '#f9f1e8')}>
                     {service.name}
                   </h3>
-                  <span className="font-serif text-xl shrink-0 ml-3" style={{ color: '#d4a827' }}>
+                  <span className="font-serif text-xl shrink-0 ml-3" style={{ color: '#cd738d' }}>
                     {formatNaira(service.price)}
                   </span>
                 </div>
-                <p className="text-sm leading-relaxed mb-4" style={{ color: '#6b5238' }}>
+                <p className="text-sm leading-relaxed mb-4" style={{ color: '#6a686c' }}>
                   {service.description}
                 </p>
-                <span className="flex items-center gap-1.5 text-sm" style={{ color: '#4e3219' }}>
-                  <Clock className="w-4 h-4" style={{ color: '#b8891a' }} />
+                <span className="flex items-center gap-1.5 text-sm" style={{ color: '#39383b' }}>
+                  <Clock className="w-4 h-4" style={{ color: '#b2506e' }} />
                   {formatDuration(service.duration_minutes)}
                 </span>
               </button>
@@ -315,7 +315,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h3 className="font-serif text-2xl" style={{ color: '#f9f1e8' }}>{selectedService.name}</h3>
-                <p className="text-sm" style={{ color: '#4e3219' }}>
+                <p className="text-sm" style={{ color: '#39383b' }}>
                   {formatNaira(selectedService.price)} · {formatDuration(selectedService.duration_minutes)}
                 </p>
               </div>
@@ -324,7 +324,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
               </button>
             </div>
 
-            <h4 className="text-sm font-semibold uppercase tracking-wider mb-4" style={{ color: '#6b5238' }}>
+            <h4 className="text-sm font-semibold uppercase tracking-wider mb-4" style={{ color: '#6a686c' }}>
               Select a Date
             </h4>
             <DatePicker
@@ -335,10 +335,10 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
 
             {selectedDate && (
               <>
-                <h4 className="text-sm font-semibold uppercase tracking-wider mb-4 mt-8" style={{ color: '#6b5238' }}>
+                <h4 className="text-sm font-semibold uppercase tracking-wider mb-4 mt-8" style={{ color: '#6a686c' }}>
                   Available Times
                   {checkingAvailability && (
-                    <Loader2 className="w-4 h-4 inline ml-2 animate-spin" style={{ color: '#d4a827' }} />
+                    <Loader2 className="w-4 h-4 inline ml-2 animate-spin" style={{ color: '#cd738d' }} />
                   )}
                 </h4>
                 {getAvailableSlots().length > 0 ? (
@@ -352,9 +352,9 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
                         }}
                         className="py-3 px-2 rounded-xl text-sm font-medium transition-all duration-200"
                         style={{
-                          background: selectedTime === slot ? '#d4a827' : 'rgba(255,255,255,0.03)',
-                          color: selectedTime === slot ? '#0a0806' : '#6b5238',
-                          border: `1px solid ${selectedTime === slot ? '#d4a827' : 'rgba(212,168,39,0.1)'}`,
+                          background: selectedTime === slot ? '#cd738d' : 'rgba(255,255,255,0.03)',
+                          color: selectedTime === slot ? '#151416' : '#6a686c',
+                          border: `1px solid ${selectedTime === slot ? '#cd738d' : 'rgba(205,115,141,0.1)'}`,
                         }}
                       >
                         {formatTimeShort(slot)}
@@ -386,9 +386,9 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
             </div>
 
             <div className="rounded-xl p-4 mb-6 flex items-center gap-3"
-              style={{ background: 'rgba(212,168,39,0.06)', border: '1px solid rgba(212,168,39,0.15)' }}>
-              <Calendar className="w-5 h-5 shrink-0" style={{ color: '#d4a827' }} />
-              <div className="text-sm" style={{ color: '#a8896e' }}>
+              style={{ background: 'rgba(205,115,141,0.06)', border: '1px solid rgba(205,115,141,0.15)' }}>
+              <Calendar className="w-5 h-5 shrink-0" style={{ color: '#cd738d' }} />
+              <div className="text-sm" style={{ color: '#989599' }}>
                 <span className="font-medium" style={{ color: '#f9f1e8' }}>{selectedService.name}</span>
                 {' · '}
                 {selectedDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
@@ -401,7 +401,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
               <div>
                 <label className="label-lux">Full Name *</label>
                 <div className="relative">
-                  <User className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: '#4e3219' }} />
+                  <User className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: '#39383b' }} />
                   <input type="text" value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="input-lux pl-10" placeholder="Your full name" />
@@ -410,7 +410,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
               <div>
                 <label className="label-lux">Phone Number *</label>
                 <div className="relative">
-                  <Phone className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: '#4e3219' }} />
+                  <Phone className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: '#39383b' }} />
                   <input type="tel" value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     className="input-lux pl-10" placeholder="e.g. 0801 234 5678" />
@@ -419,7 +419,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
               <div className="sm:col-span-2">
                 <label className="label-lux">Email (optional)</label>
                 <div className="relative">
-                  <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: '#4e3219' }} />
+                  <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: '#39383b' }} />
                   <input type="email" value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="input-lux pl-10" placeholder="you@email.com" />
@@ -476,23 +476,23 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
                 ...(formData.email ? [{ l: 'Email', v: formData.email }] : []),
               ].map((row) => (
                 <div key={row.l} className="flex justify-between items-center py-3"
-                  style={{ borderBottom: '1px solid rgba(212,168,39,0.08)' }}>
-                  <span className="text-sm" style={{ color: '#4e3219' }}>{row.l}</span>
+                  style={{ borderBottom: '1px solid rgba(205,115,141,0.08)' }}>
+                  <span className="text-sm" style={{ color: '#39383b' }}>{row.l}</span>
                   <span className="font-medium text-sm" style={{ color: '#f9f1e8' }}>{row.v}</span>
                 </div>
               ))}
               <div className="flex justify-between items-center py-3">
-                <span className="text-sm" style={{ color: '#4e3219' }}>Total</span>
-                <span className="font-serif text-2xl" style={{ color: '#d4a827' }}>
+                <span className="text-sm" style={{ color: '#39383b' }}>Total</span>
+                <span className="font-serif text-2xl" style={{ color: '#cd738d' }}>
                   {formatNaira(selectedService.price)}
                 </span>
               </div>
             </div>
 
             <div className="rounded-xl p-4 mb-6 flex items-start gap-3"
-              style={{ background: 'rgba(212,168,39,0.04)', border: '1px solid rgba(212,168,39,0.12)' }}>
-              <Sparkles className="w-5 h-5 shrink-0 mt-0.5" style={{ color: '#d4a827' }} />
-              <p className="text-sm" style={{ color: '#6b5238' }}>
+              style={{ background: 'rgba(205,115,141,0.04)', border: '1px solid rgba(205,115,141,0.12)' }}>
+              <Sparkles className="w-5 h-5 shrink-0 mt-0.5" style={{ color: '#cd738d' }} />
+              <p className="text-sm" style={{ color: '#6a686c' }}>
                 Payment is due at the studio after your appointment. You'll receive a
                 confirmation message via WhatsApp shortly after booking.
               </p>
@@ -547,16 +547,16 @@ function DatePicker({
   today.setHours(0, 0, 0, 0);
 
   return (
-    <div className="rounded-2xl p-3 sm:p-5" style={{ background: 'rgba(10,8,6,0.6)', border: '1px solid rgba(212,168,39,0.1)' }}>
+    <div className="rounded-2xl p-3 sm:p-5" style={{ background: 'rgba(10,8,6,0.6)', border: '1px solid rgba(205,115,141,0.1)' }}>
       <div className="flex items-center justify-between mb-5">
         <button
           onClick={() => setViewMonth(new Date(year, month - 1, 1))}
           className="w-9 h-9 rounded-full flex items-center justify-center transition-colors"
           style={{ background: 'rgba(255,255,255,0.03)' }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(212,168,39,0.1)')}
+          onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(205,115,141,0.1)')}
           onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.03)')}
         >
-          <ChevronLeft className="w-5 h-5" style={{ color: '#6b5238' }} />
+          <ChevronLeft className="w-5 h-5" style={{ color: '#6a686c' }} />
         </button>
         <h4 className="font-serif text-lg" style={{ color: '#f9f1e8' }}>
           {monthNames[month]} {year}
@@ -565,16 +565,16 @@ function DatePicker({
           onClick={() => setViewMonth(new Date(year, month + 1, 1))}
           className="w-9 h-9 rounded-full flex items-center justify-center transition-colors"
           style={{ background: 'rgba(255,255,255,0.03)' }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(212,168,39,0.1)')}
+          onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(205,115,141,0.1)')}
           onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.03)')}
         >
-          <ChevronRight className="w-5 h-5" style={{ color: '#6b5238' }} />
+          <ChevronRight className="w-5 h-5" style={{ color: '#6a686c' }} />
         </button>
       </div>
 
       <div className="grid grid-cols-7 gap-1 mb-2">
         {['S','M','T','W','T','F','S'].map((d, i) => (
-          <div key={i} className="text-center text-xs font-medium py-2" style={{ color: '#3d2612' }}>
+          <div key={i} className="text-center text-xs font-medium py-2" style={{ color: '#2d2c2f' }}>
             {d}
           </div>
         ))}
@@ -595,13 +595,13 @@ function DatePicker({
               onClick={() => onSelect(date)}
               className="aspect-square min-h-[40px] rounded-lg text-sm font-medium transition-all duration-200"
               style={{
-                background: isSelected ? '#d4a827' : 'transparent',
-                color: isSelected ? '#0a0806'
+                background: isSelected ? '#cd738d' : 'transparent',
+                color: isSelected ? '#151416'
                   : isDisabled ? '#2e1c0d'
-                  : '#a8896e',
+                  : '#989599',
                 cursor: isDisabled ? 'not-allowed' : 'pointer',
               }}
-              onMouseEnter={(e) => { if (!isDisabled && !isSelected) e.currentTarget.style.background = 'rgba(212,168,39,0.1)'; }}
+              onMouseEnter={(e) => { if (!isDisabled && !isSelected) e.currentTarget.style.background = 'rgba(205,115,141,0.1)'; }}
               onMouseLeave={(e) => { if (!isDisabled && !isSelected) e.currentTarget.style.background = 'transparent'; }}
             >
               {date.getDate()}

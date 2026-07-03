@@ -9,13 +9,13 @@ export default function Contact() {
 
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="section-label">
-            <span className="w-8 h-px" style={{ background: 'rgba(212,168,39,0.5)' }} />
+            <span className="w-8 h-px" style={{ background: 'rgba(205,115,141,0.5)' }} />
             Get In Touch
-            <span className="w-8 h-px" style={{ background: 'rgba(212,168,39,0.5)' }} />
+            <span className="w-8 h-px" style={{ background: 'rgba(205,115,141,0.5)' }} />
           </span>
           <h2 className="heading-serif text-4xl md:text-5xl mt-4" style={{ color: '#f9f1e8' }}>
             Find{' '}
-            <span className="italic" style={{ color: '#d4a827' }}>Us</span>
+            <span className="italic" style={{ color: '#cd738d' }}>Us</span>
           </h2>
         </div>
 
@@ -26,15 +26,15 @@ export default function Contact() {
             <div className="card-lux p-7">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0"
-                  style={{ background: 'rgba(212,168,39,0.08)', border: '1px solid rgba(212,168,39,0.2)' }}>
-                  <MapPin className="w-6 h-6" style={{ color: '#d4a827' }} />
+                  style={{ background: 'rgba(205,115,141,0.08)', border: '1px solid rgba(205,115,141,0.2)' }}>
+                  <MapPin className="w-6 h-6" style={{ color: '#cd738d' }} />
                 </div>
                 <div>
                   <h3 className="font-serif text-xl mb-2" style={{ color: '#f9f1e8' }}>Location</h3>
-                  <p className="leading-relaxed" style={{ color: '#6b5238' }}>
+                  <p className="leading-relaxed" style={{ color: '#6a686c' }}>
                     Life Camp/Gwarimpa, Abuja
                   </p>
-                  <p className="text-sm mt-1" style={{ color: '#4e3219' }}>
+                  <p className="text-sm mt-1" style={{ color: '#39383b' }}>
                     Federal Capital Territory, Nigeria
                   </p>
                 </div>
@@ -45,8 +45,8 @@ export default function Contact() {
             <div className="card-lux p-7">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0"
-                  style={{ background: 'rgba(212,168,39,0.08)', border: '1px solid rgba(212,168,39,0.2)' }}>
-                  <Clock className="w-6 h-6" style={{ color: '#d4a827' }} />
+                  style={{ background: 'rgba(205,115,141,0.08)', border: '1px solid rgba(205,115,141,0.2)' }}>
+                  <Clock className="w-6 h-6" style={{ color: '#cd738d' }} />
                 </div>
                 <div className="flex-grow">
                   <h3 className="font-serif text-xl mb-3" style={{ color: '#f9f1e8' }}>Operating Hours</h3>
@@ -57,8 +57,8 @@ export default function Contact() {
                       { day: 'Sunday',          hours: 'By special request' },
                     ].map((row) => (
                       <div key={row.day} className="flex justify-between">
-                        <span style={{ color: '#6b5238' }}>{row.day}</span>
-                        <span className="font-medium" style={{ color: '#a8896e' }}>{row.hours}</span>
+                        <span style={{ color: '#6a686c' }}>{row.day}</span>
+                        <span className="font-medium" style={{ color: '#989599' }}>{row.hours}</span>
                       </div>
                     ))}
                   </div>
@@ -103,9 +103,9 @@ export default function Contact() {
                 className="card-lux p-6 hover:-translate-y-1 group block"
               >
                 <item.Icon className="w-7 h-7 mb-3 transition-transform group-hover:scale-110"
-                  style={{ color: '#d4a827' }} />
+                  style={{ color: '#cd738d' }} />
                 <h4 className="font-medium mb-1" style={{ color: '#f9f1e8' }}>{item.label}</h4>
-                <p className="text-sm break-all" style={{ color: '#4e3219' }}>{item.handle}</p>
+                <p className="text-sm break-all" style={{ color: '#39383b' }}>{item.handle}</p>
               </a>
             ))}
           </div>

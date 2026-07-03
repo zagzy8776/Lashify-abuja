@@ -57,7 +57,7 @@ export default function Admin({ onNavigate }: Props) {
   if (session === null) {
     return (
       <div className="pt-32 pb-24 min-h-screen section-dark flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#d4a827' }} />
+        <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#cd738d' }} />
       </div>
     );
   }
@@ -67,16 +67,16 @@ export default function Admin({ onNavigate }: Props) {
       <div className="pt-32 pb-24 min-h-screen section-dark flex items-center justify-center px-6">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
-            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 overflow-hidden" style={{ border: '1px solid rgba(212,168,39,0.3)', background: 'rgba(212,168,39,0.08)' }}>
-              <Lock className="w-8 h-8" style={{ color: '#d4a827' }} />
+            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 overflow-hidden" style={{ border: '1px solid rgba(205,115,141,0.3)', background: 'rgba(205,115,141,0.08)' }}>
+              <Lock className="w-8 h-8" style={{ color: '#cd738d' }} />
             </div>
             <h1 className="font-serif text-3xl" style={{ color: '#f9f1e8' }}>Admin Portal</h1>
-            <p className="text-sm mt-2" style={{ color: '#4e3219' }}>Sign in to manage LashifyAbuja</p>
+            <p className="text-sm mt-2" style={{ color: '#39383b' }}>Sign in to manage LashifyAbuja</p>
           </div>
 
-          <form onSubmit={handleLogin} className="rounded-2xl p-8" style={{ background: 'rgba(16,10,6,0.8)', border: '1px solid rgba(212,168,39,0.15)' }}>
+          <form onSubmit={handleLogin} className="rounded-2xl p-8" style={{ background: 'rgba(27,26,28,0.8)', border: '1px solid rgba(205,115,141,0.15)' }}>
             <div className="mb-5">
-              <label className="block text-sm font-medium mb-2" style={{ color: '#6b5238' }}>Email</label>
+              <label className="block text-sm font-medium mb-2" style={{ color: '#6a686c' }}>Email</label>
               <input
                 type="email"
                 value={email}
@@ -87,7 +87,7 @@ export default function Admin({ onNavigate }: Props) {
               />
             </div>
             <div className="mb-6">
-              <label className="block text-sm font-medium mb-2" style={{ color: '#6b5238' }}>Password</label>
+              <label className="block text-sm font-medium mb-2" style={{ color: '#6a686c' }}>Password</label>
               <input
                 type="password"
                 value={password}
@@ -111,7 +111,7 @@ export default function Admin({ onNavigate }: Props) {
 
           <button
             onClick={() => onNavigate('home')}
-            className="w-full text-center text-sm mt-6 transition-colors" style={{ color: '#3d2612' }} onMouseEnter={(e) => (e.currentTarget.style.color = '#d4a827')} onMouseLeave={(e) => (e.currentTarget.style.color = '#3d2612')}
+            className="w-full text-center text-sm mt-6 transition-colors" style={{ color: '#2d2c2f' }} onMouseEnter={(e) => (e.currentTarget.style.color = '#cd738d')} onMouseLeave={(e) => (e.currentTarget.style.color = '#2d2c2f')}
           >
             ← Back to website
           </button>
@@ -203,7 +203,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   if (loading) {
     return (
       <div className="pt-32 pb-24 min-h-screen section-dark flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#d4a827' }} />
+        <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#cd738d' }} />
       </div>
     );
   }
@@ -214,11 +214,11 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="font-serif text-3xl" style={{ color: '#f9f1e8' }}>Dashboard</h1>
-            <p className="text-sm mt-1" style={{ color: '#4e3219' }}>Welcome back, Lashify</p>
+            <p className="text-sm mt-1" style={{ color: '#39383b' }}>Welcome back, Lashify</p>
           </div>
           <button
             onClick={onLogout}
-            className="flex items-center gap-2 px-4 py-2 text-sm transition-colors" style={{ color: '#6b5238' }}
+            className="flex items-center gap-2 px-4 py-2 text-sm transition-colors" style={{ color: '#6a686c' }}
           >
             <LogOut className="w-4 h-4" /> Sign Out
           </button>
@@ -231,9 +231,9 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
               onClick={() => setTab(t.key)}
               className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all"
               style={{
-                background: tab === t.key ? '#d4a827' : 'rgba(255,255,255,0.03)',
-                color: tab === t.key ? '#0a0806' : '#6b5238',
-                border: `1px solid ${tab === t.key ? '#d4a827' : 'rgba(212,168,39,0.1)'}`,
+                background: tab === t.key ? '#cd738d' : 'rgba(255,255,255,0.03)',
+                color: tab === t.key ? '#151416' : '#6a686c',
+                border: `1px solid ${tab === t.key ? '#cd738d' : 'rgba(205,115,141,0.1)'}`,
               }}
             >
               <t.icon className="w-4 h-4" />
@@ -251,10 +251,10 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
               <StatCard icon={DollarSign} label="Revenue (Completed)" value={formatNaira(totalRevenue)} color="green" />
             </div>
 
-            <div className="rounded-2xl p-6" style={{ background: 'rgba(16,10,6,0.7)', border: '1px solid rgba(212,168,39,0.12)' }}>
+            <div className="rounded-2xl p-6" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(205,115,141,0.12)' }}>
               <h3 className="font-serif text-xl mb-5" style={{ color: '#f9f1e8' }}>Upcoming Appointments</h3>
               {upcomingAppointments.length === 0 ? (
-                <p className="text-sm py-8 text-center" style={{ color: '#4e3219' }}>No upcoming appointments.</p>
+                <p className="text-sm py-8 text-center" style={{ color: '#39383b' }}>No upcoming appointments.</p>
               ) : (
                 <div className="space-y-3">
                   {upcomingAppointments.slice(0, 5).map((apt) => (
@@ -272,10 +272,10 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
         )}
 
         {tab === 'appointments' && (
-          <div className="rounded-2xl p-6" style={{ background: 'rgba(16,10,6,0.7)', border: '1px solid rgba(212,168,39,0.12)' }}>
+          <div className="rounded-2xl p-6" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(205,115,141,0.12)' }}>
             <h3 className="font-serif text-xl mb-5" style={{ color: '#f9f1e8' }}>All Appointments</h3>
             {appointments.length === 0 ? (
-              <p className="text-sm py-8 text-center" style={{ color: '#4e3219' }}>No appointments yet.</p>
+              <p className="text-sm py-8 text-center" style={{ color: '#39383b' }}>No appointments yet.</p>
             ) : (
               <div className="space-y-3">
                 {appointments.map((apt) => (
@@ -312,15 +312,15 @@ function StatCard({ icon: Icon, label, value, color }: {
   value: string;
   color: 'gold' | 'rose' | 'ink' | 'green';
 }) {
-  const iconColors: Record<string, string> = { gold: '#d4a827', rose: 'rgba(200,80,80,0.8)', ink: '#a8896e', green: '#6be06b' };
+  const iconColors: Record<string, string> = { gold: '#cd738d', rose: 'rgba(200,80,80,0.8)', ink: '#989599', green: '#6be06b' };
   return (
-    <div className="bg-white rounded-2xl p-5" style={{ background: 'rgba(16,10,6,0.7)', border: '1px solid rgba(212,168,39,0.12)' }}>
+    <div className="bg-white rounded-2xl p-5" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(205,115,141,0.12)' }}>
       <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3`}
-        style={{ background: 'rgba(212,168,39,0.08)', border: '1px solid rgba(212,168,39,0.15)' }}>
+        style={{ background: 'rgba(205,115,141,0.08)', border: '1px solid rgba(205,115,141,0.15)' }}>
         <Icon className="w-5 h-5" style={{ color: iconColors[color] }} />
       </div>
       <div className="font-serif text-2xl" style={{ color: '#f9f1e8' }}>{value}</div>
-      <div className="text-xs mt-1" style={{ color: '#4e3219' }}>{label}</div>
+      <div className="text-xs mt-1" style={{ color: '#39383b' }}>{label}</div>
     </div>
   );
 }
@@ -332,23 +332,23 @@ function AppointmentRow({ apt, onStatusChange, compact }: {
 }) {
   const [expanded, setExpanded] = useState(false);
   const statusColors: Record<string, { bg: string; color: string }> = {
-    pending:   { bg: 'rgba(212,168,39,0.1)',  color: '#d4a827' },
+    pending:   { bg: 'rgba(205,115,141,0.1)',  color: '#cd738d' },
     confirmed: { bg: 'rgba(60,120,200,0.1)',  color: '#7ab0f0' },
     completed: { bg: 'rgba(60,180,60,0.1)',   color: '#6be06b' },
     cancelled: { bg: 'rgba(200,60,60,0.1)',   color: 'rgba(200,80,80,0.8)' },
-    no_show:   { bg: 'rgba(255,255,255,0.05)', color: '#4e3219' },
+    no_show:   { bg: 'rgba(255,255,255,0.05)', color: '#39383b' },
   };
 
   const date = new Date(apt.appointment_date + 'T00:00:00');
 
   return (
-    <div className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(212,168,39,0.08)' }}>
+    <div className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(205,115,141,0.08)' }}>
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-4 flex-grow">
           <div className="text-center shrink-0">
-            <div className="text-xs uppercase" style={{ color: '#4e3219' }}>{DAYS_SHORT[date.getDay()]}</div>
+            <div className="text-xs uppercase" style={{ color: '#39383b' }}>{DAYS_SHORT[date.getDay()]}</div>
             <div className="font-serif text-2xl" style={{ color: '#f9f1e8' }}>{date.getDate()}</div>
-            <div className="text-xs" style={{ color: '#4e3219' }}>{date.toLocaleDateString('en-US', { month: 'short' })}</div>
+            <div className="text-xs" style={{ color: '#39383b' }}>{date.toLocaleDateString('en-US', { month: 'short' })}</div>
           </div>
           <div className="flex-grow min-w-0">
             <div className="flex items-center gap-2 mb-1">
@@ -357,9 +357,9 @@ function AppointmentRow({ apt, onStatusChange, compact }: {
                 {apt.status.replace('_', ' ')}
               </span>
             </div>
-            <p className="text-sm" style={{ color: '#6b5238' }}>{apt.client_name} · {formatTime(apt.start_time)}</p>
+            <p className="text-sm" style={{ color: '#6a686c' }}>{apt.client_name} · {formatTime(apt.start_time)}</p>
             {!compact && (
-              <p className="text-xs mt-1" style={{ color: '#4e3219' }}>{formatNaira(Number(apt.service_price))}</p>
+              <p className="text-xs mt-1" style={{ color: '#39383b' }}>{formatNaira(Number(apt.service_price))}</p>
             )}
           </div>
         </div>
@@ -397,19 +397,19 @@ function AppointmentRow({ apt, onStatusChange, compact }: {
               className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
                 style={{ background: 'rgba(255,255,255,0.04)' }}
             >
-              <ChevronRight className="w-4 h-4 transition-transform" style={{ color: '#4e3219', transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)' }} />
+              <ChevronRight className="w-4 h-4 transition-transform" style={{ color: '#39383b', transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)' }} />
             </button>
           )}
         </div>
       </div>
       {expanded && !compact && (
-        <div className="mt-4 pt-4 grid sm:grid-cols-2 gap-3 text-sm" style={{ borderTop: '1px solid rgba(212,168,39,0.08)' }}>
+        <div className="mt-4 pt-4 grid sm:grid-cols-2 gap-3 text-sm" style={{ borderTop: '1px solid rgba(205,115,141,0.08)' }}>
           <div className="flex items-center gap-2 text-ink-600">
-            <Phone className="w-4 h-4" style={{ color: '#d4a827' }} /> <span style={{ color: '#6b5238' }}>{apt.client_phone}</span>
+            <Phone className="w-4 h-4" style={{ color: '#cd738d' }} /> <span style={{ color: '#6a686c' }}>{apt.client_phone}</span>
           </div>
           {apt.client_email && (
             <div className="flex items-center gap-2 text-ink-600">
-              <Mail className="w-4 h-4" style={{ color: '#d4a827' }} /> <span style={{ color: '#6b5238' }}>{apt.client_email}</span>
+              <Mail className="w-4 h-4" style={{ color: '#cd738d' }} /> <span style={{ color: '#6a686c' }}>{apt.client_email}</span>
             </div>
           )}
           <div className="text-ink-600">
@@ -518,11 +518,11 @@ function GalleryManager() {
     }
   };
 
-  if (loading) return <Loader2 className="w-6 h-6 animate-spin" style={{ color: '#d4a827' }} />;
+  if (loading) return <Loader2 className="w-6 h-6 animate-spin" style={{ color: '#cd738d' }} />;
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl p-6" style={{ background: 'rgba(16,10,6,0.7)', border: '1px solid rgba(212,168,39,0.12)' }}>
+      <div className="rounded-2xl p-6" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(205,115,141,0.12)' }}>
         <h3 className="font-serif text-xl mb-5" style={{ color: '#f9f1e8' }}>Add Gallery Item</h3>
         <div className="space-y-4">
           <div className="grid sm:grid-cols-2 gap-3">
@@ -554,14 +554,14 @@ function GalleryManager() {
               className="input-lux"
             />
             {uploading && (
-              <div className="mt-2 text-sm" style={{ color: '#d4a827' }}>
+              <div className="mt-2 text-sm" style={{ color: '#cd738d' }}>
                 Uploading... {uploadProgress}%
               </div>
             )}
           </div>
 
           {newItem.image_url && (
-            <div className="relative aspect-square max-w-xs rounded-xl overflow-hidden" style={{ border: '1px solid rgba(212,168,39,0.2)' }}>
+            <div className="relative aspect-square max-w-xs rounded-xl overflow-hidden" style={{ border: '1px solid rgba(205,115,141,0.2)' }}>
               <img src={newItem.image_url} alt="Preview" className="w-full h-full object-cover" />
             </div>
           )}
@@ -650,26 +650,26 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
 
   return (
     <>
-      <div className="rounded-2xl p-6" style={{ background: 'rgba(16,10,6,0.7)', border: '1px solid rgba(212,168,39,0.12)' }}>
+      <div className="rounded-2xl p-6" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(205,115,141,0.12)' }}>
         <h3 className="font-serif text-xl mb-5" style={{ color: '#f9f1e8' }}>Manage Services</h3>
         <div className="space-y-3">
           {services.map((svc) => (
-            <div key={svc.id} className="flex items-center justify-between p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(212,168,39,0.1)' }}>
+            <div key={svc.id} className="flex items-center justify-between p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(205,115,141,0.1)' }}>
               <div className="flex-grow">
                 <div className="flex items-center gap-3 mb-1">
                   <h4 className="font-medium" style={{ color: '#f9f1e8' }}>{svc.name}</h4>
-                  <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: svc.is_active ? 'rgba(60,180,60,0.15)' : 'rgba(255,255,255,0.05)', color: svc.is_active ? '#6be06b' : '#4e3219' }}>
+                  <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: svc.is_active ? 'rgba(60,180,60,0.15)' : 'rgba(255,255,255,0.05)', color: svc.is_active ? '#6be06b' : '#39383b' }}>
                     {svc.is_active ? 'Active' : 'Inactive'}
                   </span>
                 </div>
-                <p className="text-sm" style={{ color: '#4e3219' }}>{svc.description}</p>
-                <p className="text-sm mt-1" style={{ color: '#4e3219' }}>{formatDuration(svc.duration_minutes)} • {formatNaira(svc.price)}</p>
+                <p className="text-sm" style={{ color: '#39383b' }}>{svc.description}</p>
+                <p className="text-sm mt-1" style={{ color: '#39383b' }}>{formatDuration(svc.duration_minutes)} • {formatNaira(svc.price)}</p>
               </div>
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => handleEdit(svc)}
                   className="p-2 rounded-lg transition-colors hover:bg-opacity-80"
-                  style={{ background: 'rgba(212,168,39,0.15)', color: '#d4a827' }}
+                  style={{ background: 'rgba(205,115,141,0.15)', color: '#cd738d' }}
                   title="Edit service"
                 >
                   <Pencil className="w-4 h-4" />
@@ -685,7 +685,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
                 <button
                   onClick={() => toggleServiceActive(svc.id, svc.is_active)}
                   className="relative w-11 h-6 rounded-full transition-colors"
-                  style={{ background: svc.is_active ? '#d4a827' : 'rgba(255,255,255,0.1)' }}
+                  style={{ background: svc.is_active ? '#cd738d' : 'rgba(255,255,255,0.1)' }}
                   title={svc.is_active ? 'Deactivate' : 'Activate'}
                 >
                   <span className="absolute top-0.5 w-5 h-5 rounded-full transition-transform" style={{ background: '#f9f1e8', transform: svc.is_active ? 'translateX(20px)' : 'translateX(2px)' }} />
@@ -699,12 +699,12 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
       {/* Edit Modal */}
       {editingService && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(10,8,6,0.85)' }}>
-          <div className="w-full max-w-2xl rounded-2xl p-6" style={{ background: 'rgba(16,10,6,0.98)', border: '1px solid rgba(212,168,39,0.2)' }}>
+          <div className="w-full max-w-2xl rounded-2xl p-6" style={{ background: 'rgba(27,26,28,0.98)', border: '1px solid rgba(205,115,141,0.2)' }}>
             <h3 className="font-serif text-2xl mb-6" style={{ color: '#f9f1e8' }}>Edit Service</h3>
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-2" style={{ color: '#6b5238' }}>Service Name</label>
+                <label className="block text-sm font-medium mb-2" style={{ color: '#6a686c' }}>Service Name</label>
                 <input
                   type="text"
                   value={editForm.name || ''}
@@ -715,7 +715,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2" style={{ color: '#6b5238' }}>Description</label>
+                <label className="block text-sm font-medium mb-2" style={{ color: '#6a686c' }}>Description</label>
                 <textarea
                   value={editForm.description || ''}
                   onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
@@ -726,7 +726,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
 
               <div className="grid sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium mb-2" style={{ color: '#6b5238' }}>Price (₦)</label>
+                  <label className="block text-sm font-medium mb-2" style={{ color: '#6a686c' }}>Price (₦)</label>
                   <input
                     type="number"
                     value={editForm.price || ''}
@@ -737,7 +737,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2" style={{ color: '#6b5238' }}>Duration (min)</label>
+                  <label className="block text-sm font-medium mb-2" style={{ color: '#6a686c' }}>Duration (min)</label>
                   <input
                     type="number"
                     value={editForm.duration_minutes || ''}
@@ -748,7 +748,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2" style={{ color: '#6b5238' }}>Category</label>
+                  <label className="block text-sm font-medium mb-2" style={{ color: '#6a686c' }}>Category</label>
                   <select
                     value={editForm.category || 'lashes'}
                     onChange={(e) => setEditForm({ ...editForm, category: e.target.value })}
@@ -777,7 +777,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
                 }}
                 disabled={saving}
                 className="flex-1 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors"
-                style={{ background: 'rgba(255,255,255,0.04)', color: '#6b5238', border: '1px solid rgba(212,168,39,0.1)' }}
+                style={{ background: 'rgba(255,255,255,0.04)', color: '#6a686c', border: '1px solid rgba(205,115,141,0.1)' }}
               >
                 Cancel
               </button>
@@ -824,28 +824,28 @@ function ReviewsManager() {
     }
   };
 
-  if (loading) return <Loader2 className="w-6 h-6 animate-spin" style={{ color: '#d4a827' }} />;
+  if (loading) return <Loader2 className="w-6 h-6 animate-spin" style={{ color: '#cd738d' }} />;
 
   return (
     <div className="space-y-3">
       {reviews.length === 0 ? (
-        <p className="text-center py-8" style={{ color: '#4e3219' }}>No reviews yet.</p>
+        <p className="text-center py-8" style={{ color: '#39383b' }}>No reviews yet.</p>
       ) : (
         reviews.map((review) => (
-          <div key={review.id} className="rounded-2xl p-5" style={{ background: 'rgba(16,10,6,0.7)', border: '1px solid rgba(212,168,39,0.12)' }}>
+          <div key={review.id} className="rounded-2xl p-5" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(205,115,141,0.12)' }}>
             <div className="flex items-start justify-between mb-3">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <h4 className="font-medium" style={{ color: '#f9f1e8' }}>{review.client_name}</h4>
                   <div className="flex gap-0.5">
                     {[...Array(review.rating)].map((_, i) => (
-                      <Star key={i} className="w-3.5 h-3.5" style={{ fill: '#d4a827', color: '#d4a827' }} />
+                      <Star key={i} className="w-3.5 h-3.5" style={{ fill: '#cd738d', color: '#cd738d' }} />
                     ))}
                   </div>
                 </div>
-                <p className="text-sm" style={{ color: '#6b5238' }}>{review.comment}</p>
+                <p className="text-sm" style={{ color: '#6a686c' }}>{review.comment}</p>
               </div>
-              <span className="text-xs px-2 py-1 rounded-full shrink-0" style={{ background: review.is_published ? 'rgba(60,180,60,0.15)' : 'rgba(255,255,255,0.05)', color: review.is_published ? '#6be06b' : '#4e3219' }}>
+              <span className="text-xs px-2 py-1 rounded-full shrink-0" style={{ background: review.is_published ? 'rgba(60,180,60,0.15)' : 'rgba(255,255,255,0.05)', color: review.is_published ? '#6be06b' : '#39383b' }}>
                 {review.is_published ? 'Published' : 'Hidden'}
               </span>
             </div>
@@ -853,7 +853,7 @@ function ReviewsManager() {
               <button
                 onClick={() => togglePublish(review.id, review.is_published)}
                 className="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
-                style={{ background: 'rgba(255,255,255,0.04)', color: '#6b5238', border: '1px solid rgba(212,168,39,0.1)' }}
+                style={{ background: 'rgba(255,255,255,0.04)', color: '#6a686c', border: '1px solid rgba(205,115,141,0.1)' }}
               >
                 {review.is_published ? 'Hide' : 'Publish'}
               </button>

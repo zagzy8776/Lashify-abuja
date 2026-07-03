@@ -7,15 +7,15 @@
     scroll-behavior: smooth;
   }
   body {
-    background-color: #0a0806;
-    color: #f9f1e8;
+    background-color: #151416;
+    color: #f8f1ee;
     font-family: 'Inter', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
   ::selection {
-    background-color: #e8c45a;
-    color: #0a0806;
+    background-color: #df9db1;
+    color: #151416;
   }
 }
 
@@ -25,80 +25,80 @@
   }
   .btn-gold {
     @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 font-medium tracking-wide rounded-full transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0;
-    background: linear-gradient(135deg, #d4a827 0%, #e8c45a 50%, #d4a827 100%);
-    color: #0a0806;
-    box-shadow: 0 4px 20px rgba(212,168,39,0.3);
+    background: linear-gradient(135deg, #cd738d 0%, #df9db1 50%, #cd738d 100%);
+    color: #fdf8f9;
+    box-shadow: 0 4px 20px rgba(205,115,141,0.3);
     min-height: 48px;
     min-width: 48px;
   }
   .btn-gold:hover {
-    box-shadow: 0 8px 30px rgba(212,168,39,0.5);
+    box-shadow: 0 8px 30px rgba(205,115,141,0.5);
   }
   .btn-outline {
     @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 font-medium tracking-wide rounded-full transition-all duration-300 hover:-translate-y-0.5;
-    border: 1px solid rgba(212,168,39,0.4);
-    color: #e8c45a;
+    border: 1px solid rgba(205,115,141,0.4);
+    color: #df9db1;
     min-height: 48px;
     min-width: 48px;
   }
   .btn-outline:hover {
-    border-color: #e8c45a;
-    background: rgba(212,168,39,0.08);
+    border-color: #df9db1;
+    background: rgba(205,115,141,0.08);
   }
   .btn-ghost {
     @apply inline-flex items-center justify-center gap-2 px-6 py-3 font-medium tracking-wide rounded-full transition-all duration-300;
-    color: #c9a98c;
+    color: #e1c4b7;
   }
   .btn-ghost:hover {
     background: rgba(255,255,255,0.06);
-    color: #e8c45a;
+    color: #df9db1;
   }
   .section-label {
     @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.25em];
-    color: #d4a827;
+    color: #cd738d;
   }
   .heading-serif {
     @apply font-serif font-light tracking-tight;
   }
   .card-lux {
     @apply rounded-2xl shadow-sm transition-all duration-500;
-    background: rgba(22,14,8,0.85);
-    border: 1px solid rgba(212,168,39,0.15);
+    background: rgba(35,34,37,0.85);
+    border: 1px solid rgba(205,115,141,0.15);
     backdrop-filter: blur(6px);
   }
   .card-lux:hover {
-    border-color: rgba(212,168,39,0.35);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,168,39,0.1);
+    border-color: rgba(205,115,141,0.35);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(205,115,141,0.1);
   }
   .input-lux {
     @apply w-full px-4 py-3 rounded-xl transition-colors duration-200 focus:outline-none;
-    background: rgba(16,10,6,0.8);
-    border: 1px solid rgba(212,168,39,0.2);
-    color: #f9f1e8;
+    background: rgba(27,26,28,0.8);
+    border: 1px solid rgba(205,115,141,0.2);
+    color: #f8f1ee;
   }
   .input-lux::placeholder {
-    color: #6b5238;
+    color: #6a686c;
   }
   .input-lux:focus {
-    border-color: rgba(212,168,39,0.6);
-    background: rgba(16,10,6,0.95);
+    border-color: rgba(205,115,141,0.6);
+    background: rgba(27,26,28,0.95);
   }
   .label-lux {
     @apply block text-sm font-medium mb-1.5;
-    color: #a8896e;
+    color: #989599;
   }
   .section-dark {
-    background: #0a0806;
+    background: #151416;
   }
   .section-brown {
-    background: #100d09;
+    background: #1b1a1c;
   }
   .section-mid {
-    background: #160e08;
+    background: #232225;
   }
   .divider-gold {
     height: 1px;
-    background: linear-gradient(to right, transparent, rgba(212,168,39,0.4), transparent);
+    background: linear-gradient(to right, transparent, rgba(205,115,141,0.4), transparent);
   }
 }
 
@@ -107,19 +107,19 @@
     text-wrap: balance;
   }
   .gold-gradient-text {
-    background: linear-gradient(135deg, #b8891a 0%, #e8c45a 40%, #d4a827 70%, #f0d98a 100%);
+    background: linear-gradient(135deg, #b2506e 0%, #df9db1 40%, #cd738d 70%, #f5dce3 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
   }
   .shimmer-dark {
-    background: linear-gradient(90deg, #160e08 0%, #2c2015 50%, #160e08 100%);
+    background: linear-gradient(90deg, #232225 0%, #2d2c2f 50%, #232225 100%);
     background-size: 1000px 100%;
     animation: shimmer 2.5s linear infinite;
   }
   .shimmer-bg {
-    background: linear-gradient(90deg, #100d09 0%, #2e1c0d 50%, #100d09 100%);
+    background: linear-gradient(90deg, #1b1a1c 0%, #39383b 50%, #1b1a1c 100%);
     background-size: 1000px 100%;
   }
   .scrollbar-hide::-webkit-scrollbar { display: none; }
