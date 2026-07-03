@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer base {
+  html, body {
+    overflow-x: hidden;
+  }
   html {
     scroll-behavior: smooth;
   }
@@ -12,6 +15,8 @@
     font-family: 'Inter', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    width: 100%;
+    position: relative;
   }
   ::selection {
     background-color: #df9db1;
