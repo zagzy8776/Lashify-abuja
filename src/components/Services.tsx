@@ -57,16 +57,16 @@ export default function Services({ onNavigate, onBookService, compact }: Props) 
 
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="section-label">
-            <span className="w-8 h-px" style={{ background: 'rgba(197,179,88,0.5)' }} />
+            <span className="w-8 h-px" style={{ background: 'rgba(74,35,17,0.5)' }} />
             Our Services
-            <span className="w-8 h-px" style={{ background: 'rgba(197,179,88,0.5)' }} />
+            <span className="w-8 h-px" style={{ background: 'rgba(74,35,17,0.5)' }} />
           </span>
-          <h2 className="heading-serif text-4xl md:text-5xl mt-4 mb-4" style={{ color: '#371c14' }}>
+          <h2 className="heading-serif text-4xl md:text-5xl mt-4 mb-4" style={{ color: '#f4e6e0' }}>
             Services &
             <br />
-            <span className="italic" style={{ color: '#c5b358' }}>Pricing</span>
+            <span className="italic" style={{ color: '#4a2311' }}>Pricing</span>
           </h2>
-          <p className="text-sm leading-relaxed" style={{ color: '#6a686c' }}>
+          <p className="text-sm leading-relaxed" style={{ color: '#7a4428' }}>
             All services include consultation and aftercare. No hidden fees.
           </p>
         </div>
@@ -79,8 +79,8 @@ export default function Services({ onNavigate, onBookService, compact }: Props) 
           return (
             <div key={cat} className="mb-16 last:mb-0">
               <h3 className="font-serif text-2xl mb-6 flex items-center gap-3"
-                style={{ color: '#989599' }}>
-                <span className="w-10 h-px" style={{ background: 'rgba(197,179,88,0.4)' }} />
+                style={{ color: '#5e311a' }}>
+                <span className="w-10 h-px" style={{ background: 'rgba(74,35,17,0.4)' }} />
                 {categoryLabels[cat] || cat}
               </h3>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -92,50 +92,50 @@ export default function Services({ onNavigate, onBookService, compact }: Props) 
                     onClick={() => onBookService ? onBookService(service) : onNavigate('book')}
                   >
                     {service.image_url && (
-                      <div className="w-full h-48 bg-gray-100 overflow-hidden" style={{ borderBottom: '1px solid rgba(197,179,88,0.1)' }}>
+                      <div className="w-full h-48 bg-gray-100 overflow-hidden" style={{ borderBottom: '1px solid rgba(74,35,17,0.1)' }}>
                         <img src={service.image_url} alt={service.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                       </div>
                     )}
                     <div className="p-7 flex flex-col flex-grow">
                       <div className="flex items-start justify-between mb-4">
                         <h4 className="font-serif text-xl transition-colors"
-                          style={{ color: '#371c14' }}
-                          onMouseEnter={(e) => (e.currentTarget.style.color = '#c5b358')}
-                          onMouseLeave={(e) => (e.currentTarget.style.color = '#371c14')}
+                          style={{ color: '#f4e6e0' }}
+                          onMouseEnter={(e) => (e.currentTarget.style.color = '#4a2311')}
+                          onMouseLeave={(e) => (e.currentTarget.style.color = '#f4e6e0')}
                         >
                           {service.name}
                         </h4>
                         <div className="text-right shrink-0 ml-3">
-                        <div className="font-serif text-2xl" style={{ color: '#c5b358' }}>
+                        <div className="font-serif text-2xl" style={{ color: '#4a2311' }}>
                           {formatNaira(service.price)}
                         </div>
                       </div>
                     </div>
 
-                    <p className="text-sm leading-relaxed mb-5 flex-grow" style={{ color: '#39383b' }}>
+                    <p className="text-sm leading-relaxed mb-5 flex-grow" style={{ color: '#965d3e' }}>
                       {service.description}
                     </p>
 
                     <div className="flex items-center gap-4 text-sm mb-5 pb-5"
-                      style={{ borderBottom: '1px solid rgba(197,179,88,0.1)', color: '#39383b' }}>
+                      style={{ borderBottom: '1px solid rgba(74,35,17,0.1)', color: '#965d3e' }}>
                       <span className="flex items-center gap-1.5">
-                        <Clock className="w-4 h-4" style={{ color: '#b89f5d' }} />
+                        <Clock className="w-4 h-4" style={{ color: '#3a1c0d' }} />
                         {formatDuration(service.duration_minutes)}
                       </span>
                       <span className="flex items-center gap-1.5">
-                        <Check className="w-4 h-4" style={{ color: '#b89f5d' }} />
+                        <Check className="w-4 h-4" style={{ color: '#3a1c0d' }} />
                         Consultation included
                       </span>
                     </div>
 
                     <button className="flex items-center justify-between text-sm font-medium transition-colors"
-                      style={{ color: '#6a686c' }}
+                      style={{ color: '#7a4428' }}
                     >
                       <span className="group-hover:text-gold-400 transition-colors">
                         Book this service
                       </span>
                       <span className="w-9 h-9 rounded-full flex items-center justify-center transition-all"
-                        style={{ border: '1px solid rgba(197,179,88,0.2)' }}>
+                        style={{ border: '1px solid rgba(74,35,17,0.2)' }}>
                         <ArrowRight className="w-4 h-4" />
                       </span>
                     </button>

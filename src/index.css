@@ -10,8 +10,8 @@
     scroll-behavior: smooth;
   }
   body {
-    background-color: #F9F6F0;
-    color: #371c14;
+    background-color: #d1b1a3;
+    color: #3a1c0d;
     font-family: 'Inter', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -19,8 +19,8 @@
     position: relative;
   }
   ::selection {
-    background-color: #e6d795;
-    color: #fcf9f8;
+    background-color: #3a1c0d;
+    color: #d1b1a3;
   }
 }
 
@@ -30,25 +30,25 @@
   }
   .btn-gold {
     @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 font-medium tracking-wide rounded-full transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0;
-    background: linear-gradient(135deg, #c5b358 0%, #e6d795 50%, #c5b358 100%);
-    color: #371c14;
-    box-shadow: 0 4px 20px rgba(197,179,88,0.3);
+    background: linear-gradient(135deg, #4a2311 0%, #5e311a 50%, #4a2311 100%);
+    color: #f4e6e0;
+    box-shadow: 0 4px 20px rgba(74,35,17,0.3);
     min-height: 48px;
     min-width: 48px;
   }
   .btn-gold:hover {
-    box-shadow: 0 8px 30px rgba(197,179,88,0.5);
+    box-shadow: 0 8px 30px rgba(74,35,17,0.5);
   }
   .btn-outline {
     @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 font-medium tracking-wide rounded-full transition-all duration-300 hover:-translate-y-0.5;
-    border: 1px solid rgba(197,179,88,0.4);
-    color: #e6d795;
+    border: 1px solid rgba(74,35,17,0.4);
+    color: #5e311a;
     min-height: 48px;
     min-width: 48px;
   }
   .btn-outline:hover {
-    border-color: #e6d795;
-    background: rgba(197,179,88,0.08);
+    border-color: #5e311a;
+    background: rgba(74,35,17,0.08);
   }
   .btn-ghost {
     @apply inline-flex items-center justify-center gap-2 px-6 py-3 font-medium tracking-wide rounded-full transition-all duration-300;
@@ -56,11 +56,11 @@
   }
   .btn-ghost:hover {
     background: rgba(0,0,0,0.04);
-    color: #c5b358;
+    color: #4a2311;
   }
   .section-label {
     @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.25em];
-    color: #c5b358;
+    color: #4a2311;
   }
   .heading-serif {
     @apply font-serif font-light tracking-tight;
@@ -68,24 +68,24 @@
   .card-lux {
     @apply rounded-2xl shadow-sm transition-all duration-500;
     background: rgba(255,255,255,0.85);
-    border: 1px solid rgba(197,179,88,0.2);
+    border: 1px solid rgba(74,35,17,0.2);
     backdrop-filter: blur(8px);
   }
   .card-lux:hover {
-    border-color: rgba(197,179,88,0.35);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.08), 0 0 0 1px rgba(197,179,88,0.1);
+    border-color: rgba(74,35,17,0.35);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.08), 0 0 0 1px rgba(74,35,17,0.1);
   }
   .input-lux {
     @apply w-full px-4 py-3 rounded-xl transition-colors duration-200 focus:outline-none;
     background: rgba(255,255,255,0.8);
-    border: 1px solid rgba(197,179,88,0.2);
-    color: #371c14;
+    border: 1px solid rgba(74,35,17,0.2);
+    color: #3a1c0d;
   }
   .input-lux::placeholder {
     color: #807d81;
   }
   .input-lux:focus {
-    border-color: rgba(197,179,88,0.6);
+    border-color: rgba(74,35,17,0.6);
     background: rgba(255,255,255,1);
   }
   .label-lux {
@@ -93,7 +93,7 @@
     color: #693a2c;
   }
   .section-light {
-    background: #F9F6F0;
+    background: #d1b1a3;
   }
   .section-cream {
     background: #F3EBE6;
@@ -103,7 +103,7 @@
   }
   .divider-gold {
     height: 1px;
-    background: linear-gradient(to right, transparent, rgba(197,179,88,0.4), transparent);
+    background: linear-gradient(to right, transparent, rgba(74,35,17,0.4), transparent);
   }
 }
 
@@ -112,7 +112,7 @@
     text-wrap: balance;
   }
   .gold-gradient-text {
-    background: linear-gradient(135deg, #b89f5d 0%, #e6d795 40%, #c5b358 70%, #f5dce3 100%);
+    background: linear-gradient(135deg, #4a2311 0%, #3a1c0d 50%, #4a2311 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -124,7 +124,7 @@
     animation: shimmer 2.5s linear infinite;
   }
   .shimmer-bg {
-    background: linear-gradient(90deg, #F9F6F0 0%, #F3EBE6 50%, #F9F6F0 100%);
+    background: linear-gradient(90deg, #3a1c0d 0%, #F3EBE6 50%, #3a1c0d 100%);
     background-size: 1000px 100%;
   }
   .scrollbar-hide::-webkit-scrollbar { display: none; }

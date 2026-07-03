@@ -88,16 +88,16 @@ export default function Gallery() {
 
         <div className="text-center max-w-2xl mx-auto mb-12">
           <span className="section-label">
-            <span className="w-8 h-px" style={{ background: 'rgba(197,179,88,0.5)' }} />
+            <span className="w-8 h-px" style={{ background: 'rgba(74,35,17,0.5)' }} />
             Portfolio
-            <span className="w-8 h-px" style={{ background: 'rgba(197,179,88,0.5)' }} />
+            <span className="w-8 h-px" style={{ background: 'rgba(74,35,17,0.5)' }} />
           </span>
-          <h2 className="heading-serif text-4xl md:text-5xl mt-4 mb-5" style={{ color: '#371c14' }}>
+          <h2 className="heading-serif text-4xl md:text-5xl mt-4 mb-5" style={{ color: '#f4e6e0' }}>
             The
             <br />
-            <span className="italic" style={{ color: '#c5b358' }}>Gallery</span>
+            <span className="italic" style={{ color: '#4a2311' }}>Gallery</span>
           </h2>
-          <p className="text-sm" style={{ color: '#6a686c' }}>Real results from real clients.</p>
+          <p className="text-sm" style={{ color: '#7a4428' }}>Real results from real clients.</p>
         </div>
 
         {/* Filter tabs */}
@@ -108,9 +108,9 @@ export default function Gallery() {
               onClick={() => setFilter(cat)}
               className="px-5 py-2 rounded-full text-sm font-medium tracking-wide transition-all duration-300"
               style={{
-                background: filter === cat ? '#c5b358' : 'rgba(255,255,255,0.04)',
-                color: filter === cat ? '#151416' : '#6a686c',
-                border: `1px solid ${filter === cat ? '#c5b358' : 'rgba(197,179,88,0.15)'}`,
+                background: filter === cat ? '#4a2311' : 'rgba(255,255,255,0.5)',
+                color: filter === cat ? '#d5b1a3' : '#7a4428',
+                border: `1px solid ${filter === cat ? '#4a2311' : 'rgba(74,35,17,0.15)'}`,
               }}
             >
               {categoryLabels[cat] || cat}
@@ -126,7 +126,7 @@ export default function Gallery() {
               className={`group relative overflow-hidden rounded-2xl cursor-pointer ${
                 idx % 5 === 0 ? 'md:col-span-2 md:row-span-2 aspect-square' : 'aspect-square'
               }`}
-              style={{ border: '1px solid rgba(197,179,88,0.08)' }}
+              style={{ border: '1px solid rgba(74,35,17,0.08)' }}
             >
               <img
                 src={item.image_url}
@@ -136,18 +136,18 @@ export default function Gallery() {
                 style={{ filter: 'brightness(0.8) saturate(0.9)' }}
               />
               <div className="absolute inset-0 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-500"
-                style={{ background: 'linear-gradient(to top, rgba(10,8,6,0.85) 0%, rgba(10,8,6,0.1) 60%, transparent 100%)' }} />
+                style={{ background: 'linear-gradient(to top, rgba(203,164,149,0.85) 0%, rgba(203,164,149,0.1) 60%, transparent 100%)' }} />
               <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-5 sm:translate-y-4 sm:group-hover:translate-y-0 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-500">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="font-serif text-base sm:text-lg" style={{ color: '#371c14' }}>{item.title}</h4>
-                    <span className="text-xs uppercase tracking-wider" style={{ color: '#c5b358' }}>
+                    <h4 className="font-serif text-base sm:text-lg" style={{ color: '#f4e6e0' }}>{item.title}</h4>
+                    <span className="text-xs uppercase tracking-wider" style={{ color: '#4a2311' }}>
                       {categoryLabels[item.category] || item.category}
                     </span>
                   </div>
                   <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center"
                     style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(4px)' }}>
-                    <ZoomIn className="w-4 h-4" style={{ color: '#371c14' }} />
+                    <ZoomIn className="w-4 h-4" style={{ color: '#f4e6e0' }} />
                   </div>
                 </div>
               </div>
@@ -160,7 +160,7 @@ export default function Gallery() {
       {lightbox && (
         <div
           className="fixed inset-0 z-[100] flex items-center justify-center p-6 animate-fade-in"
-          style={{ background: 'rgba(10,8,6,0.97)', backdropFilter: 'blur(12px)' }}
+          style={{ background: 'rgba(203,164,149,0.97)', backdropFilter: 'blur(12px)' }}
           onClick={() => setLightbox(null)}
         >
           <button
@@ -168,7 +168,7 @@ export default function Gallery() {
             style={{ background: 'rgba(255,255,255,0.08)' }}
             onClick={() => setLightbox(null)}
           >
-            <X className="w-6 h-6" style={{ color: '#371c14' }} />
+            <X className="w-6 h-6" style={{ color: '#f4e6e0' }} />
           </button>
           <div className="max-w-4xl w-full" onClick={(e) => e.stopPropagation()}>
             <img
@@ -177,9 +177,9 @@ export default function Gallery() {
               className="w-full max-h-[80vh] object-contain rounded-2xl"
             />
             <div className="text-center mt-6">
-              <h3 className="font-serif text-2xl" style={{ color: '#371c14' }}>{lightbox.title}</h3>
+              <h3 className="font-serif text-2xl" style={{ color: '#f4e6e0' }}>{lightbox.title}</h3>
               {lightbox.description && (
-                <p className="mt-2" style={{ color: '#6a686c' }}>{lightbox.description}</p>
+                <p className="mt-2" style={{ color: '#7a4428' }}>{lightbox.description}</p>
               )}
             </div>
           </div>

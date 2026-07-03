@@ -17,7 +17,7 @@ export default function Hero({ onNavigate }: Props) {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full"
           style={{ background: 'radial-gradient(circle, rgba(80,40,10,0.2) 0%, transparent 70%)' }} />
         <div className="absolute bottom-0 right-0 w-80 h-80 rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(197,179,88,0.05) 0%, transparent 70%)' }} />
+          style={{ background: 'radial-gradient(circle, rgba(74,35,17,0.05) 0%, transparent 70%)' }} />
       </div>
 
       <div className="container-lux relative z-10 pt-24 lg:pt-28 pb-20">
@@ -26,17 +26,17 @@ export default function Hero({ onNavigate }: Props) {
           {/* Left — text */}
           <div className={`transition-all duration-1000 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <div className="flex items-center gap-2 mb-7">
-              <span className="text-xs tracking-[0.2em] uppercase" style={{ color: '#6a686c' }}>
+              <span className="text-xs tracking-[0.2em] uppercase" style={{ color: '#7a4428' }}>
                 Abuja's #1 Lash Studio
               </span>
             </div>
 
             <h1 className="font-serif font-light leading-[1.05] mb-6"
-              style={{ fontSize: 'clamp(3rem, 6vw, 5rem)', color: '#371c14' }}>
+              style={{ fontSize: 'clamp(3rem, 6vw, 5rem)', color: '#f4e6e0' }}>
               Where Your Eyes
               <br />
               <span className="italic" style={{
-                background: 'linear-gradient(135deg, #b89f5d 0%, #e6d795 40%, #c5b358 100%)',
+                background: 'linear-gradient(135deg, #3a1c0d 0%, #5e311a 40%, #4a2311 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
               }}>
@@ -65,7 +65,7 @@ export default function Hero({ onNavigate }: Props) {
                 { v: '3+ yrs', l: 'Experience' },
               ].map((s) => (
                 <div key={s.l}>
-                  <div className="font-serif text-3xl" style={{ color: '#c5b358' }}>{s.v}</div>
+                  <div className="font-serif text-3xl" style={{ color: '#4a2311' }}>{s.v}</div>
                   <div className="text-xs uppercase tracking-[0.15em] mt-1" style={{ color: '#2d2c2f' }}>{s.l}</div>
                 </div>
               ))}
@@ -85,8 +85,8 @@ export default function Hero({ onNavigate }: Props) {
 
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2"
         style={{ opacity: 0.3 }}>
-        <span className="text-xs uppercase tracking-[0.2em]" style={{ color: '#6a686c' }}>Scroll</span>
-        <div className="w-px h-8" style={{ background: 'linear-gradient(to bottom, rgba(197,179,88,0.5), transparent)' }} />
+        <span className="text-xs uppercase tracking-[0.2em]" style={{ color: '#7a4428' }}>Scroll</span>
+        <div className="w-px h-8" style={{ background: 'linear-gradient(to bottom, rgba(74,35,17,0.5), transparent)' }} />
       </div>
 
       <style>{`
@@ -116,7 +116,7 @@ function HeroLogoGlow() {
           style={{ filter: 'brightness(1.05) contrast(1.05)' }}
         />
         <div className="absolute inset-0 rounded-full pointer-events-none" style={{
-          background: 'radial-gradient(circle at center, transparent 55%, rgba(10,8,6,0.35) 100%)',
+          background: 'radial-gradient(circle at center, transparent 55%, rgba(203,164,149,0.35) 100%)',
         }} />
       </div>
     </div>

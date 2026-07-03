@@ -57,7 +57,7 @@ export default function Admin({ onNavigate }: Props) {
   if (session === null) {
     return (
       <div className="pt-32 pb-24 min-h-screen section-light flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#c5b358' }} />
+        <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#4a2311' }} />
       </div>
     );
   }
@@ -67,16 +67,16 @@ export default function Admin({ onNavigate }: Props) {
       <div className="pt-32 pb-24 min-h-screen section-light flex items-center justify-center px-6">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
-            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 overflow-hidden" style={{ border: '1px solid rgba(197,179,88,0.3)', background: 'rgba(197,179,88,0.08)' }}>
-              <Lock className="w-8 h-8" style={{ color: '#c5b358' }} />
+            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 overflow-hidden" style={{ border: '1px solid rgba(74,35,17,0.3)', background: 'rgba(74,35,17,0.08)' }}>
+              <Lock className="w-8 h-8" style={{ color: '#4a2311' }} />
             </div>
-            <h1 className="font-serif text-3xl" style={{ color: '#371c14' }}>Admin Portal</h1>
-            <p className="text-sm mt-2" style={{ color: '#39383b' }}>Sign in to manage LashifyAbuja</p>
+            <h1 className="font-serif text-3xl" style={{ color: '#f4e6e0' }}>Admin Portal</h1>
+            <p className="text-sm mt-2" style={{ color: '#965d3e' }}>Sign in to manage LashifyAbuja</p>
           </div>
 
-          <form onSubmit={handleLogin} className="rounded-2xl p-8" style={{ background: 'rgba(27,26,28,0.8)', border: '1px solid rgba(197,179,88,0.15)' }}>
+          <form onSubmit={handleLogin} className="rounded-2xl p-8" style={{ background: 'rgba(223,191,174,0.8)', border: '1px solid rgba(74,35,17,0.15)' }}>
             <div className="mb-5">
-              <label className="block text-sm font-medium mb-2" style={{ color: '#6a686c' }}>Email</label>
+              <label className="block text-sm font-medium mb-2" style={{ color: '#7a4428' }}>Email</label>
               <input
                 type="email"
                 value={email}
@@ -87,7 +87,7 @@ export default function Admin({ onNavigate }: Props) {
               />
             </div>
             <div className="mb-6">
-              <label className="block text-sm font-medium mb-2" style={{ color: '#6a686c' }}>Password</label>
+              <label className="block text-sm font-medium mb-2" style={{ color: '#7a4428' }}>Password</label>
               <input
                 type="password"
                 value={password}
@@ -111,7 +111,7 @@ export default function Admin({ onNavigate }: Props) {
 
           <button
             onClick={() => onNavigate('home')}
-            className="w-full text-center text-sm mt-6 transition-colors" style={{ color: '#2d2c2f' }} onMouseEnter={(e) => (e.currentTarget.style.color = '#c5b358')} onMouseLeave={(e) => (e.currentTarget.style.color = '#2d2c2f')}
+            className="w-full text-center text-sm mt-6 transition-colors" style={{ color: '#2d2c2f' }} onMouseEnter={(e) => (e.currentTarget.style.color = '#4a2311')} onMouseLeave={(e) => (e.currentTarget.style.color = '#2d2c2f')}
           >
             ← Back to website
           </button>
@@ -204,7 +204,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   if (loading) {
     return (
       <div className="pt-32 pb-24 min-h-screen section-light flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#c5b358' }} />
+        <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#4a2311' }} />
       </div>
     );
   }
@@ -214,12 +214,12 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
       <div className="container-lux py-8">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="font-serif text-3xl" style={{ color: '#371c14' }}>Dashboard</h1>
-            <p className="text-sm mt-1" style={{ color: '#39383b' }}>Welcome back, Lashify</p>
+            <h1 className="font-serif text-3xl" style={{ color: '#f4e6e0' }}>Dashboard</h1>
+            <p className="text-sm mt-1" style={{ color: '#965d3e' }}>Welcome back, Lashify</p>
           </div>
           <button
             onClick={onLogout}
-            className="flex items-center gap-2 px-4 py-2 text-sm transition-colors" style={{ color: '#6a686c' }}
+            className="flex items-center gap-2 px-4 py-2 text-sm transition-colors" style={{ color: '#7a4428' }}
           >
             <LogOut className="w-4 h-4" /> Sign Out
           </button>
@@ -232,15 +232,15 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
               onClick={() => setTab(t.key)}
               className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all relative"
               style={{
-                background: tab === t.key ? '#c5b358' : 'rgba(255,255,255,0.03)',
-                color: tab === t.key ? '#151416' : '#6a686c',
-                border: `1px solid ${tab === t.key ? '#c5b358' : 'rgba(197,179,88,0.1)'}`,
+                background: tab === t.key ? '#4a2311' : 'rgba(255,255,255,0.4)',
+                color: tab === t.key ? '#d5b1a3' : '#7a4428',
+                border: `1px solid ${tab === t.key ? '#4a2311' : 'rgba(74,35,17,0.1)'}`,
               }}
             >
               <t.icon className="w-4 h-4" />
               {t.label}
               {(t.key === 'appointments' || t.key === 'inbox') && pendingCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white text-[10px] flex items-center justify-center font-bold border-2 border-[#F9F6F0]">
+                <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white text-[10px] flex items-center justify-center font-bold border-2 border-[#3a1c0d]">
                   {pendingCount}
                 </span>
               )}
@@ -257,10 +257,10 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
               <StatCard icon={DollarSign} label="Revenue (Completed)" value={formatNaira(totalRevenue)} color="green" />
             </div>
 
-            <div className="rounded-2xl p-6" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(197,179,88,0.12)' }}>
-              <h3 className="font-serif text-xl mb-5" style={{ color: '#371c14' }}>Upcoming Appointments</h3>
+            <div className="rounded-2xl p-6" style={{ background: 'rgba(223,191,174,0.7)', border: '1px solid rgba(74,35,17,0.12)' }}>
+              <h3 className="font-serif text-xl mb-5" style={{ color: '#f4e6e0' }}>Upcoming Appointments</h3>
               {upcomingAppointments.length === 0 ? (
-                <p className="text-sm py-8 text-center" style={{ color: '#39383b' }}>No upcoming appointments.</p>
+                <p className="text-sm py-8 text-center" style={{ color: '#965d3e' }}>No upcoming appointments.</p>
               ) : (
                 <div className="space-y-3">
                   {upcomingAppointments.slice(0, 5).map((apt) => (
@@ -278,10 +278,10 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
         )}
 
         {tab === 'appointments' && (
-          <div className="rounded-2xl p-6" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(197,179,88,0.12)' }}>
-            <h3 className="font-serif text-xl mb-5" style={{ color: '#371c14' }}>All Appointments</h3>
+          <div className="rounded-2xl p-6" style={{ background: 'rgba(223,191,174,0.7)', border: '1px solid rgba(74,35,17,0.12)' }}>
+            <h3 className="font-serif text-xl mb-5" style={{ color: '#f4e6e0' }}>All Appointments</h3>
             {appointments.length === 0 ? (
-              <p className="text-sm py-8 text-center" style={{ color: '#39383b' }}>No appointments yet.</p>
+              <p className="text-sm py-8 text-center" style={{ color: '#965d3e' }}>No appointments yet.</p>
             ) : (
               <div className="space-y-3">
                 {appointments.map((apt) => (
@@ -297,31 +297,31 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
         )}
 
         {tab === 'inbox' && (
-          <div className="rounded-2xl p-6" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(197,179,88,0.12)' }}>
-            <h3 className="font-serif text-xl mb-5" style={{ color: '#371c14' }}>Client Messages</h3>
+          <div className="rounded-2xl p-6" style={{ background: 'rgba(223,191,174,0.7)', border: '1px solid rgba(74,35,17,0.12)' }}>
+            <h3 className="font-serif text-xl mb-5" style={{ color: '#f4e6e0' }}>Client Messages</h3>
             {appointments.filter(a => a.notes).length === 0 ? (
-              <p className="text-sm py-8 text-center" style={{ color: '#39383b' }}>No messages yet.</p>
+              <p className="text-sm py-8 text-center" style={{ color: '#965d3e' }}>No messages yet.</p>
             ) : (
               <div className="space-y-4">
                 {appointments.filter(a => a.notes).map((apt) => (
-                  <div key={apt.id} className="p-5 rounded-xl border relative" style={{ background: 'rgba(255,255,255,0.03)', borderColor: apt.status === 'pending' ? 'rgba(197,179,88,0.5)' : 'rgba(197,179,88,0.1)' }}>
+                  <div key={apt.id} className="p-5 rounded-xl border relative" style={{ background: 'rgba(255,255,255,0.4)', borderColor: apt.status === 'pending' ? 'rgba(74,35,17,0.5)' : 'rgba(74,35,17,0.1)' }}>
                     {apt.status === 'pending' && (
                       <span className="absolute top-4 right-4 w-2 h-2 rounded-full bg-red-500"></span>
                     )}
                     <div className="flex items-center gap-3 mb-3">
-                      <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ background: 'rgba(197,179,88,0.1)' }}>
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ background: 'rgba(74,35,17,0.1)' }}>
                         <span className="font-serif text-lg text-ink-900">{apt.client_name.charAt(0).toUpperCase()}</span>
                       </div>
                       <div>
                         <h4 className="font-medium text-ink-900">{apt.client_name}</h4>
-                        <p className="text-xs" style={{ color: '#6a686c' }}>{apt.client_email || apt.client_phone} · For {apt.service_name}</p>
+                        <p className="text-xs" style={{ color: '#7a4428' }}>{apt.client_email || apt.client_phone} · For {apt.service_name}</p>
                       </div>
                     </div>
                     <div className="p-4 rounded-lg text-sm text-ink-800 leading-relaxed mb-4" style={{ background: 'rgba(255,255,255,0.6)' }}>
                       "{apt.notes}"
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-xs mr-auto" style={{ color: '#6a686c' }}>Booking Date: {new Date(apt.appointment_date).toLocaleDateString()}</span>
+                      <span className="text-xs mr-auto" style={{ color: '#7a4428' }}>Booking Date: {new Date(apt.appointment_date).toLocaleDateString()}</span>
                       {apt.status === 'pending' && (
                         <>
                           <button onClick={() => handleUpdateAppointmentStatus(apt.id, 'confirmed')} className="px-4 py-1.5 rounded-lg text-xs font-medium bg-blue-50 text-blue-600 border border-blue-200 hover:bg-blue-100 transition-colors">
@@ -367,15 +367,15 @@ function StatCard({ icon: Icon, label, value, color }: {
   value: string;
   color: 'gold' | 'rose' | 'ink' | 'green';
 }) {
-  const iconColors: Record<string, string> = { gold: '#c5b358', rose: 'rgba(200,80,80,0.8)', ink: '#989599', green: '#6be06b' };
+  const iconColors: Record<string, string> = { gold: '#4a2311', rose: 'rgba(200,80,80,0.8)', ink: '#5e311a', green: '#6be06b' };
   return (
-    <div className="bg-white rounded-2xl p-5" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(197,179,88,0.12)' }}>
+    <div className="bg-white rounded-2xl p-5" style={{ background: 'rgba(223,191,174,0.7)', border: '1px solid rgba(74,35,17,0.12)' }}>
       <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3`}
-        style={{ background: 'rgba(197,179,88,0.08)', border: '1px solid rgba(197,179,88,0.15)' }}>
+        style={{ background: 'rgba(74,35,17,0.08)', border: '1px solid rgba(74,35,17,0.15)' }}>
         <Icon className="w-5 h-5" style={{ color: iconColors[color] }} />
       </div>
-      <div className="font-serif text-2xl" style={{ color: '#371c14' }}>{value}</div>
-      <div className="text-xs mt-1" style={{ color: '#39383b' }}>{label}</div>
+      <div className="font-serif text-2xl" style={{ color: '#f4e6e0' }}>{value}</div>
+      <div className="text-xs mt-1" style={{ color: '#965d3e' }}>{label}</div>
     </div>
   );
 }
@@ -387,23 +387,23 @@ function AppointmentRow({ apt, onStatusChange, compact }: {
 }) {
   const [expanded, setExpanded] = useState(false);
   const statusColors: Record<string, { bg: string; color: string }> = {
-    pending:   { bg: 'rgba(197,179,88,0.1)',  color: '#c5b358' },
+    pending:   { bg: 'rgba(74,35,17,0.1)',  color: '#4a2311' },
     confirmed: { bg: 'rgba(60,120,200,0.1)',  color: '#7ab0f0' },
     completed: { bg: 'rgba(60,180,60,0.1)',   color: '#6be06b' },
     cancelled: { bg: 'rgba(200,60,60,0.1)',   color: 'rgba(200,80,80,0.8)' },
-    no_show:   { bg: 'rgba(255,255,255,0.05)', color: '#39383b' },
+    no_show:   { bg: 'rgba(255,255,255,0.6)', color: '#965d3e' },
   };
 
   const date = new Date(apt.appointment_date + 'T00:00:00');
 
   return (
-    <div className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(197,179,88,0.08)' }}>
+    <div className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.4)', border: '1px solid rgba(74,35,17,0.08)' }}>
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-4 flex-grow">
           <div className="text-center shrink-0">
-            <div className="text-xs uppercase" style={{ color: '#39383b' }}>{DAYS_SHORT[date.getDay()]}</div>
-            <div className="font-serif text-2xl" style={{ color: '#371c14' }}>{date.getDate()}</div>
-            <div className="text-xs" style={{ color: '#39383b' }}>{date.toLocaleDateString('en-US', { month: 'short' })}</div>
+            <div className="text-xs uppercase" style={{ color: '#965d3e' }}>{DAYS_SHORT[date.getDay()]}</div>
+            <div className="font-serif text-2xl" style={{ color: '#f4e6e0' }}>{date.getDate()}</div>
+            <div className="text-xs" style={{ color: '#965d3e' }}>{date.toLocaleDateString('en-US', { month: 'short' })}</div>
           </div>
           <div className="flex-grow min-w-0">
             <div className="flex items-center gap-2 mb-1">
@@ -412,9 +412,9 @@ function AppointmentRow({ apt, onStatusChange, compact }: {
                 {apt.status.replace('_', ' ')}
               </span>
             </div>
-            <p className="text-sm" style={{ color: '#6a686c' }}>{apt.client_name} · {formatTime(apt.start_time)}</p>
+            <p className="text-sm" style={{ color: '#7a4428' }}>{apt.client_name} · {formatTime(apt.start_time)}</p>
             {!compact && (
-              <p className="text-xs mt-1" style={{ color: '#39383b' }}>{formatNaira(Number(apt.service_price))}</p>
+              <p className="text-xs mt-1" style={{ color: '#965d3e' }}>{formatNaira(Number(apt.service_price))}</p>
             )}
           </div>
         </div>
@@ -450,21 +450,21 @@ function AppointmentRow({ apt, onStatusChange, compact }: {
             <button
               onClick={() => setExpanded(!expanded)}
               className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
-                style={{ background: 'rgba(255,255,255,0.04)' }}
+                style={{ background: 'rgba(255,255,255,0.5)' }}
             >
-              <ChevronRight className="w-4 h-4 transition-transform" style={{ color: '#39383b', transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)' }} />
+              <ChevronRight className="w-4 h-4 transition-transform" style={{ color: '#965d3e', transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)' }} />
             </button>
           )}
         </div>
       </div>
       {expanded && !compact && (
-        <div className="mt-4 pt-4 grid sm:grid-cols-2 gap-3 text-sm" style={{ borderTop: '1px solid rgba(197,179,88,0.08)' }}>
+        <div className="mt-4 pt-4 grid sm:grid-cols-2 gap-3 text-sm" style={{ borderTop: '1px solid rgba(74,35,17,0.08)' }}>
           <div className="flex items-center gap-2 text-ink-600">
-            <Phone className="w-4 h-4" style={{ color: '#c5b358' }} /> <span style={{ color: '#6a686c' }}>{apt.client_phone}</span>
+            <Phone className="w-4 h-4" style={{ color: '#4a2311' }} /> <span style={{ color: '#7a4428' }}>{apt.client_phone}</span>
           </div>
           {apt.client_email && (
             <div className="flex items-center gap-2 text-ink-600">
-              <Mail className="w-4 h-4" style={{ color: '#c5b358' }} /> <span style={{ color: '#6a686c' }}>{apt.client_email}</span>
+              <Mail className="w-4 h-4" style={{ color: '#4a2311' }} /> <span style={{ color: '#7a4428' }}>{apt.client_email}</span>
             </div>
           )}
           <div className="text-ink-600">
@@ -573,12 +573,12 @@ function GalleryManager() {
     }
   };
 
-  if (loading) return <Loader2 className="w-6 h-6 animate-spin" style={{ color: '#c5b358' }} />;
+  if (loading) return <Loader2 className="w-6 h-6 animate-spin" style={{ color: '#4a2311' }} />;
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl p-6" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(197,179,88,0.12)' }}>
-        <h3 className="font-serif text-xl mb-5" style={{ color: '#371c14' }}>Add Gallery Item</h3>
+      <div className="rounded-2xl p-6" style={{ background: 'rgba(223,191,174,0.7)', border: '1px solid rgba(74,35,17,0.12)' }}>
+        <h3 className="font-serif text-xl mb-5" style={{ color: '#f4e6e0' }}>Add Gallery Item</h3>
         <div className="space-y-4">
           <div className="grid sm:grid-cols-2 gap-3">
             <input
@@ -609,14 +609,14 @@ function GalleryManager() {
               className="input-lux"
             />
             {uploading && (
-              <div className="mt-2 text-sm" style={{ color: '#c5b358' }}>
+              <div className="mt-2 text-sm" style={{ color: '#4a2311' }}>
                 Uploading... {uploadProgress}%
               </div>
             )}
           </div>
 
           {newItem.image_url && (
-            <div className="relative aspect-square max-w-xs rounded-xl overflow-hidden" style={{ border: '1px solid rgba(197,179,88,0.2)' }}>
+            <div className="relative aspect-square max-w-xs rounded-xl overflow-hidden" style={{ border: '1px solid rgba(74,35,17,0.2)' }}>
               <img src={newItem.image_url} alt="Preview" className="w-full h-full object-cover" />
             </div>
           )}
@@ -631,11 +631,11 @@ function GalleryManager() {
         {items.map((item) => (
           <div key={item.id} className="group relative aspect-square rounded-xl overflow-hidden">
             <img src={item.image_url} alt={item.title} className="w-full h-full object-cover" />
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-3" style={{ background: 'rgba(10,8,6,0.85)' }}>
-              <p className="text-white text-sm font-medium mb-2 text-center">{item.title}</p>
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-3" style={{ background: 'rgba(203,164,149,0.85)' }}>
+              <p className="text-[#3a1c0d] text-sm font-medium mb-2 text-center">{item.title}</p>
               <button
                 onClick={() => deleteItem(item.id)}
-                className="px-3 py-1.5 bg-rose-500 text-white rounded-lg text-xs font-medium hover:bg-rose-600"
+                className="px-3 py-1.5 bg-rose-500 text-[#3a1c0d] rounded-lg text-xs font-medium hover:bg-rose-600"
               >
                 Delete
               </button>
@@ -765,16 +765,16 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
   return (
     <div className="space-y-6">
       {/* Add Service Section */}
-      <div className="rounded-2xl p-6" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(197,179,88,0.12)' }}>
-        <h3 className="font-serif text-xl mb-5" style={{ color: '#371c14' }}>Add New Service</h3>
+      <div className="rounded-2xl p-6" style={{ background: 'rgba(223,191,174,0.7)', border: '1px solid rgba(74,35,17,0.12)' }}>
+        <h3 className="font-serif text-xl mb-5" style={{ color: '#f4e6e0' }}>Add New Service</h3>
         <div className="space-y-4">
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: '#6a686c' }}>Service Name</label>
+              <label className="block text-sm font-medium mb-1" style={{ color: '#7a4428' }}>Service Name</label>
               <input type="text" value={newItem.name} onChange={(e) => setNewItem({...newItem, name: e.target.value})} className="input-lux" />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: '#6a686c' }}>Category</label>
+              <label className="block text-sm font-medium mb-1" style={{ color: '#7a4428' }}>Category</label>
               <select value={newItem.category} onChange={(e) => setNewItem({...newItem, category: e.target.value})} className="input-lux">
                 <option value="lashes">Lashes</option>
                 <option value="brows">Brows</option>
@@ -783,26 +783,26 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1" style={{ color: '#6a686c' }}>Description</label>
+            <label className="block text-sm font-medium mb-1" style={{ color: '#7a4428' }}>Description</label>
             <textarea value={newItem.description} onChange={(e) => setNewItem({...newItem, description: e.target.value})} className="input-lux min-h-[60px]" />
           </div>
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: '#6a686c' }}>Price (₦)</label>
+              <label className="block text-sm font-medium mb-1" style={{ color: '#7a4428' }}>Price (₦)</label>
               <input type="number" value={newItem.price || ''} onChange={(e) => setNewItem({...newItem, price: Number(e.target.value)})} className="input-lux" />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: '#6a686c' }}>Duration (min)</label>
+              <label className="block text-sm font-medium mb-1" style={{ color: '#7a4428' }}>Duration (min)</label>
               <input type="number" value={newItem.duration_minutes || ''} onChange={(e) => setNewItem({...newItem, duration_minutes: Number(e.target.value)})} className="input-lux" />
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1" style={{ color: '#6a686c' }}>Upload Image</label>
+            <label className="block text-sm font-medium mb-1" style={{ color: '#7a4428' }}>Upload Image</label>
             <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, false)} disabled={uploading} className="input-lux" />
-            {uploading && <div className="mt-2 text-sm" style={{ color: '#c5b358' }}>Uploading... {uploadProgress}%</div>}
+            {uploading && <div className="mt-2 text-sm" style={{ color: '#4a2311' }}>Uploading... {uploadProgress}%</div>}
           </div>
           {newItem.image_url && (
-            <div className="relative aspect-video max-w-xs rounded-xl overflow-hidden" style={{ border: '1px solid rgba(197,179,88,0.2)' }}>
+            <div className="relative aspect-video max-w-xs rounded-xl overflow-hidden" style={{ border: '1px solid rgba(74,35,17,0.2)' }}>
               <img src={newItem.image_url} alt="Preview" className="w-full h-full object-cover" />
             </div>
           )}
@@ -813,31 +813,31 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
       </div>
 
       {/* List Services Section */}
-      <div className="rounded-2xl p-6" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(197,179,88,0.12)' }}>
-        <h3 className="font-serif text-xl mb-5" style={{ color: '#371c14' }}>Manage Services</h3>
+      <div className="rounded-2xl p-6" style={{ background: 'rgba(223,191,174,0.7)', border: '1px solid rgba(74,35,17,0.12)' }}>
+        <h3 className="font-serif text-xl mb-5" style={{ color: '#f4e6e0' }}>Manage Services</h3>
         <div className="space-y-3">
           {services.map((svc) => (
-            <div key={svc.id} className="flex items-center justify-between p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(197,179,88,0.1)' }}>
+            <div key={svc.id} className="flex items-center justify-between p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.4)', border: '1px solid rgba(74,35,17,0.1)' }}>
               <div className="flex-grow flex items-center gap-4">
                 {svc.image_url && (
-                  <img src={svc.image_url} alt={svc.name} className="w-16 h-16 object-cover rounded-lg" style={{ border: '1px solid rgba(197,179,88,0.2)' }} />
+                  <img src={svc.image_url} alt={svc.name} className="w-16 h-16 object-cover rounded-lg" style={{ border: '1px solid rgba(74,35,17,0.2)' }} />
                 )}
                 <div>
                   <div className="flex items-center gap-3 mb-1">
-                    <h4 className="font-medium" style={{ color: '#371c14' }}>{svc.name}</h4>
-                    <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: svc.is_active ? 'rgba(60,180,60,0.15)' : 'rgba(255,255,255,0.05)', color: svc.is_active ? '#6be06b' : '#39383b' }}>
+                    <h4 className="font-medium" style={{ color: '#f4e6e0' }}>{svc.name}</h4>
+                    <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: svc.is_active ? 'rgba(60,180,60,0.15)' : 'rgba(255,255,255,0.6)', color: svc.is_active ? '#6be06b' : '#965d3e' }}>
                       {svc.is_active ? 'Active' : 'Inactive'}
                     </span>
                   </div>
-                  <p className="text-sm" style={{ color: '#39383b' }}>{svc.description}</p>
-                  <p className="text-sm mt-1" style={{ color: '#39383b' }}>{formatDuration(svc.duration_minutes)} • {formatNaira(svc.price)}</p>
+                  <p className="text-sm" style={{ color: '#965d3e' }}>{svc.description}</p>
+                  <p className="text-sm mt-1" style={{ color: '#965d3e' }}>{formatDuration(svc.duration_minutes)} • {formatNaira(svc.price)}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <button onClick={() => handleEdit(svc)} className="p-2 rounded-lg transition-colors hover:bg-opacity-80" style={{ background: 'rgba(197,179,88,0.15)', color: '#c5b358' }} title="Edit service"><Pencil className="w-4 h-4" /></button>
+                <button onClick={() => handleEdit(svc)} className="p-2 rounded-lg transition-colors hover:bg-opacity-80" style={{ background: 'rgba(74,35,17,0.15)', color: '#4a2311' }} title="Edit service"><Pencil className="w-4 h-4" /></button>
                 <button onClick={() => handleDelete(svc.id, svc.name)} className="p-2 rounded-lg transition-colors hover:bg-opacity-80" style={{ background: 'rgba(200,60,60,0.1)', color: 'rgba(200,80,80,0.8)' }} title="Delete service"><Trash2 className="w-4 h-4" /></button>
-                <button onClick={() => toggleServiceActive(svc.id, svc.is_active)} className="relative w-11 h-6 rounded-full transition-colors" style={{ background: svc.is_active ? '#c5b358' : 'rgba(255,255,255,0.1)' }} title={svc.is_active ? 'Deactivate' : 'Activate'}>
-                  <span className="absolute top-0.5 w-5 h-5 rounded-full transition-transform" style={{ background: '#371c14', transform: svc.is_active ? 'translateX(20px)' : 'translateX(2px)' }} />
+                <button onClick={() => toggleServiceActive(svc.id, svc.is_active)} className="relative w-11 h-6 rounded-full transition-colors" style={{ background: svc.is_active ? '#4a2311' : 'rgba(255,255,255,0.7)' }} title={svc.is_active ? 'Deactivate' : 'Activate'}>
+                  <span className="absolute top-0.5 w-5 h-5 rounded-full transition-transform" style={{ background: '#f4e6e0', transform: svc.is_active ? 'translateX(20px)' : 'translateX(2px)' }} />
                 </button>
               </div>
             </div>
@@ -847,29 +847,29 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
 
       {/* Edit Modal */}
       {editingService && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(10,8,6,0.85)' }}>
-          <div className="w-full max-w-2xl rounded-2xl p-6" style={{ background: 'rgba(27,26,28,0.98)', border: '1px solid rgba(197,179,88,0.2)' }}>
-            <h3 className="font-serif text-2xl mb-6" style={{ color: '#371c14' }}>Edit Service</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(203,164,149,0.85)' }}>
+          <div className="w-full max-w-2xl rounded-2xl p-6" style={{ background: 'rgba(223,191,174,0.98)', border: '1px solid rgba(74,35,17,0.2)' }}>
+            <h3 className="font-serif text-2xl mb-6" style={{ color: '#f4e6e0' }}>Edit Service</h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-2" style={{ color: '#6a686c' }}>Service Name</label>
+                <label className="block text-sm font-medium mb-2" style={{ color: '#7a4428' }}>Service Name</label>
                 <input type="text" value={editForm.name || ''} onChange={(e) => setEditForm({ ...editForm, name: e.target.value })} className="input-lux" />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2" style={{ color: '#6a686c' }}>Description</label>
+                <label className="block text-sm font-medium mb-2" style={{ color: '#7a4428' }}>Description</label>
                 <textarea value={editForm.description || ''} onChange={(e) => setEditForm({ ...editForm, description: e.target.value })} className="input-lux min-h-[100px]" />
               </div>
               <div className="grid sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium mb-2" style={{ color: '#6a686c' }}>Price (₦)</label>
+                  <label className="block text-sm font-medium mb-2" style={{ color: '#7a4428' }}>Price (₦)</label>
                   <input type="number" value={editForm.price || ''} onChange={(e) => setEditForm({ ...editForm, price: Number(e.target.value) })} className="input-lux" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2" style={{ color: '#6a686c' }}>Duration (min)</label>
+                  <label className="block text-sm font-medium mb-2" style={{ color: '#7a4428' }}>Duration (min)</label>
                   <input type="number" value={editForm.duration_minutes || ''} onChange={(e) => setEditForm({ ...editForm, duration_minutes: Number(e.target.value) })} className="input-lux" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2" style={{ color: '#6a686c' }}>Category</label>
+                  <label className="block text-sm font-medium mb-2" style={{ color: '#7a4428' }}>Category</label>
                   <select value={editForm.category || 'lashes'} onChange={(e) => setEditForm({ ...editForm, category: e.target.value })} className="input-lux">
                     <option value="lashes">Lashes</option>
                     <option value="brows">Brows</option>
@@ -878,12 +878,12 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2" style={{ color: '#6a686c' }}>Upload Image (Optional)</label>
+                <label className="block text-sm font-medium mb-2" style={{ color: '#7a4428' }}>Upload Image (Optional)</label>
                 <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, true)} disabled={uploading} className="input-lux" />
-                {uploading && <div className="mt-2 text-sm" style={{ color: '#c5b358' }}>Uploading... {uploadProgress}%</div>}
+                {uploading && <div className="mt-2 text-sm" style={{ color: '#4a2311' }}>Uploading... {uploadProgress}%</div>}
               </div>
               {editForm.image_url && (
-                <div className="relative aspect-video max-w-xs rounded-xl overflow-hidden" style={{ border: '1px solid rgba(197,179,88,0.2)' }}>
+                <div className="relative aspect-video max-w-xs rounded-xl overflow-hidden" style={{ border: '1px solid rgba(74,35,17,0.2)' }}>
                   <img src={editForm.image_url} alt="Preview" className="w-full h-full object-cover" />
                 </div>
               )}
@@ -892,7 +892,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
               <button onClick={handleSaveEdit} disabled={saving || !editForm.name?.trim()} className="flex-1 btn-gold disabled:opacity-50">
                 {saving ? <Loader2 className="w-5 h-5 animate-spin inline" /> : 'Save Changes'}
               </button>
-              <button onClick={() => { setEditingService(null); setEditForm({}); }} disabled={saving} className="flex-1 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors" style={{ background: 'rgba(255,255,255,0.04)', color: '#6a686c', border: '1px solid rgba(197,179,88,0.1)' }}>Cancel</button>
+              <button onClick={() => { setEditingService(null); setEditForm({}); }} disabled={saving} className="flex-1 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors" style={{ background: 'rgba(255,255,255,0.5)', color: '#7a4428', border: '1px solid rgba(74,35,17,0.1)' }}>Cancel</button>
             </div>
           </div>
         </div>
@@ -936,28 +936,28 @@ function ReviewsManager() {
     }
   };
 
-  if (loading) return <Loader2 className="w-6 h-6 animate-spin" style={{ color: '#c5b358' }} />;
+  if (loading) return <Loader2 className="w-6 h-6 animate-spin" style={{ color: '#4a2311' }} />;
 
   return (
     <div className="space-y-3">
       {reviews.length === 0 ? (
-        <p className="text-center py-8" style={{ color: '#39383b' }}>No reviews yet.</p>
+        <p className="text-center py-8" style={{ color: '#965d3e' }}>No reviews yet.</p>
       ) : (
         reviews.map((review) => (
-          <div key={review.id} className="rounded-2xl p-5" style={{ background: 'rgba(27,26,28,0.7)', border: '1px solid rgba(197,179,88,0.12)' }}>
+          <div key={review.id} className="rounded-2xl p-5" style={{ background: 'rgba(223,191,174,0.7)', border: '1px solid rgba(74,35,17,0.12)' }}>
             <div className="flex items-start justify-between mb-3">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <h4 className="font-medium" style={{ color: '#371c14' }}>{review.client_name}</h4>
+                  <h4 className="font-medium" style={{ color: '#f4e6e0' }}>{review.client_name}</h4>
                   <div className="flex gap-0.5">
                     {[...Array(review.rating)].map((_, i) => (
-                      <Star key={i} className="w-3.5 h-3.5" style={{ fill: '#c5b358', color: '#c5b358' }} />
+                      <Star key={i} className="w-3.5 h-3.5" style={{ fill: '#4a2311', color: '#4a2311' }} />
                     ))}
                   </div>
                 </div>
-                <p className="text-sm" style={{ color: '#6a686c' }}>{review.comment}</p>
+                <p className="text-sm" style={{ color: '#7a4428' }}>{review.comment}</p>
               </div>
-              <span className="text-xs px-2 py-1 rounded-full shrink-0" style={{ background: review.is_published ? 'rgba(60,180,60,0.15)' : 'rgba(255,255,255,0.05)', color: review.is_published ? '#6be06b' : '#39383b' }}>
+              <span className="text-xs px-2 py-1 rounded-full shrink-0" style={{ background: review.is_published ? 'rgba(60,180,60,0.15)' : 'rgba(255,255,255,0.6)', color: review.is_published ? '#6be06b' : '#965d3e' }}>
                 {review.is_published ? 'Published' : 'Hidden'}
               </span>
             </div>
@@ -965,7 +965,7 @@ function ReviewsManager() {
               <button
                 onClick={() => togglePublish(review.id, review.is_published)}
                 className="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
-                style={{ background: 'rgba(255,255,255,0.04)', color: '#6a686c', border: '1px solid rgba(197,179,88,0.1)' }}
+                style={{ background: 'rgba(255,255,255,0.5)', color: '#7a4428', border: '1px solid rgba(74,35,17,0.1)' }}
               >
                 {review.is_published ? 'Hide' : 'Publish'}
               </button>
