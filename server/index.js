@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import pool from './db.js';
 import { v2 as cloudinary } from 'cloudinary';
+import nodemailer from 'nodemailer';
 
 dotenv.config();
 
@@ -23,6 +24,15 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-producti
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
+
+// Configure Nodemailer Transport
+const transporter = nodemailer.createTransport({
+  service: 'gmail', // You can change this to another provider
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
 
 // Admin credentials (in production, store in database)
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@lashifyabuja.com';
@@ -133,6 +143,20 @@ app.post('/api/appointments', async (req, res) => {
       clientId = clientResult.rows[0].id;
     }
     
+    // Check for double booking conflict
+    const conflictResult = await client.query(
+      `SELECT id FROM appointments 
+       WHERE appointment_date = $1 
+       AND status IN ('pending', 'confirmed')
+       AND (($2 >= start_time AND $2 < end_time) OR ($3 > start_time AND $3 <= end_time) OR ($2 <= start_time AND $3 >= end_time))`,
+      [appointment_date, start_time, end_time]
+    );
+
+    if (conflictResult.rows.length > 0) {
+      await client.query('ROLLBACK');
+      return res.status(409).json({ error: 'That time slot was just booked by someone else!' });
+    }
+
     // Create appointment
     const appointmentResult = await client.query(
       `INSERT INTO appointments 
@@ -143,7 +167,34 @@ app.post('/api/appointments', async (req, res) => {
     );
     
     await client.query('COMMIT');
-    res.json(appointmentResult.rows[0]);
+    const newAppointment = appointmentResult.rows[0];
+    res.json(newAppointment);
+
+    // Send Emails asynchronously
+    if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+      try {
+        // Notify Owner
+        await transporter.sendMail({
+          from: `"LashifyAbuja Booking" <${process.env.EMAIL_USER}>`,
+          to: ADMIN_EMAIL,
+          subject: `New Appointment: ${client_name} - ${service_name}`,
+          text: `You have a new booking request!\nName: ${client_name}\nPhone: ${client_phone}\nEmail: ${client_email || 'N/A'}\nService: ${service_name} (${service_duration} mins)\nDate: ${appointment_date}\nTime: ${start_time} - ${end_time}\nNotes: ${notes || 'None'}\n\nPlease log in to the admin dashboard to confirm or cancel.`
+        });
+
+        // Notify Client (if email provided)
+        if (client_email) {
+          await transporter.sendMail({
+            from: `"LashifyAbuja" <${process.env.EMAIL_USER}>`,
+            to: client_email,
+            subject: `Booking Request Received - LashifyAbuja`,
+            text: `Hi ${client_name},\n\nThank you for your booking request! We have received it and will confirm shortly via WhatsApp or email.\n\nService: ${service_name}\nDate: ${appointment_date}\nTime: ${start_time} - ${end_time}\n\nBest regards,\nLashifyAbuja`
+          });
+        }
+      } catch (emailError) {
+        console.error('Failed to send notification emails:', emailError);
+      }
+    }
+
   } catch (error) {
     await client.query('ROLLBACK');
     console.error('Error creating appointment:', error);

@@ -122,6 +122,13 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
       setError('Please provide your name and phone number.');
       return;
     }
+
+    const digitsOnly = formData.phone.replace(/\D/g, '');
+    if (digitsOnly.length < 10) {
+      setError('Please enter a valid phone number (at least 10 digits).');
+      return;
+    }
+
     setSubmitting(true);
     setError('');
 
@@ -145,8 +152,13 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
       const data = await createAppointment(appointmentData);
       setConfirmedAppointment(data);
       setStep('success');
-    } catch {
-      setError('Unable to book your appointment. Please try again or contact us directly.');
+    } catch (err: any) {
+      const msg = err?.message || '';
+      if (msg.includes('conflict') || msg.toLowerCase().includes('already booked')) {
+        setError('That time slot was just booked by someone else! Please select another time.');
+      } else {
+        setError(msg || 'Unable to book your appointment. Please try again or contact us directly.');
+      }
     }
     setSubmitting(false);
   };

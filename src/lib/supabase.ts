@@ -100,8 +100,9 @@ export async function createAppointment(data: Partial<Appointment>): Promise<App
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   });
-  if (!res.ok) throw new Error('Failed to create appointment');
-  return res.json();
+  const json = await res.json();
+  if (!res.ok) throw new Error(json.error || 'Failed to create appointment');
+  return json;
 }
 
 export async function updateAppointmentStatus(id: string, status: AppointmentStatus): Promise<void> {
