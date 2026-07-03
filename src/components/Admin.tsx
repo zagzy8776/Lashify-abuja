@@ -191,11 +191,15 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   ];
 
   const today = new Date();
-  const todayStr = today.toISOString().split('T')[0];
-  const todayAppointments = appointments.filter((a) => a.appointment_date === todayStr);
+  const todayStr = new Date().toISOString().split('T')[0];
+  const todayAppointments = appointments.filter((a) => a.appointment_date === todayStr && a.status !== 'cancelled' && a.status !== 'completed');
   const upcomingAppointments = appointments
-    .filter((a) => a.appointment_date >= todayStr && a.status !== 'cancelled' && a.status !== 'completed')
+    .filter((a) => a.appointment_date > todayStr && a.status !== 'cancelled' && a.status !== 'completed')
     .sort((a, b) => a.appointment_date.localeCompare(b.appointment_date) || a.start_time.localeCompare(b.start_time));
+  const pastAppointments = appointments
+    .filter((a) => a.appointment_date < todayStr || a.status === 'cancelled' || a.status === 'completed')
+    .sort((a, b) => b.appointment_date.localeCompare(a.appointment_date) || b.start_time.localeCompare(a.start_time));
+
   const totalRevenue = appointments
     .filter((a) => a.status === 'completed')
     .reduce((sum, a) => sum + Number(a.service_price), 0);
@@ -278,21 +282,48 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
         )}
 
         {tab === 'appointments' && (
-          <div className="rounded-2xl p-6" style={{ background: 'rgba(223,191,174,0.7)', border: '1px solid rgba(74,35,17,0.12)' }}>
-            <h3 className="font-serif text-xl mb-5" style={{ color: '#f4e6e0' }}>All Appointments</h3>
-            {appointments.length === 0 ? (
-              <p className="text-sm py-8 text-center" style={{ color: '#965d3e' }}>No appointments yet.</p>
-            ) : (
-              <div className="space-y-3">
-                {appointments.map((apt) => (
-                  <AppointmentRow
-                    key={apt.id}
-                    apt={apt}
-                    onStatusChange={handleUpdateAppointmentStatus}
-                  />
-                ))}
+          <div className="space-y-8">
+            <div className="rounded-2xl p-8" style={{ background: 'rgba(255,255,255,0.6)', border: '1px solid rgba(74,35,17,0.1)' }}>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                <h3 className="font-serif text-2xl" style={{ color: '#3a1c0d' }}>Today's Bookings</h3>
               </div>
-            )}
+              {todayAppointments.length === 0 ? (
+                <p className="text-sm py-4 italic" style={{ color: '#965d3e' }}>No appointments scheduled for today.</p>
+              ) : (
+                <div className="space-y-4">
+                  {todayAppointments.map((apt) => (
+                    <AppointmentRow key={apt.id} apt={apt} onStatusChange={handleUpdateAppointmentStatus} />
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="rounded-2xl p-8" style={{ background: 'rgba(255,255,255,0.4)', border: '1px solid rgba(74,35,17,0.08)' }}>
+              <h3 className="font-serif text-2xl mb-6" style={{ color: '#4a2311' }}>Upcoming</h3>
+              {upcomingAppointments.length === 0 ? (
+                <p className="text-sm py-4 italic" style={{ color: '#965d3e' }}>No future appointments found.</p>
+              ) : (
+                <div className="space-y-4">
+                  {upcomingAppointments.map((apt) => (
+                    <AppointmentRow key={apt.id} apt={apt} onStatusChange={handleUpdateAppointmentStatus} />
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="rounded-2xl p-8" style={{ background: 'rgba(203,164,149,0.2)', border: '1px solid rgba(74,35,17,0.05)' }}>
+              <h3 className="font-serif text-2xl mb-6" style={{ color: '#5e311a' }}>Past History</h3>
+              {pastAppointments.length === 0 ? (
+                <p className="text-sm py-4 italic" style={{ color: '#965d3e' }}>No history yet.</p>
+              ) : (
+                <div className="space-y-4 opacity-75 hover:opacity-100 transition-opacity">
+                  {pastAppointments.slice(0, 10).map((apt) => (
+                    <AppointmentRow key={apt.id} apt={apt} onStatusChange={handleUpdateAppointmentStatus} compact />
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         )}
 
@@ -386,71 +417,84 @@ function AppointmentRow({ apt, onStatusChange, compact }: {
   compact?: boolean;
 }) {
   const [expanded, setExpanded] = useState(false);
-  const statusColors: Record<string, { bg: string; color: string }> = {
-    pending:   { bg: 'rgba(74,35,17,0.1)',  color: '#4a2311' },
-    confirmed: { bg: 'rgba(60,120,200,0.1)',  color: '#7ab0f0' },
-    completed: { bg: 'rgba(60,180,60,0.1)',   color: '#6be06b' },
-    cancelled: { bg: 'rgba(200,60,60,0.1)',   color: 'rgba(200,80,80,0.8)' },
-    no_show:   { bg: 'rgba(255,255,255,0.6)', color: '#965d3e' },
+  const statusColors: Record<string, { bg: string; color: string; border: string }> = {
+    pending:   { bg: 'rgba(223,191,174,0.3)', color: '#7a4428', border: 'rgba(223,191,174,0.6)' },
+    confirmed: { bg: 'rgba(74,35,17,0.08)',  color: '#4a2311', border: 'rgba(74,35,17,0.2)' },
+    completed: { bg: 'rgba(46,64,46,0.06)',   color: '#2E402E', border: 'rgba(46,64,46,0.15)' },
+    cancelled: { bg: 'rgba(139,90,90,0.06)',  color: '#8b5a5a', border: 'rgba(139,90,90,0.15)' },
+    no_show:   { bg: 'transparent', color: '#965d3e', border: 'transparent' },
   };
 
   const date = new Date(apt.appointment_date + 'T00:00:00');
 
   return (
-    <div className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.4)', border: '1px solid rgba(74,35,17,0.08)' }}>
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-4 flex-grow">
-          <div className="text-center shrink-0">
-            <div className="text-xs uppercase" style={{ color: '#965d3e' }}>{DAYS_SHORT[date.getDay()]}</div>
-            <div className="font-serif text-2xl" style={{ color: '#f4e6e0' }}>{date.getDate()}</div>
-            <div className="text-xs" style={{ color: '#965d3e' }}>{date.toLocaleDateString('en-US', { month: 'short' })}</div>
+    <div className="p-5 rounded-xl transition-all duration-300 hover:shadow-md" style={{ background: 'white', border: '1px solid rgba(74,35,17,0.08)' }}>
+      <div className="flex items-center justify-between gap-6">
+        <div className="flex items-center gap-6 flex-grow">
+          <div className="text-center shrink-0 w-16">
+            <div className="text-[10px] uppercase font-bold tracking-widest" style={{ color: '#965d3e' }}>{DAYS_SHORT[date.getDay()]}</div>
+            <div className="font-serif text-3xl my-0.5" style={{ color: '#3a1c0d' }}>{date.getDate()}</div>
+            <div className="text-[10px] uppercase font-bold tracking-widest" style={{ color: '#965d3e' }}>{date.toLocaleDateString('en-US', { month: 'short' })}</div>
           </div>
+          
+          <div className="w-px h-12 hidden sm:block" style={{ background: 'rgba(74,35,17,0.1)' }}></div>
+          
           <div className="flex-grow min-w-0">
-            <div className="flex items-center gap-2 mb-1">
-              <h4 className="font-medium text-ink-900 truncate">{apt.service_name}</h4>
-              <span className={`text-xs px-2 py-0.5 rounded-full shrink-0 ${statusColors[apt.status]}`}>
+            <div className="flex items-center gap-3 mb-1.5">
+              <h4 className="font-serif text-lg text-ink-900 truncate" style={{ color: '#3a1c0d' }}>{apt.service_name}</h4>
+              <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full shrink-0" 
+                    style={{ background: statusColors[apt.status].bg, color: statusColors[apt.status].color, border: `1px solid ${statusColors[apt.status].border}` }}>
                 {apt.status.replace('_', ' ')}
               </span>
             </div>
-            <p className="text-sm" style={{ color: '#7a4428' }}>{apt.client_name} · {formatTime(apt.start_time)}</p>
-            {!compact && (
-              <p className="text-xs mt-1" style={{ color: '#965d3e' }}>{formatNaira(Number(apt.service_price))}</p>
-            )}
+            <div className="flex items-center gap-2 text-sm">
+              <span className="font-medium" style={{ color: '#5e311a' }}>{apt.client_name}</span>
+              <span style={{ color: '#965d3e' }}>•</span>
+              <span style={{ color: '#7a4428' }}>{formatTime(apt.start_time)}</span>
+              {!compact && (
+                <>
+                  <span style={{ color: '#965d3e' }}>•</span>
+                  <span className="font-serif" style={{ color: '#4a2311' }}>{formatNaira(Number(apt.service_price))}</span>
+                </>
+              )}
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-2 shrink-0">
           {apt.status === 'pending' && (
             <button
               onClick={() => onStatusChange(apt.id, 'confirmed')}
-              className="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
-                style={{ background: 'rgba(60,120,200,0.1)', color: '#7ab0f0', border: '1px solid rgba(60,120,200,0.2)' }}
+              title="Accept Appointment"
+              className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:-translate-y-0.5"
+                style={{ background: '#4a2311', color: '#f4e6e0', boxShadow: '0 4px 10px rgba(74,35,17,0.2)' }}
             >
-              Confirm
+              <Check className="w-4 h-4" />
             </button>
           )}
           {(apt.status === 'pending' || apt.status === 'confirmed') && (
             <button
               onClick={() => onStatusChange(apt.id, 'completed')}
-              className="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
-                style={{ background: 'rgba(60,180,60,0.1)', color: '#6be06b', border: '1px solid rgba(60,180,60,0.2)' }}
+              title="Mark as Completed"
+              className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:-translate-y-0.5"
+                style={{ background: 'rgba(46,64,46,0.1)', color: '#2E402E' }}
             >
-              <Check className="w-3.5 h-3.5 inline" /> Done
+              <Check className="w-4 h-4" />
             </button>
           )}
           {apt.status !== 'cancelled' && apt.status !== 'completed' && (
             <button
               onClick={() => onStatusChange(apt.id, 'cancelled')}
-              className="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
-                style={{ background: 'rgba(200,60,60,0.1)', color: 'rgba(200,80,80,0.8)', border: '1px solid rgba(200,60,60,0.15)' }}
+              title="Decline / Cancel"
+              className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:-translate-y-0.5"
+                style={{ background: 'rgba(139,90,90,0.1)', color: '#8b5a5a' }}
             >
-              <X className="w-3.5 h-3.5 inline mr-1" /> Decline
+              <X className="w-4 h-4" />
             </button>
           )}
           {!compact && (
             <button
               onClick={() => setExpanded(!expanded)}
-              className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
-                style={{ background: 'rgba(255,255,255,0.5)' }}
+              className="w-9 h-9 rounded-full flex items-center justify-center transition-colors hover:bg-gray-50"
             >
               <ChevronRight className="w-4 h-4 transition-transform" style={{ color: '#965d3e', transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)' }} />
             </button>
