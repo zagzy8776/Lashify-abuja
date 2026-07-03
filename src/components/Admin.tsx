@@ -428,39 +428,39 @@ function AppointmentRow({ apt, onStatusChange, compact }: {
   const date = new Date(apt.appointment_date + 'T00:00:00');
 
   return (
-    <div className="p-5 rounded-xl transition-all duration-300 hover:shadow-md" style={{ background: 'white', border: '1px solid rgba(74,35,17,0.08)' }}>
-      <div className="flex items-center justify-between gap-6">
-        <div className="flex items-center gap-6 flex-grow">
-          <div className="text-center shrink-0 w-16">
+    <div className="p-4 sm:p-5 rounded-xl transition-all duration-300 hover:shadow-md" style={{ background: 'white', border: '1px solid rgba(74,35,17,0.08)' }}>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6">
+        <div className="flex items-center gap-3 sm:gap-6 flex-grow">
+          <div className="text-center shrink-0 w-12 sm:w-16">
             <div className="text-[10px] uppercase font-bold tracking-widest" style={{ color: '#965d3e' }}>{DAYS_SHORT[date.getDay()]}</div>
-            <div className="font-serif text-3xl my-0.5" style={{ color: '#3a1c0d' }}>{date.getDate()}</div>
+            <div className="font-serif text-2xl sm:text-3xl my-0.5" style={{ color: '#3a1c0d' }}>{date.getDate()}</div>
             <div className="text-[10px] uppercase font-bold tracking-widest" style={{ color: '#965d3e' }}>{date.toLocaleDateString('en-US', { month: 'short' })}</div>
           </div>
           
           <div className="w-px h-12 hidden sm:block" style={{ background: 'rgba(74,35,17,0.1)' }}></div>
           
           <div className="flex-grow min-w-0">
-            <div className="flex items-center gap-3 mb-1.5">
-              <h4 className="font-serif text-lg text-ink-900 truncate" style={{ color: '#3a1c0d' }}>{apt.service_name}</h4>
-              <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full shrink-0" 
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3 mb-1.5">
+              <h4 className="font-serif text-base sm:text-lg text-ink-900 truncate" style={{ color: '#3a1c0d' }}>{apt.service_name}</h4>
+              <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full w-fit shrink-0" 
                     style={{ background: statusColors[apt.status].bg, color: statusColors[apt.status].color, border: `1px solid ${statusColors[apt.status].border}` }}>
                 {apt.status.replace('_', ' ')}
               </span>
             </div>
-            <div className="flex items-center gap-2 text-sm">
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs sm:text-sm">
               <span className="font-medium" style={{ color: '#5e311a' }}>{apt.client_name}</span>
-              <span style={{ color: '#965d3e' }}>•</span>
+              <span className="hidden sm:inline" style={{ color: '#965d3e' }}>•</span>
               <span style={{ color: '#7a4428' }}>{formatTime(apt.start_time)}</span>
               {!compact && (
                 <>
-                  <span style={{ color: '#965d3e' }}>•</span>
+                  <span className="hidden sm:inline" style={{ color: '#965d3e' }}>•</span>
                   <span className="font-serif" style={{ color: '#4a2311' }}>{formatNaira(Number(apt.service_price))}</span>
                 </>
               )}
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto pt-2 sm:pt-0 border-t sm:border-t-0 w-full sm:w-auto justify-end mt-2 sm:mt-0" style={{ borderColor: 'rgba(74,35,17,0.08)' }}>
           {apt.status === 'pending' && (
             <button
               onClick={() => onStatusChange(apt.id, 'confirmed')}
