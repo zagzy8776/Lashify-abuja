@@ -10,14 +10,14 @@ const categoryLabels: Record<string, string> = {
 };
 
 const fallbackImages = [
-  { url: 'https://images.pexels.com/photos/3997389/pexels-photo-3997389.jpeg?auto=compress&cs=tinysrgb&w=800', cat: 'lashes', title: 'Classic Set' },
-  { url: 'https://images.pexels.com/photos/3997391/pexels-photo-3997391.jpeg?auto=compress&cs=tinysrgb&w=800', cat: 'lashes', title: 'Volume Set' },
-  { url: 'https://images.pexels.com/photos/3997385/pexels-photo-3997385.jpeg?auto=compress&cs=tinysrgb&w=800', cat: 'lashes', title: 'Hybrid Set' },
-  { url: 'https://images.pexels.com/photos/3997381/pexels-photo-3997381.jpeg?auto=compress&cs=tinysrgb&w=800', cat: 'brows', title: 'Brow Lamination' },
-  { url: 'https://images.pexels.com/photos/3997379/pexels-photo-3997379.jpeg?auto=compress&cs=tinysrgb&w=800', cat: 'lashes', title: 'Mega Volume' },
-  { url: 'https://images.pexels.com/photos/3997383/pexels-photo-3997383.jpeg?auto=compress&cs=tinysrgb&w=800', cat: 'brows', title: 'Brow Shaping' },
-  { url: 'https://images.pexels.com/photos/3997387/pexels-photo-3997387.jpeg?auto=compress&cs=tinysrgb&w=800', cat: 'lashes', title: 'Lash Refill' },
-  { url: 'https://images.pexels.com/photos/3997388/pexels-photo-3997388.jpeg?auto=compress&cs=tinysrgb&w=800', cat: 'other', title: 'Combo Set' },
+  { url: '/images/studio.jpg', cat: 'lashes', title: 'Classic Set' },
+  { url: '/images/studio.jpg', cat: 'lashes', title: 'Volume Set' },
+  { url: '/images/studio.jpg', cat: 'lashes', title: 'Hybrid Set' },
+  { url: '/images/studio.jpg', cat: 'brows', title: 'Brow Lamination' },
+  { url: '/images/studio.jpg', cat: 'lashes', title: 'Mega Volume' },
+  { url: '/images/studio.jpg', cat: 'brows', title: 'Brow Shaping' },
+  { url: '/images/studio.jpg', cat: 'lashes', title: 'Lash Refill' },
+  { url: '/images/studio.jpg', cat: 'other', title: 'Combo Set' },
 ];
 
 export default function Gallery() {
