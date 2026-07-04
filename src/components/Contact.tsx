@@ -9,13 +9,13 @@ export default function Contact() {
 
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="section-label">
-            <span className="w-8 h-px" style={{ background: 'rgba(74,35,17,0.5)' }} />
+            <span className="w-8 h-px" style={{ background: 'rgba(179, 139, 158, 0.5)' }} />
             Get In Touch
-            <span className="w-8 h-px" style={{ background: 'rgba(74,35,17,0.5)' }} />
+            <span className="w-8 h-px" style={{ background: 'rgba(179, 139, 158, 0.5)' }} />
           </span>
-          <h2 className="heading-serif text-4xl md:text-5xl mt-4" style={{ color: '#f4e6e0' }}>
+          <h2 className="heading-serif text-4xl md:text-5xl mt-4" style={{ color: '#3d2e36' }}>
             Find{' '}
-            <span className="italic" style={{ color: '#4a2311' }}>Us</span>
+            <span className="italic" style={{ color: '#b38b9e' }}>Us</span>
           </h2>
         </div>
 
@@ -26,22 +26,22 @@ export default function Contact() {
             <div className="card-lux p-7">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0"
-                  style={{ background: 'rgba(74,35,17,0.08)', border: '1px solid rgba(74,35,17,0.2)' }}>
-                  <MapPin className="w-6 h-6" style={{ color: '#4a2311' }} />
+                  style={{ background: 'rgba(179, 139, 158, 0.08)', border: '1px solid rgba(179, 139, 158, 0.2)' }}>
+                  <MapPin className="w-6 h-6" style={{ color: '#b38b9e' }} />
                 </div>
                 <div>
-                  <h3 className="font-serif text-xl mb-2" style={{ color: '#f4e6e0' }}>Location</h3>
+                  <h3 className="font-serif text-xl mb-2" style={{ color: '#3d2e36' }}>Location</h3>
                   <a 
                     href="https://www.google.com/maps/search/?api=1&query=Plot+2079+Nonso+Benson+Udeh+Street+Abuja+Nigeria" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="block hover:opacity-75 transition-opacity"
                   >
-                    <p className="leading-relaxed" style={{ color: '#7a4428' }}>
+                    <p className="leading-relaxed" style={{ color: '#5a4850' }}>
                       Plot 2079 Nonso Benson<br />
                       Udeh Street Abuja
                     </p>
-                    <p className="text-sm mt-1" style={{ color: '#965d3e' }}>
+                    <p className="text-sm mt-1" style={{ color: '#8f7882' }}>
                       Federal Capital Territory, Nigeria
                     </p>
                   </a>
@@ -53,11 +53,11 @@ export default function Contact() {
             <div className="card-lux p-7">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0"
-                  style={{ background: 'rgba(74,35,17,0.08)', border: '1px solid rgba(74,35,17,0.2)' }}>
-                  <Clock className="w-6 h-6" style={{ color: '#4a2311' }} />
+                  style={{ background: 'rgba(179, 139, 158, 0.08)', border: '1px solid rgba(179, 139, 158, 0.2)' }}>
+                  <Clock className="w-6 h-6" style={{ color: '#b38b9e' }} />
                 </div>
                 <div className="flex-grow">
-                  <h3 className="font-serif text-xl mb-3" style={{ color: '#f4e6e0' }}>Operating Hours</h3>
+                  <h3 className="font-serif text-xl mb-3" style={{ color: '#3d2e36' }}>Operating Hours</h3>
                   <div className="space-y-2 text-sm">
                     {[
                       { day: 'Monday – Friday', hours: '9:00 AM – 7:00 PM' },
@@ -65,8 +65,8 @@ export default function Contact() {
                       { day: 'Sunday',          hours: 'By special request' },
                     ].map((row) => (
                       <div key={row.day} className="flex justify-between">
-                        <span style={{ color: '#7a4428' }}>{row.day}</span>
-                        <span className="font-medium" style={{ color: '#5e311a' }}>{row.hours}</span>
+                        <span style={{ color: '#5a4850' }}>{row.day}</span>
+                        <span className="font-medium" style={{ color: '#b38b9e' }}>{row.hours}</span>
                       </div>
                     ))}
                   </div>
@@ -111,9 +111,9 @@ export default function Contact() {
                 className="card-lux p-6 hover:-translate-y-1 group block"
               >
                 <item.Icon className="w-7 h-7 mb-3 transition-transform group-hover:scale-110"
-                  style={{ color: '#4a2311' }} />
-                <h4 className="font-medium mb-1" style={{ color: '#f4e6e0' }}>{item.label}</h4>
-                <p className="text-sm break-all" style={{ color: '#965d3e' }}>{item.handle}</p>
+                  style={{ color: '#b38b9e' }} />
+                <h4 className="font-medium mb-1" style={{ color: '#3d2e36' }}>{item.label}</h4>
+                <p className="text-sm break-all" style={{ color: '#8f7882' }}>{item.handle}</p>
               </a>
             ))}
           </div>

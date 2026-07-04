@@ -297,3 +297,26 @@ export async function adminDeleteReview(id: string): Promise<void> {
   });
   if (!res.ok) throw new Error('Failed to delete review');
 }
+
+export const services: Service[] = [
+  { id: 'p1', name: 'Classic Lashes', slug: 'classic-lashes', category: 'lashes', price: 20000, duration_minutes: 90, description: 'A single extension applied to each natural lash for a subtle, natural enhancement.', is_active: true, created_at: '', sort_order: 1, image_url: null },
+  { id: 'p2', name: 'Hybrid Lashes', slug: 'hybrid-lashes', category: 'lashes', price: 25000, duration_minutes: 120, description: 'A perfect blend of Classic and Volume lashes for a textured, fuller look.', is_active: true, created_at: '', sort_order: 2, image_url: null },
+  { id: 'p3', name: 'Russian Volume', slug: 'russian-volume', category: 'lashes', price: 30000, duration_minutes: 150, description: 'Multiple lightweight extensions applied to each natural lash for dramatic fluff and volume.', is_active: true, created_at: '', sort_order: 3, image_url: null },
+  { id: 'p4', name: 'Mega Volume', slug: 'mega-volume', category: 'lashes', price: 35000, duration_minutes: 180, description: 'The most dramatic, dense, and dark lash look available. Maximum fullness.', is_active: true, created_at: '', sort_order: 4, image_url: null },
+  { id: 'p5', name: 'Wispy Lashes', slug: 'wispy-lashes', category: 'lashes', price: 28000, duration_minutes: 135, description: 'Spiky, textured, and customized styling for a trendy, wispy effect.', is_active: true, created_at: '', sort_order: 5, image_url: null },
+  { id: 'p6', name: 'Microblading', slug: 'microblading', category: 'brows', price: 50000, duration_minutes: 120, description: 'Semi-permanent brow tattoo using hair-like strokes for a natural, fuller brow.', is_active: true, created_at: '', sort_order: 6, image_url: null },
+  { id: 'p7', name: 'Ombre Powder Brows', slug: 'ombre-powder-brows', category: 'brows', price: 60000, duration_minutes: 150, description: 'A soft, shaded brow pencil look that is semi-permanent and heals beautifully.', is_active: true, created_at: '', sort_order: 7, image_url: null },
+  { id: 'p8', name: 'Brow Lamination', slug: 'brow-lamination', category: 'brows', price: 25000, duration_minutes: 60, description: 'A perm for your brows that gives them a set, uniform shape for an extended period.', is_active: true, created_at: '', sort_order: 8, image_url: null },
+  { id: 'p9', name: 'Brow Tinting', slug: 'brow-tinting', category: 'brows', price: 10000, duration_minutes: 30, description: 'Semi-permanent dye to enhance the color, shape, and thickness of your brows.', is_active: true, created_at: '', sort_order: 9, image_url: null },
+  { id: 'p10', name: 'Brow Shaping', slug: 'brow-shaping', category: 'brows', price: 8000, duration_minutes: 30, description: 'Expert brow mapping and shaping using high-quality wax.', is_active: true, created_at: '', sort_order: 10, image_url: null }
+];
+
+export const defaultTimeSlots: TimeSlot[] = [
+  { id: 't1', day_of_week: 1, start_time: '09:00', end_time: '19:00', is_active: true, created_at: '' },
+  { id: 't2', day_of_week: 2, start_time: '09:00', end_time: '19:00', is_active: true, created_at: '' },
+  { id: 't3', day_of_week: 3, start_time: '09:00', end_time: '19:00', is_active: true, created_at: '' },
+  { id: 't4', day_of_week: 4, start_time: '09:00', end_time: '19:00', is_active: true, created_at: '' },
+  { id: 't5', day_of_week: 5, start_time: '09:00', end_time: '19:00', is_active: true, created_at: '' },
+  { id: 't6', day_of_week: 6, start_time: '10:00', end_time: '17:00', is_active: true, created_at: '' },
+  { id: 't0', day_of_week: 0, start_time: '12:00', end_time: '17:00', is_active: false, created_at: '' }
+];

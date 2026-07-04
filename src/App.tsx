@@ -41,7 +41,7 @@ function App() {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen" style={{ background: '#fcf9f8' }}>
+    <div className="min-h-screen" style={{ background: '#faf7f2' }}>
       <SEOSchema title="Lash & Brow Studio" description="Premium Lash and Brow services in Abuja. Book your luxury appointment today." />
       {!isAdmin && <Navbar onNavigate={handleNavigate} currentPage={page} />}
 

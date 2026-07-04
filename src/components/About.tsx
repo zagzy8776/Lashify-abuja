@@ -31,18 +31,17 @@ export default function About({ onNavigate }: Props) {
                 right: '0',
                 padding: '16px 20px',
                 borderRadius: '16px',
-                background: 'rgba(10,7,4,0.92)',
-                border: '1px solid rgba(74,35,17,0.35)',
+                background: 'rgba(250, 247, 242, 0.72)',
+                border: '1px solid rgba(179, 139, 158, 0.25)',
                 backdropFilter: 'blur(12px)',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.6), 0 0 20px rgba(74,35,17,0.1)',
+                boxShadow: '0 8px 32px rgba(179, 139, 158, 0.12), 0 0 20px rgba(179, 139, 158, 0.08)',
                 animation: 'fadeUp 1s ease-out 0.6s both',
               }}
             >
-              <div className="font-serif" style={{ fontSize: '2.4rem', lineHeight: 1, color: '#4a2311' }}>3+</div>
-              <div className="text-xs mt-1 uppercase tracking-[0.15em]" style={{ color: '#7a4428' }}>Years in Abuja</div>
+              <div className="font-serif" style={{ fontSize: '2.4rem', lineHeight: 1, color: '#b38b9e' }}>3+</div>
+              <div className="text-xs mt-1 uppercase tracking-[0.15em]" style={{ color: '#5a4850' }}>Years in Abuja</div>
             </div>
 
-            {/* Logo badge — top left */}
             <div
               className="absolute z-20"
               style={{
@@ -50,17 +49,13 @@ export default function About({ onNavigate }: Props) {
                 left: '0',
                 width: '68px',
                 height: '68px',
-                borderRadius: '50%',
-                overflow: 'hidden',
-                border: '2px solid rgba(74,35,17,0.4)',
-                boxShadow: '0 0 20px rgba(74,35,17,0.25)',
                 animation: 'fadeUp 1s ease-out 0.3s both',
               }}
             >
               <img
-                src="/images/WhatsApp_Image_2026-06-30_at_2.12.44_PM.jpeg"
-                alt="LashifyAbuja"
-                className="w-full h-full object-cover"
+                src="/images/logo.png"
+                alt="LashifyAbuja Logo"
+                className="w-full h-full object-contain"
               />
             </div>
           </div>
@@ -68,24 +63,24 @@ export default function About({ onNavigate }: Props) {
           {/* Text side */}
           <div>
             <span className="section-label">
-              <span className="w-8 h-px" style={{ background: 'rgba(74,35,17,0.5)' }} />
+              <span className="w-8 h-px" style={{ background: 'rgba(179, 139, 158, 0.5)' }} />
               Meet Lashify
             </span>
-            <h2 className="heading-serif text-4xl md:text-5xl mt-4 mb-6" style={{ color: '#f4e6e0' }}>
+            <h2 className="heading-serif text-4xl md:text-5xl mt-4 mb-6" style={{ color: '#3d2e36' }}>
               The Artist Behind
               <br />
-              <span className="italic" style={{ color: '#4a2311' }}>LashifyAbuja</span>
+              <span className="italic" style={{ color: '#b38b9e' }}>LashifyAbuja</span>
             </h2>
-            <p className="leading-relaxed mb-3" style={{ color: '#7a4428', lineHeight: 1.8 }}>
+            <p className="leading-relaxed mb-3" style={{ color: '#5a4850', lineHeight: 1.8 }}>
               Abuja's trusted lash and brow specialist — known for precision,
               care, and results that speak for themselves.
             </p>
-            <p className="leading-relaxed" style={{ color: '#7a4428', lineHeight: 1.8 }}>
+            <p className="leading-relaxed" style={{ color: '#5a4850', lineHeight: 1.8 }}>
               Every set is custom-crafted to your features and lifestyle. Your appointment
               is a personal experience, not a transaction.
             </p>
-            <span className="font-script text-3xl block mt-8" style={{ color: '#4a2311' }}>Lashify</span>
-            <span className="text-xs uppercase tracking-widest" style={{ color: '#2d2c2f' }}>
+            <span className="font-script text-3xl block mt-8" style={{ color: '#b38b9e' }}>Lashify</span>
+            <span className="text-xs uppercase tracking-widest" style={{ color: '#8f7882' }}>
               Founder & Lead Artist
             </span>
             <br />
@@ -99,11 +94,11 @@ export default function About({ onNavigate }: Props) {
           {values.map((v) => (
             <div key={v.title} className="card-lux p-6 text-center hover:-translate-y-1">
               <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4"
-                style={{ background: 'rgba(74,35,17,0.08)', border: '1px solid rgba(74,35,17,0.2)' }}>
-                <v.icon className="w-6 h-6" style={{ color: '#4a2311' }} />
+                style={{ background: 'rgba(179, 139, 158, 0.08)', border: '1px solid rgba(179, 139, 158, 0.2)' }}>
+                <v.icon className="w-6 h-6" style={{ color: '#b38b9e' }} />
               </div>
-              <h3 className="font-serif text-lg mb-2" style={{ color: '#f4e6e0' }}>{v.title}</h3>
-              <p className="text-xs leading-relaxed" style={{ color: '#7a4428' }}>{v.desc}</p>
+              <h3 className="font-serif text-lg mb-2" style={{ color: '#3d2e36' }}>{v.title}</h3>
+              <p className="text-xs leading-relaxed" style={{ color: '#5a4850' }}>{v.desc}</p>
             </div>
           ))}
         </div>
@@ -143,7 +138,7 @@ function GlowCircle() {
         style={{
           inset: '-8px',
           borderRadius: '50%',
-          border: '1px solid rgba(74,35,17,0.25)',
+          border: '1px solid rgba(179, 139, 158, 0.3)',
         }}
       />
 
@@ -156,18 +151,18 @@ function GlowCircle() {
         }}
       >
         <img
-          src="/images/download_(1).jpg"
-          alt="LashifyAbuja"
+          src="/images/studio.jpg"
+          alt="LashifyAbuja Studio"
           className="w-full h-full object-cover"
           style={{
-            filter: 'brightness(0.9) contrast(1.08) saturate(0.9)',
+            filter: 'brightness(1.0) contrast(1.05) saturate(0.9)',
           }}
         />
         {/* Inner vignette to blend with glow */}
         <div
           className="absolute inset-0 rounded-full pointer-events-none"
           style={{
-            background: 'radial-gradient(circle at center, transparent 55%, rgba(203,164,149,0.4) 100%)',
+            background: 'radial-gradient(circle at center, transparent 55%, rgba(179, 139, 158, 0.35) 100%)',
           }}
         />
       </div>

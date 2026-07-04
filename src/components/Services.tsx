@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Clock, ArrowRight, Check } from 'lucide-react';
-import { fetchServices, type Service } from '../lib/supabase';
+import { fetchServices, services, type Service } from '../lib/supabase';
 import { formatNaira, formatDuration } from '../lib/utils';
 
 type Props = {
@@ -16,7 +16,7 @@ const categoryLabels: Record<string, string> = {
 };
 
 export default function Services({ onNavigate, onBookService, compact }: Props) {
-  const [services, setServices] = useState<Service[]>([]);
+  const [servicesList, setServicesList] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,24 +24,13 @@ export default function Services({ onNavigate, onBookService, compact }: Props) 
       try {
         const data = await fetchServices();
         if (data && data.length > 0) {
-          setServices(data);
+          setServicesList(data);
         } else {
-          // Fallback placeholders for Lashes and Brows
-          setServices([
-            { id: 'p1', name: 'Classic Lashes', category: 'lashes', price: 20000, duration_minutes: 90, description: 'A single extension applied to each natural lash for a subtle, natural enhancement.', is_active: true, created_at: '' },
-            { id: 'p2', name: 'Hybrid Lashes', category: 'lashes', price: 25000, duration_minutes: 120, description: 'A perfect blend of Classic and Volume lashes for a textured, fuller look.', is_active: true, created_at: '' },
-            { id: 'p3', name: 'Russian Volume', category: 'lashes', price: 30000, duration_minutes: 150, description: 'Multiple lightweight extensions applied to each natural lash for dramatic fluff and volume.', is_active: true, created_at: '' },
-            { id: 'p4', name: 'Mega Volume', category: 'lashes', price: 35000, duration_minutes: 180, description: 'The most dramatic, dense, and dark lash look available. Maximum fullness.', is_active: true, created_at: '' },
-            { id: 'p5', name: 'Wispy Lashes', category: 'lashes', price: 28000, duration_minutes: 135, description: 'Spiky, textured, and customized styling for a trendy, wispy effect.', is_active: true, created_at: '' },
-            { id: 'p6', name: 'Microblading', category: 'brows', price: 50000, duration_minutes: 120, description: 'Semi-permanent brow tattoo using hair-like strokes for a natural, fuller brow.', is_active: true, created_at: '' },
-            { id: 'p7', name: 'Ombre Powder Brows', category: 'brows', price: 60000, duration_minutes: 150, description: 'A soft, shaded brow pencil look that is semi-permanent and heals beautifully.', is_active: true, created_at: '' },
-            { id: 'p8', name: 'Brow Lamination', category: 'brows', price: 25000, duration_minutes: 60, description: 'A perm for your brows that gives them a set, uniform shape for an extended period.', is_active: true, created_at: '' },
-            { id: 'p9', name: 'Brow Tinting', category: 'brows', price: 10000, duration_minutes: 30, description: 'Semi-permanent dye to enhance the color, shape, and thickness of your brows.', is_active: true, created_at: '' },
-            { id: 'p10', name: 'Brow Shaping', category: 'brows', price: 8000, duration_minutes: 30, description: 'Expert brow mapping and shaping using high-quality wax.', is_active: true, created_at: '' }
-          ]);
+          setServicesList(services);
         }
       } catch (err) {
-        console.error('Failed to fetch services:', err);
+        console.error('Failed to fetch services, using local fallback:', err);
+        setServicesList(services);
       }
       setLoading(false);
     };
@@ -73,30 +62,30 @@ export default function Services({ onNavigate, onBookService, compact }: Props) 
 
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="section-label">
-            <span className="w-8 h-px" style={{ background: 'rgba(74,35,17,0.5)' }} />
+            <span className="w-8 h-px" style={{ background: 'rgba(179, 139, 158, 0.5)' }} />
             Our Services
-            <span className="w-8 h-px" style={{ background: 'rgba(74,35,17,0.5)' }} />
+            <span className="w-8 h-px" style={{ background: 'rgba(179, 139, 158, 0.5)' }} />
           </span>
-          <h2 className="heading-serif text-4xl md:text-5xl mt-4 mb-4" style={{ color: '#f4e6e0' }}>
+          <h2 className="heading-serif text-4xl md:text-5xl mt-4 mb-4" style={{ color: '#3d2e36' }}>
             Services &
             <br />
-            <span className="italic" style={{ color: '#4a2311' }}>Pricing</span>
+            <span className="italic" style={{ color: '#b38b9e' }}>Pricing</span>
           </h2>
-          <p className="text-sm leading-relaxed" style={{ color: '#7a4428' }}>
+          <p className="text-sm leading-relaxed" style={{ color: '#5a4850' }}>
             All services include consultation and aftercare. No hidden fees.
           </p>
         </div>
 
         {categories.map((cat) => {
-          const catServices = services.filter((s) => s.category === cat);
+          const catServices = servicesList.filter((s) => s.category === cat);
           if (catServices.length === 0) return null;
           const shown = displayCount ? catServices.slice(0, displayCount) : catServices;
 
           return (
             <div key={cat} className="mb-16 last:mb-0">
               <h3 className="font-serif text-2xl mb-6 flex items-center gap-3"
-                style={{ color: '#5e311a' }}>
-                <span className="w-10 h-px" style={{ background: 'rgba(74,35,17,0.4)' }} />
+                style={{ color: '#b38b9e' }}>
+                <span className="w-10 h-px" style={{ background: 'rgba(179, 139, 158, 0.4)' }} />
                 {categoryLabels[cat] || cat}
               </h3>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -108,50 +97,50 @@ export default function Services({ onNavigate, onBookService, compact }: Props) 
                     onClick={() => onBookService ? onBookService(service) : onNavigate('book')}
                   >
                     {service.image_url && (
-                      <div className="w-full h-48 bg-gray-100 overflow-hidden" style={{ borderBottom: '1px solid rgba(74,35,17,0.1)' }}>
+                      <div className="w-full h-48 bg-gray-100 overflow-hidden" style={{ borderBottom: '1px solid rgba(179, 139, 158, 0.15)' }}>
                         <img src={service.image_url} alt={service.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                       </div>
                     )}
                     <div className="p-7 flex flex-col flex-grow">
                       <div className="flex items-start justify-between mb-4">
                         <h4 className="font-serif text-xl transition-colors"
-                          style={{ color: '#f4e6e0' }}
-                          onMouseEnter={(e) => (e.currentTarget.style.color = '#4a2311')}
-                          onMouseLeave={(e) => (e.currentTarget.style.color = '#f4e6e0')}
+                          style={{ color: '#3d2e36' }}
+                          onMouseEnter={(e) => (e.currentTarget.style.color = '#b38b9e')}
+                          onMouseLeave={(e) => (e.currentTarget.style.color = '#3d2e36')}
                         >
                           {service.name}
                         </h4>
                         <div className="text-right shrink-0 ml-3">
-                        <div className="font-serif text-2xl" style={{ color: '#4a2311' }}>
+                        <div className="font-serif text-2xl" style={{ color: '#b38b9e' }}>
                           {formatNaira(service.price)}
                         </div>
                       </div>
                     </div>
 
-                    <p className="text-sm leading-relaxed mb-5 flex-grow" style={{ color: '#965d3e' }}>
+                    <p className="text-sm leading-relaxed mb-5 flex-grow" style={{ color: '#5a4850' }}>
                       {service.description}
                     </p>
 
                     <div className="flex items-center gap-4 text-sm mb-5 pb-5"
-                      style={{ borderBottom: '1px solid rgba(74,35,17,0.1)', color: '#965d3e' }}>
+                      style={{ borderBottom: '1px solid rgba(179, 139, 158, 0.15)', color: '#5a4850' }}>
                       <span className="flex items-center gap-1.5">
-                        <Clock className="w-4 h-4" style={{ color: '#3a1c0d' }} />
+                        <Clock className="w-4 h-4" style={{ color: '#b38b9e' }} />
                         {formatDuration(service.duration_minutes)}
                       </span>
                       <span className="flex items-center gap-1.5">
-                        <Check className="w-4 h-4" style={{ color: '#3a1c0d' }} />
+                        <Check className="w-4 h-4" style={{ color: '#b38b9e' }} />
                         Consultation included
                       </span>
                     </div>
 
                     <button className="flex items-center justify-between text-sm font-medium transition-colors"
-                      style={{ color: '#7a4428' }}
+                      style={{ color: '#b38b9e' }}
                     >
-                      <span className="group-hover:text-gold-400 transition-colors">
+                      <span className="group-hover:text-[#3d2e36] transition-colors">
                         Book this service
                       </span>
-                      <span className="w-9 h-9 rounded-full flex items-center justify-center transition-all"
-                        style={{ border: '1px solid rgba(74,35,17,0.2)' }}>
+                      <span className="w-9 h-9 rounded-full flex items-center justify-center transition-all group-hover:border-[#b38b9e]"
+                        style={{ border: '1px solid rgba(179, 139, 158, 0.3)' }}>
                         <ArrowRight className="w-4 h-4" />
                       </span>
                     </button>

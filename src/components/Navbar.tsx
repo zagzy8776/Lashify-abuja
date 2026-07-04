@@ -70,32 +70,31 @@ export default function Navbar({ onNavigate, currentPage }: Props) {
       }`}
       style={{
         background: scrolled
-          ? 'rgba(203,164,149,0.95)'
+          ? 'rgba(255, 255, 255, 0.55)'
           : 'transparent',
-        backdropFilter: scrolled ? 'blur(12px)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(74,35,17,0.1)' : 'none',
+        backdropFilter: scrolled ? 'blur(20px)' : 'none',
+        borderBottom: scrolled ? '1px solid rgba(179, 139, 158, 0.15)' : 'none',
       }}
     >
       <nav className="container-lux flex items-center justify-between">
         <button onClick={handleLogoTap} className="flex items-center gap-3 group">
-          <div className="w-11 h-11 rounded-full overflow-hidden transition-all duration-300" style={{ border: '1px solid rgba(74,35,17,0.15)' }}>
+          <div className="w-11 h-11 transition-all duration-300">
             <img
-              src="/images/WhatsApp_Image_2026-06-30_at_2.12.44_PM.jpeg"
-              alt="LashifyAbuja"
-              className="w-full h-full object-cover"
-              style={{ filter: 'brightness(1.05) contrast(1.05)' }}
+              src="/images/logo.png"
+              alt="LashifyAbuja Logo"
+              className="w-full h-full object-contain"
             />
           </div>
           <div className="text-left leading-none">
-            <div className="font-serif text-xl tracking-wide" style={{ color: '#f4e6e0' }}>
-              Lashify<span style={{ color: '#4a2311' }}>Abuja</span>
+            <div className="font-serif text-xl tracking-wide" style={{ color: '#3d2e36' }}>
+              Lashify<span style={{ color: '#b38b9e' }}>Abuja</span>
             </div>
-            <div className="text-[10px] uppercase tracking-[0.2em] mt-0.5" style={{ color: '#965d3e' }}>
+            <div className="text-[10px] uppercase tracking-[0.2em] mt-0.5" style={{ color: '#8f7882' }}>
               Lash &amp; Brow Studio
             </div>
           </div>
         </button>
-
+ 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-1">
           {navLinks.map((link) => (
@@ -104,10 +103,10 @@ export default function Navbar({ onNavigate, currentPage }: Props) {
               onClick={() => handleNav(link.page)}
               className="px-4 py-2 text-sm font-medium tracking-wide rounded-full transition-all duration-300"
               style={{
-                color: currentPage === link.page ? '#4a2311' : '#5e311a',
+                color: currentPage === link.page ? '#b38b9e' : '#5a4850',
               }}
-              onMouseEnter={(e) => { if (currentPage !== link.page) (e.target as HTMLElement).style.color = '#4a2311'; }}
-              onMouseLeave={(e) => { if (currentPage !== link.page) (e.target as HTMLElement).style.color = '#5e311a'; }}
+              onMouseEnter={(e) => { if (currentPage !== link.page) (e.target as HTMLElement).style.color = '#b38b9e'; }}
+              onMouseLeave={(e) => { if (currentPage !== link.page) (e.target as HTMLElement).style.color = '#5a4850'; }}
             >
               {link.label}
             </button>
@@ -117,22 +116,22 @@ export default function Navbar({ onNavigate, currentPage }: Props) {
             Book Now
           </button>
         </div>
-
+ 
         {/* Mobile toggle */}
         <button
           className="md:hidden p-3"
-          style={{ color: '#5e311a' }}
+          style={{ color: '#b38b9e' }}
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
         >
           {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </nav>
-
+ 
       {/* Mobile menu */}
       {mobileOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 border-t animate-fade-down"
-          style={{ background: 'rgba(203,164,149,0.98)', borderColor: 'rgba(74,35,17,0.1)', backdropFilter: 'blur(12px)' }}>
+          style={{ background: 'rgba(250, 247, 242, 0.95)', borderColor: 'rgba(179, 139, 158, 0.12)', backdropFilter: 'blur(12px)' }}>
           <div className="container-lux py-6 flex flex-col gap-2">
             {navLinks.map((link) => (
               <button
@@ -140,8 +139,8 @@ export default function Navbar({ onNavigate, currentPage }: Props) {
                 onClick={() => handleNav(link.page)}
                 className="px-4 py-4 text-left text-base font-medium rounded-lg transition-colors"
                 style={{
-                  color: currentPage === link.page ? '#4a2311' : '#5e311a',
-                  background: currentPage === link.page ? 'rgba(74,35,17,0.08)' : 'transparent',
+                  color: currentPage === link.page ? '#b38b9e' : '#5a4850',
+                  background: currentPage === link.page ? 'rgba(179, 139, 158, 0.1)' : 'transparent',
                 }}
               >
                 {link.label}

@@ -12,7 +12,7 @@ type Props = {
 // Map URL slugs back to proper names
 const formatSlug = (slug: string) => slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 
-export default function ServiceLocationPage({ onNavigate, onBookService }: Props) {
+export default function ServiceLocationPage({ onNavigate: _, onBookService }: Props) {
   const { serviceSlug, locationSlug } = useParams<{ serviceSlug: string; locationSlug: string }>();
 
   const serviceName = formatSlug(serviceSlug || '');
@@ -32,7 +32,7 @@ export default function ServiceLocationPage({ onNavigate, onBookService }: Props
   const description = `Looking for ${serviceName} near ${locationName}? Lashify Abuja offers premium, luxury ${serviceName} services. Book your appointment today.`;
 
   return (
-    <div className="min-h-screen" style={{ background: '#d1b1a3' }}>
+    <div className="min-h-screen" style={{ background: '#ede3d5' }}>
       <SEOSchema 
         title={title}
         description={description}
@@ -43,8 +43,8 @@ export default function ServiceLocationPage({ onNavigate, onBookService }: Props
       <div className="container-lux py-16">
         <div className="max-w-3xl mx-auto mt-8 text-center mb-16">
           <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full" style={{ background: 'rgba(255,255,255,0.4)' }}>
-            <MapPin className="w-4 h-4" style={{ color: '#4a2311' }} />
-            <span className="text-sm font-medium tracking-wide uppercase" style={{ color: '#4a2311' }}>
+            <MapPin className="w-4 h-4" style={{ color: '#b38b9e' }} />
+            <span className="text-sm font-medium tracking-wide uppercase" style={{ color: '#b38b9e' }}>
               Serving {locationName} & Surroundings
             </span>
           </div>
@@ -54,7 +54,7 @@ export default function ServiceLocationPage({ onNavigate, onBookService }: Props
             in {locationName}
           </h1>
           
-          <p className="text-lg md:text-xl leading-relaxed mb-10" style={{ color: '#5e311a' }}>
+          <p className="text-lg md:text-xl leading-relaxed mb-10" style={{ color: '#5a4850' }}>
             {description} Our studio specializes in creating perfectly tailored looks that enhance your natural beauty.
           </p>
 
@@ -69,7 +69,7 @@ export default function ServiceLocationPage({ onNavigate, onBookService }: Props
 
         <div className="grid md:grid-cols-2 gap-12 mt-20 max-w-5xl mx-auto">
           <div className="card-lux p-8">
-            <h3 className="text-2xl font-serif mb-6" style={{ color: '#3a1c0d' }}>Why Choose Us for {serviceName}?</h3>
+            <h3 className="text-2xl font-serif mb-6" style={{ color: '#3d2e36' }}>Why Choose Us for {serviceName}?</h3>
             <ul className="space-y-4">
               {[
                 `Highly trained and certified artists`,
@@ -78,31 +78,31 @@ export default function ServiceLocationPage({ onNavigate, onBookService }: Props
                 `Long-lasting retention and flawless results`
               ].map((item, i) => (
                 <li key={i} className="flex gap-3 items-start">
-                  <CheckCircle2 className="w-6 h-6 shrink-0 mt-0.5" style={{ color: '#4a2311' }} />
-                  <span style={{ color: '#5e311a' }}>{item}</span>
+                  <CheckCircle2 className="w-6 h-6 shrink-0 mt-0.5" style={{ color: '#b38b9e' }} />
+                  <span style={{ color: '#5a4850' }}>{item}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="card-lux p-8" style={{ background: 'linear-gradient(135deg, rgba(74,35,17,0.05) 0%, rgba(74,35,17,0) 100%)' }}>
-            <h3 className="text-2xl font-serif mb-6" style={{ color: '#3a1c0d' }}>Service Details</h3>
+          <div className="card-lux p-8" style={{ background: 'linear-gradient(135deg, rgba(179, 139, 158, 0.04) 0%, rgba(74,35,17,0) 100%)' }}>
+            <h3 className="text-2xl font-serif mb-6" style={{ color: '#3d2e36' }}>Service Details</h3>
             <div className="space-y-6">
               <div>
-                <span className="text-sm font-medium uppercase tracking-wider mb-1 block" style={{ color: '#7a4428' }}>Duration</span>
-                <div className="flex items-center gap-2 text-lg font-medium" style={{ color: '#3a1c0d' }}>
+                <span className="text-sm font-medium uppercase tracking-wider mb-1 block" style={{ color: '#b38b9e' }}>Duration</span>
+                <div className="flex items-center gap-2 text-lg font-medium" style={{ color: '#3d2e36' }}>
                   <Clock className="w-5 h-5" /> {serviceData.duration_minutes} Minutes
                 </div>
               </div>
               
               <div>
-                <span className="text-sm font-medium uppercase tracking-wider mb-1 block" style={{ color: '#7a4428' }}>Investment</span>
-                <div className="text-3xl font-serif" style={{ color: '#4a2311' }}>
+                <span className="text-sm font-medium uppercase tracking-wider mb-1 block" style={{ color: '#b38b9e' }}>Investment</span>
+                <div className="text-3xl font-serif" style={{ color: '#b38b9e' }}>
                   ₦{serviceData.price.toLocaleString()}
                 </div>
               </div>
               
-              <p className="text-sm mt-6 p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.6)', color: '#5e311a' }}>
+              <p className="text-sm mt-6 p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.6)', color: '#5a4850' }}>
                 We are easily accessible from {locationName} and surrounding areas in Abuja. 
                 Full payment details and studio directions will be sent upon booking confirmation.
               </p>
