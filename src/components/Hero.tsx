@@ -35,6 +35,12 @@ export default function Hero({ onNavigate, onBookService }: Props) {
     }
   };
 
+  const CATEGORY_LABELS: Record<string, string> = {
+    'lash': 'Lash Services',
+    'brows': 'Brow Services',
+    'lash-refill': 'Lash Fills',
+  };
+
   const categories = Array.from(new Set(servicesList.map(s => s.category)));
 
   return (
@@ -131,7 +137,7 @@ export default function Hero({ onNavigate, onBookService }: Props) {
               {categories.map(cat => (
                 <div key={cat} className="mt-2">
                   <div className="px-4 pt-4 pb-2 text-[11px] font-bold text-gray-500 uppercase tracking-widest">
-                    {cat.replace('-', ' ')}
+                    {CATEGORY_LABELS[cat] || cat.replace('-', ' ')}
                   </div>
                   {servicesList.filter(s => s.category === cat).map(service => (
                     <button 

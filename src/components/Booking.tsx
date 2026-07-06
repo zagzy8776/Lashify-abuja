@@ -37,11 +37,33 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
   const [confirmedAppointment, setConfirmedAppointment] = useState<Appointment | null>(null);
   const [paymentOption, setPaymentOption] = useState<'full' | 'half'>('full');
   const [groupSize, setGroupSize] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const totalPrice = selectedService ? selectedService.price * groupSize : 0;
   const totalDuration = selectedService ? selectedService.duration_minutes * groupSize : 0;
 
   const amountToPay = paymentOption === 'full' ? totalPrice : totalPrice / 2;
+
+  const CATEGORIES = [
+    {
+      id: 'lash',
+      title: 'Lash Services',
+      description: 'Luxurious lash extensions tailored to your eye shape.',
+      image: 'https://images.unsplash.com/photo-1588514106606-d083bc5dfac7?q=80&w=800&auto=format&fit=crop',
+    },
+    {
+      id: 'brows',
+      title: 'Brow Services',
+      description: 'Expert brow shaping, tinting, and microblading.',
+      image: 'https://images.unsplash.com/photo-1596704017254-9b121068fb31?q=80&w=800&auto=format&fit=crop',
+    },
+    {
+      id: 'lash-refill',
+      title: 'Lash Fills',
+      description: 'Maintain your gorgeous lashes with regular refills.',
+      image: 'https://images.unsplash.com/photo-1512496015851-a1dc8a477d5b?q=80&w=800&auto=format&fit=crop',
+    }
+  ];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -183,6 +205,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
   const resetBooking = () => {
     setStep('service');
     setSelectedService(null);
+    setSelectedCategory(null);
     setSelectedDate(null);
     setSelectedTime('');
     setGroupSize(1);
@@ -194,7 +217,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
   if (loading) {
     return (
       <section className="pt-32 pb-24 min-h-screen section-light flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#b38b9e' }} />
+        <Loader2 className="w-8 h-8 animate-spin text-rose-500" />
       </section>
     );
   }
@@ -203,36 +226,32 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
     return (
       <section className="pt-32 pb-24 min-h-screen section-light flex items-center">
         <div className="container-lux max-w-2xl">
-          <div className="card-lux p-10 md:p-14 text-center animate-scale-in"
-            style={{ boxShadow: '0 20px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(179, 139, 158, 0.2)' }}>
-            <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
-              style={{ background: 'rgba(179, 139, 158, 0.08)', border: '1px solid rgba(179, 139, 158, 0.3)' }}>
-              <PartyPopper className="w-10 h-10" style={{ color: '#b38b9e' }} />
+          <div className="card-lux p-10 md:p-14 text-center animate-scale-in shadow-2xl border border-rose-100">
+            <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 bg-rose-50">
+              <PartyPopper className="w-10 h-10 text-rose-500" />
             </div>
-            <h2 className="heading-serif text-4xl mb-4" style={{ color: '#3d2e36' }}>
+            <h2 className="heading-serif text-4xl mb-4 text-gray-900">
               Appointment Requested!
             </h2>
-            <p className="leading-relaxed mb-8" style={{ color: '#b38b9e' }}>
+            <p className="leading-relaxed mb-8 text-rose-500">
               Thank you so much, {confirmedAppointment.client_name}! I have received your booking request.
               I will personally confirm your appointment with you via WhatsApp or phone shortly. I can't wait to see you!
             </p>
 
-            <div className="rounded-2xl p-6 text-left space-y-3 mb-8"
-              style={{ background: 'rgba(203,164,149,0.6)', border: '1px solid rgba(179, 139, 158, 0.08)' }}>
+            <div className="rounded-2xl p-6 text-left space-y-3 mb-8 bg-rose-50 border border-rose-100">
               {[
                 { l: 'Service', v: confirmedAppointment.service_name },
                 { l: 'Date', v: new Date(confirmedAppointment.appointment_date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }) },
                 { l: 'Time', v: `${formatTime(confirmedAppointment.start_time)} – ${formatTime(confirmedAppointment.end_time)}` },
               ].map((row) => (
-                <div key={row.l} className="flex justify-between items-center pb-3"
-                  style={{ borderBottom: '1px solid rgba(179, 139, 158, 0.08)' }}>
-                  <span className="text-sm" style={{ color: '#5a4850' }}>{row.l}</span>
-                  <span className="font-medium text-sm" style={{ color: '#3d2e36' }}>{row.v}</span>
+                <div key={row.l} className="flex justify-between items-center pb-3 border-b border-rose-100">
+                  <span className="text-sm text-gray-700">{row.l}</span>
+                  <span className="font-medium text-sm text-gray-900">{row.v}</span>
                 </div>
               ))}
               <div className="flex justify-between items-center pt-1">
-                <span className="text-sm" style={{ color: '#5a4850' }}>Price</span>
-                <span className="font-serif text-2xl" style={{ color: '#b38b9e' }}>
+                <span className="text-sm text-gray-700">Price</span>
+                <span className="font-serif text-2xl text-rose-500">
                   {formatNaira(confirmedAppointment.service_price)}
                 </span>
               </div>
@@ -276,12 +295,12 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
         {/* Header */}
         <div className="text-center mb-10">
           <span className="section-label">
-            <span className="w-8 h-px" style={{ background: 'rgba(179, 139, 158, 0.5)' }} />
+            <span className="w-8 h-px bg-rose-200" />
             Book Your Visit
-            <span className="w-8 h-px" style={{ background: 'rgba(179, 139, 158, 0.5)' }} />
+            <span className="w-8 h-px bg-rose-200" />
           </span>
-          <h1 className="heading-serif text-4xl md:text-5xl mt-4" style={{ color: '#3d2e36' }}>
-            Reserve Your <span className="italic" style={{ color: '#b38b9e' }}>Moment</span>
+          <h1 className="heading-serif text-4xl md:text-5xl mt-4 text-gray-900">
+            Reserve Your <span className="italic text-rose-500">Moment</span>
           </h1>
         </div>
 
@@ -292,60 +311,113 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
               <div className={`flex flex-col items-center gap-2 ${idx <= currentStepIndex ? '' : 'opacity-30'}`}>
                 <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-300"
                   style={{
-                    background: idx < currentStepIndex ? '#b38b9e'
-                      : idx === currentStepIndex ? 'rgba(179, 139, 158, 0.3)'
+                    background: idx < currentStepIndex ? '#f43f5e'
+                      : idx === currentStepIndex ? '#ffe4e6'
                       : 'rgba(255,255,255,0.5)',
                     color: idx < currentStepIndex ? '#d5b1a3'
-                      : idx === currentStepIndex ? '#b38b9e'
+                      : idx === currentStepIndex ? '#f43f5e'
                       : '#5a4850',
-                    border: idx === currentStepIndex ? '2px solid rgba(74,35,17,0.6)' : '1px solid rgba(179, 139, 158, 0.3)',
-                    boxShadow: idx === currentStepIndex ? '0 0 20px rgba(179, 139, 158, 0.2)' : 'none',
+                    border: idx === currentStepIndex ? '2px solid #e5e7eb' : '1px solid #ffe4e6',
+                    boxShadow: idx === currentStepIndex ? '0 0 20px #ffe4e6' : 'none',
                   }}>
                   {idx < currentStepIndex ? <Check className="w-5 h-5" /> : idx + 1}
                 </div>
-                <span className="text-[10px] sm:text-xs font-medium" style={{ color: idx === currentStepIndex ? '#b38b9e' : '#8f7882' }}>
+                <span className="text-[10px] sm:text-xs font-medium" style={{ color: idx === currentStepIndex ? '#f43f5e' : '#6b7280' }}>
                   {s.label}
                 </span>
               </div>
               {idx < steps.length - 1 && (
-                <div className="w-8 sm:w-12 md:w-20 h-px mx-2 transition-colors"
-                  style={{ background: idx < currentStepIndex ? '#b38b9e' : 'rgba(179, 139, 158, 0.08)' }} />
+                <div className={`w-8 sm:w-12 md:w-20 h-px mx-2 transition-colors ${idx < currentStepIndex ? 'bg-rose-500' : 'bg-rose-100'}`} />
               )}
             </div>
           ))}
         </div>
 
         {/* Step: Service */}
-        {step === 'service' && (
-          <div className="grid md:grid-cols-2 gap-4 animate-fade-up">
-            {services.map((service) => (
-              <button
-                key={service.id}
-                onClick={() => {
-                  setSelectedService(service);
-                  setStep('datetime');
-                }}
-                className="card-lux p-6 text-left hover:shadow-xl group"
+        {step === 'service' && !selectedCategory && (
+          <div className="grid md:grid-cols-3 gap-6 animate-fade-up">
+            {CATEGORIES.map((cat) => (
+              <div
+                key={cat.id}
+                onClick={() => setSelectedCategory(cat.id)}
+                className="group cursor-pointer rounded-3xl overflow-hidden relative shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 bg-white"
               >
-                <div className="flex items-start justify-between mb-3">
-                  <h3 className="font-serif text-xl transition-colors" style={{ color: '#3d2e36' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = '#b38b9e')}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = '#3d2e36')}>
-                    {service.name}
-                  </h3>
-                  <span className="font-serif text-xl shrink-0 ml-3" style={{ color: '#b38b9e' }}>
-                    {formatNaira(service.price)}
-                  </span>
+                <div className="aspect-[4/5] relative">
+                  <img 
+                    src={cat.image} 
+                    alt={cat.title} 
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-300" />
+                  
+                  <div className="absolute bottom-0 inset-x-0 p-6 flex flex-col items-center text-center">
+                    <h3 className="text-2xl font-extrabold text-white mb-2 tracking-tight">
+                      {cat.title}
+                    </h3>
+                    <p className="text-white/80 font-medium mb-4 text-sm">
+                      {cat.description}
+                    </p>
+                    <button className="bg-rose-500 text-white font-bold px-6 py-2.5 rounded-full hover:bg-rose-600 transition-colors shadow-lg text-sm w-full">
+                      Select Category
+                    </button>
+                  </div>
                 </div>
-                <p className="text-sm leading-relaxed mb-4" style={{ color: '#b38b9e' }}>
-                  {service.description}
-                </p>
-                <span className="flex items-center gap-1.5 text-sm" style={{ color: '#5a4850' }}>
-                  <Clock className="w-4 h-4" style={{ color: '#3d2e36' }} />
-                  {formatDuration(service.duration_minutes)}
-                </span>
-              </button>
+              </div>
             ))}
+          </div>
+        )}
+
+        {step === 'service' && selectedCategory && (
+          <div className="animate-fade-up">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight">
+                {CATEGORIES.find(c => c.id === selectedCategory)?.title}
+              </h2>
+              <button 
+                onClick={() => setSelectedCategory(null)} 
+                className="flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-rose-500 transition-colors"
+              >
+                <ChevronLeft className="w-4 h-4" /> Back to Categories
+              </button>
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-4">
+              {services.filter(s => s.category === selectedCategory && s.is_active !== false).length === 0 ? (
+                <div className="col-span-full text-center py-10 bg-gray-50 rounded-2xl border border-gray-100">
+                  <p className="text-gray-500 font-medium">No services currently available in this category.</p>
+                </div>
+              ) : (
+                services.filter(s => s.category === selectedCategory && s.is_active !== false).map((service) => (
+                  <button
+                    key={service.id}
+                    onClick={() => {
+                      setSelectedService(service);
+                      setStep('datetime');
+                    }}
+                    className="bg-white border border-gray-100 rounded-2xl p-6 text-left hover:border-rose-200 hover:shadow-md transition-all group flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex items-start justify-between mb-3">
+                        <h3 className="font-extrabold text-lg text-gray-900 group-hover:text-rose-600 transition-colors pr-4">
+                          {service.name}
+                        </h3>
+                        <span className="font-extrabold text-lg text-gray-900 bg-gray-50 px-3 py-1 rounded-lg shrink-0">
+                          {formatNaira(service.price)}
+                        </span>
+                      </div>
+                      <p className="text-sm leading-relaxed mb-6 text-gray-500 line-clamp-3">
+                        {service.description}
+                      </p>
+                    </div>
+                    
+                    <span className="flex items-center gap-1.5 text-sm font-bold text-gray-500 bg-gray-50 px-3 py-1.5 rounded-full w-fit">
+                      <Clock className="w-4 h-4 text-gray-400" />
+                      {service.duration_text || formatDuration(service.duration_minutes)}
+                    </span>
+                  </button>
+                ))
+              )}
+            </div>
           </div>
         )}
 
@@ -410,10 +482,10 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
 
             {selectedDate && (
               <>
-                <h4 className="text-sm font-semibold uppercase tracking-wider mb-4 mt-8" style={{ color: '#b38b9e' }}>
+                <h4 className="text-sm font-semibold uppercase tracking-wider mb-4 mt-8 text-rose-500">
                   Available Times
                   {checkingAvailability && (
-                    <Loader2 className="w-4 h-4 inline ml-2 animate-spin" style={{ color: '#b38b9e' }} />
+                    <Loader2 className="w-4 h-4 inline ml-2 animate-spin text-rose-500" />
                   )}
                 </h4>
                 {getAvailableSlots().length > 0 ? (
@@ -427,9 +499,9 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
                         }}
                         className="py-3 px-2 rounded-xl text-sm font-medium transition-all duration-200"
                         style={{
-                          background: selectedTime === slot ? '#b38b9e' : 'rgba(255,255,255,0.4)',
-                          color: selectedTime === slot ? '#d5b1a3' : '#b38b9e',
-                          border: `1px solid ${selectedTime === slot ? '#b38b9e' : 'rgba(179, 139, 158, 0.08)'}`,
+                          background: selectedTime === slot ? '#f43f5e' : 'rgba(255,255,255,0.4)',
+                          color: selectedTime === slot ? '#d5b1a3' : '#f43f5e',
+                          border: `1px solid ${selectedTime === slot ? '#f43f5e' : '#ffe4e6'}`,
                         }}
                       >
                         {formatTimeShort(slot)}
@@ -437,10 +509,9 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
                     ))}
                   </div>
                 ) : (
-                  <div className="rounded-xl p-6 text-center"
-                    style={{ background: 'rgba(200,60,60,0.06)', border: '1px solid rgba(200,60,60,0.15)' }}>
-                    <AlertCircle className="w-8 h-8 mx-auto mb-2" style={{ color: 'rgba(200,80,80,0.7)' }} />
-                    <p className="text-sm" style={{ color: 'rgba(200,100,100,0.8)' }}>
+                  <div className="rounded-xl p-6 text-center bg-red-50 border border-red-200">
+                    <AlertCircle className="w-8 h-8 mx-auto mb-2 text-red-500" />
+                    <p className="text-sm text-red-600">
                       No available slots for this day. Please select another date.
                     </p>
                   </div>
@@ -454,17 +525,16 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
         {step === 'details' && selectedService && selectedDate && selectedTime && (
           <div className="card-lux p-8 md:p-10 animate-fade-up">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="font-serif text-2xl" style={{ color: '#3d2e36' }}>Your Details</h3>
+              <h3 className="font-serif text-2xl text-gray-900">Your Details</h3>
               <button onClick={() => setStep('datetime')} className="btn-ghost text-sm">
                 <ChevronLeft className="w-4 h-4" /> Back
               </button>
             </div>
 
-            <div className="rounded-xl p-4 mb-6 flex items-center gap-3"
-              style={{ background: 'rgba(74,35,17,0.06)', border: '1px solid rgba(179, 139, 158, 0.3)' }}>
-              <Calendar className="w-5 h-5 shrink-0" style={{ color: '#b38b9e' }} />
-              <div className="text-sm" style={{ color: '#5a4850' }}>
-                <span className="font-medium" style={{ color: '#3d2e36' }}>{selectedService.name}</span>
+            <div className="rounded-xl p-4 mb-6 flex items-center gap-3 bg-gray-50 border border-rose-200">
+              <Calendar className="w-5 h-5 shrink-0 text-rose-500" />
+              <div className="text-sm text-gray-700">
+                <span className="font-medium text-gray-900">{selectedService.name}</span>
                 {' · '}
                 {selectedDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
                 {' at '}
@@ -476,7 +546,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
               <div>
                 <label className="label-lux">Full Name *</label>
                 <div className="relative">
-                  <User className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: '#5a4850' }} />
+                  <User className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-700" />
                   <input type="text" value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="input-lux pl-10" placeholder="Your full name" />
@@ -485,7 +555,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
               <div>
                 <label className="label-lux">Phone Number *</label>
                 <div className="relative">
-                  <Phone className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: '#5a4850' }} />
+                  <Phone className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-700" />
                   <input type="tel" value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     className="input-lux pl-10" placeholder="e.g. 0801 234 5678" />
@@ -494,7 +564,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
               <div className="sm:col-span-2">
                 <label className="label-lux">Email (optional)</label>
                 <div className="relative">
-                  <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: '#5a4850' }} />
+                  <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-700" />
                   <input type="email" value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="input-lux pl-10" placeholder="you@email.com" />
@@ -535,7 +605,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
         {step === 'confirm' && selectedService && selectedDate && selectedTime && (
           <div className="card-lux p-8 md:p-10 animate-fade-up">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="font-serif text-2xl" style={{ color: '#3d2e36' }}>Confirm Your Booking</h3>
+              <h3 className="font-serif text-2xl text-gray-900">Confirm Your Booking</h3>
               <button onClick={() => setStep('details')} className="btn-ghost text-sm">
                 <ChevronLeft className="w-4 h-4" /> Back
               </button>
@@ -550,25 +620,24 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
                 { l: 'Phone', v: formData.phone },
                 ...(formData.email ? [{ l: 'Email', v: formData.email }] : []),
               ].map((row) => (
-                <div key={row.l} className="flex justify-between items-center py-3"
-                  style={{ borderBottom: '1px solid rgba(179, 139, 158, 0.08)' }}>
-                  <span className="text-sm" style={{ color: '#5a4850' }}>{row.l}</span>
-                  <span className="font-medium text-sm" style={{ color: '#3d2e36' }}>{row.v}</span>
+                <div key={row.l} className="flex justify-between items-center py-3 border-b border-rose-100">
+                  <span className="text-sm text-gray-700">{row.l}</span>
+                  <span className="font-medium text-sm text-gray-900">{row.v}</span>
                 </div>
               ))}
               <div className="flex justify-between items-center py-3">
-                <span className="text-sm" style={{ color: '#5a4850' }}>Total</span>
-                <span className="font-serif text-2xl" style={{ color: '#b38b9e' }}>
+                <span className="text-sm text-gray-700">Total</span>
+                <span className="font-serif text-2xl text-rose-500">
                   {formatNaira(totalPrice)}
                 </span>
               </div>
             </div>
 
             <div className="rounded-xl p-5 mb-6 space-y-4"
-              style={{ background: 'rgba(179, 139, 158, 0.04)', border: '1px solid rgba(74,35,17,0.12)' }}>
+              style={{ background: '#ffe4e6', border: '1px solid #e5e7eb' }}>
               <div className="flex items-start gap-3">
-                <Sparkles className="w-5 h-5 shrink-0 mt-0.5" style={{ color: '#b38b9e' }} />
-                <p className="text-sm font-medium" style={{ color: '#b38b9e' }}>
+                <Sparkles className="w-5 h-5 shrink-0 mt-0.5 text-rose-500" />
+                <p className="text-sm font-medium text-rose-500">
                   Choose your payment option to secure your spot
                 </p>
               </div>
@@ -584,9 +653,9 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
                       onChange={() => setPaymentOption('full')}
                       className="w-4 h-4 accent-[#b38b9e]"
                     />
-                    <span className="text-sm font-medium" style={{ color: '#3d2e36' }}>Pay Full Amount</span>
+                    <span className="text-sm font-medium text-gray-900">Pay Full Amount</span>
                   </div>
-                  <span className="font-serif text-lg" style={{ color: '#b38b9e' }}>{formatNaira(totalPrice)}</span>
+                  <span className="font-serif text-lg text-rose-500">{formatNaira(totalPrice)}</span>
                 </label>
 
                 <label className={`flex items-center justify-between p-4 rounded-xl cursor-pointer transition-all border ${paymentOption === 'half' ? 'border-[#b38b9e] bg-white shadow-sm' : 'border-transparent hover:bg-white/50'}`}>
@@ -600,30 +669,30 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
                       className="w-4 h-4 accent-[#b38b9e]"
                     />
                     <div className="flex flex-col">
-                      <span className="text-sm font-medium" style={{ color: '#3d2e36' }}>Pay 50% Deposit</span>
-                      <span className="text-xs" style={{ color: '#b38b9e' }}>Balance due at studio</span>
+                      <span className="text-sm font-medium text-gray-900">Pay 50% Deposit</span>
+                      <span className="text-xs text-rose-500">Balance due at studio</span>
                     </div>
                   </div>
-                  <span className="font-serif text-lg" style={{ color: '#b38b9e' }}>{formatNaira(totalPrice / 2)}</span>
+                  <span className="font-serif text-lg text-rose-500">{formatNaira(totalPrice / 2)}</span>
                 </label>
               </div>
             </div>
 
             <div className="rounded-xl p-5 mb-6 text-center space-y-3"
               style={{ background: '#fdfbf9', border: '1px dashed #b38b9e' }}>
-              <p className="text-sm font-medium" style={{ color: '#b38b9e' }}>Please transfer exactly <span className="font-serif font-bold text-lg">{formatNaira(amountToPay)}</span> to:</p>
+              <p className="text-sm font-medium text-rose-500">Please transfer exactly <span className="font-serif font-bold text-lg">{formatNaira(amountToPay)}</span> to:</p>
               
               <div className="bg-white rounded-lg p-4 inline-block text-left shadow-sm">
-                <p className="text-xs uppercase tracking-wider mb-1" style={{ color: '#5a4850' }}>Bank Name</p>
-                <p className="font-bold text-lg mb-3" style={{ color: '#3d2e36' }}>OPay</p>
+                <p className="text-xs uppercase tracking-wider mb-1 text-gray-700">Bank Name</p>
+                <p className="font-bold text-lg mb-3 text-gray-900">OPay</p>
                 
-                <p className="text-xs uppercase tracking-wider mb-1" style={{ color: '#5a4850' }}>Account Number</p>
-                <p className="font-bold text-2xl tracking-widest mb-3" style={{ color: '#b38b9e' }}>8087026970</p>
+                <p className="text-xs uppercase tracking-wider mb-1 text-gray-700">Account Number</p>
+                <p className="font-bold text-2xl tracking-widest mb-3 text-rose-500">8087026970</p>
                 
-                <p className="text-xs uppercase tracking-wider mb-1" style={{ color: '#5a4850' }}>Account Name</p>
-                <p className="font-bold text-lg" style={{ color: '#3d2e36' }}>Samaila Florence</p>
+                <p className="text-xs uppercase tracking-wider mb-1 text-gray-700">Account Name</p>
+                <p className="font-bold text-lg text-gray-900">Samaila Florence</p>
               </div>
-              <p className="text-xs" style={{ color: '#b38b9e' }}>I will verify your transfer and confirm your booking via WhatsApp.</p>
+              <p className="text-xs text-rose-500">I will verify your transfer and confirm your booking via WhatsApp.</p>
             </div>
 
             {error && (
@@ -675,34 +744,34 @@ function DatePicker({
   today.setHours(0, 0, 0, 0);
 
   return (
-    <div className="rounded-2xl p-3 sm:p-5" style={{ background: '#fdfbf9', border: '1px solid rgba(179, 139, 158, 0.3)' }}>
+    <div className="rounded-2xl p-3 sm:p-5" style={{ background: '#fdfbf9', border: '1px solid #ffe4e6' }}>
       <div className="flex items-center justify-between mb-5">
         <button
           onClick={() => setViewMonth(new Date(year, month - 1, 1))}
           className="w-9 h-9 rounded-full flex items-center justify-center transition-colors"
-          style={{ background: 'rgba(179, 139, 158, 0.04)' }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(74,35,17,0.12)')}
-          onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(179, 139, 158, 0.04)')}
+          style={{ background: '#ffe4e6' }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = '#e5e7eb')}
+          onMouseLeave={(e) => (e.currentTarget.style.background = '#ffe4e6')}
         >
-          <ChevronLeft className="w-5 h-5" style={{ color: '#b38b9e' }} />
+          <ChevronLeft className="w-5 h-5 text-rose-500" />
         </button>
-        <h4 className="font-serif text-lg font-medium" style={{ color: '#3d2e36' }}>
+        <h4 className="font-serif text-lg font-medium text-gray-900">
           {monthNames[month]} {year}
         </h4>
         <button
           onClick={() => setViewMonth(new Date(year, month + 1, 1))}
           className="w-9 h-9 rounded-full flex items-center justify-center transition-colors"
-          style={{ background: 'rgba(179, 139, 158, 0.04)' }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(74,35,17,0.12)')}
-          onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(179, 139, 158, 0.04)')}
+          style={{ background: '#ffe4e6' }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = '#e5e7eb')}
+          onMouseLeave={(e) => (e.currentTarget.style.background = '#ffe4e6')}
         >
-          <ChevronRight className="w-5 h-5" style={{ color: '#b38b9e' }} />
+          <ChevronRight className="w-5 h-5 text-rose-500" />
         </button>
       </div>
 
       <div className="grid grid-cols-7 gap-1 mb-2">
         {['S','M','T','W','T','F','S'].map((d, i) => (
-          <div key={i} className="text-center text-xs font-semibold py-2" style={{ color: '#b38b9e' }}>
+          <div key={i} className="text-center text-xs font-semibold py-2 text-rose-500">
             {d}
           </div>
         ))}
@@ -723,13 +792,13 @@ function DatePicker({
               onClick={() => onSelect(date)}
               className="aspect-square min-h-[40px] rounded-lg text-sm font-semibold transition-all duration-200"
               style={{
-                background: isSelected ? '#b38b9e' : 'transparent',
+                background: isSelected ? '#f43f5e' : 'transparent',
                 color: isSelected ? '#fdfbf9'
-                  : isDisabled ? 'rgba(74,35,17,0.22)'
-                  : '#b38b9e',
+                  : isDisabled ? '#e5e7eb'
+                  : '#f43f5e',
                 cursor: isDisabled ? 'not-allowed' : 'pointer',
               }}
-              onMouseEnter={(e) => { if (!isDisabled && !isSelected) e.currentTarget.style.background = 'rgba(179, 139, 158, 0.08)'; }}
+              onMouseEnter={(e) => { if (!isDisabled && !isSelected) e.currentTarget.style.background = '#ffe4e6'; }}
               onMouseLeave={(e) => { if (!isDisabled && !isSelected) e.currentTarget.style.background = 'transparent'; }}
             >
               {date.getDate()}

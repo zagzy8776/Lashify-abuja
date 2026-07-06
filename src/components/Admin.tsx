@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { toast } from 'react-hot-toast';
 import {
   Lock, Loader2, Calendar, Users, DollarSign, TrendingUp,
   Clock, Check, X, Phone, Mail, ChevronRight, LogOut,
@@ -187,11 +188,12 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
     try {
       await adminDeleteAppointment(aptToDelete.id);
       setAppointments(appointments.filter(a => a.id !== aptToDelete.id));
+      toast.success('Appointment deleted successfully.');
       setAptToDelete(null);
     } catch (err) {
       console.error('Failed to delete appointment:', err);
       checkAuth(err);
-      alert('Failed to delete appointment.');
+      toast.error('Failed to delete appointment.');
     }
   };
 
@@ -220,12 +222,13 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
         end_time: endTime 
       });
       setAppointments(appointments.map(a => a.id === updated.id ? updated : a));
+      toast.success('Appointment updated successfully.');
       setEditingAppointment(null);
       setEditApptForm({});
     } catch (err) {
       console.error('Failed to edit appointment:', err);
       checkAuth(err);
-      alert('Failed to update appointment details.');
+      toast.error('Failed to update appointment details.');
     } finally {
       setSavingAppt(false);
     }
@@ -235,6 +238,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
     try {
       await adminUpdateService(id, { is_active: !isActive });
       setServices(services.map((s) => s.id === id ? { ...s, is_active: !isActive } : s));
+      toast.success(isActive ? 'Service deactivated' : 'Service activated');
     } catch (err) {
       console.error('Failed to toggle service:', err);
     }
@@ -734,14 +738,17 @@ function GalleryManager() {
       reader.readAsDataURL(file);
     } catch (err) {
       console.error('Failed to upload image:', err);
-      alert('Failed to upload image. Please try again.');
+      toast.error('Failed to upload image. Please try again.');
     } finally {
       setUploading(false);
     }
   };
 
+  const [savingItem, setSavingItem] = useState(false);
+
   const addItem = async () => {
     if (!newItem.title.trim() || !newItem.image_url.trim()) return;
+    setSavingItem(true);
     try {
       const data = await adminAddGalleryItem({
         title: newItem.title.trim(),
@@ -749,10 +756,14 @@ function GalleryManager() {
         image_url: newItem.image_url.trim(),
       });
       setItems([data, ...items]);
+      toast.success('Gallery image added successfully!');
       setNewItem({ title: '', category: 'lash', image_url: '' });
       setShowAddModal(false);
     } catch (err) {
       console.error('Failed to add gallery item:', err);
+      toast.error('Failed to add image.');
+    } finally {
+      setSavingItem(false);
     }
   };
 
@@ -765,6 +776,7 @@ function GalleryManager() {
         image_url: editingItem.image_url.trim(),
       });
       setItems(items.map((i) => i.id === editingItem.id ? editingItem : i));
+      toast.success('Gallery image updated!');
       setEditingItem(null);
     } catch (err) {
       console.error('Failed to update gallery item:', err);
@@ -776,6 +788,7 @@ function GalleryManager() {
     try {
       await adminDeleteGalleryItem(itemToDelete.id);
       setItems(items.filter((i) => i.id !== itemToDelete.id));
+      toast.success('Image deleted from gallery.');
       setItemToDelete(null);
     } catch (err) {
       console.error('Failed to delete gallery item:', err);
@@ -896,13 +909,15 @@ function GalleryManager() {
               <div className="flex gap-3 mt-8">
                 <button 
                   onClick={addItem} 
-                  disabled={!newItem.title.trim() || !newItem.image_url.trim() || uploading} 
-                  className="flex-1 h-12 bg-rose-500 text-white font-bold rounded-xl hover:bg-rose-600 transition-colors disabled:opacity-50 shadow-sm"
+                  disabled={!newItem.title.trim() || !newItem.image_url.trim() || uploading || savingItem} 
+                  className="flex-1 h-12 bg-rose-500 text-white font-bold rounded-xl hover:bg-rose-600 transition-colors disabled:opacity-50 shadow-sm flex items-center justify-center gap-2"
                 >
-                  Save Image
+                  {savingItem ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+                  {savingItem ? 'Saving...' : 'Save Image'}
                 </button>
                 <button 
                   onClick={() => setShowAddModal(false)} 
+                  disabled={savingItem}
                   className="px-6 h-12 bg-white text-gray-600 font-bold rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors"
                 >
                   Cancel
@@ -1009,7 +1024,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
       reader.readAsDataURL(file);
     } catch (err) {
       console.error('Failed to upload image:', err);
-      alert('Failed to upload image. Please try again.');
+      toast.error('Failed to upload image. Please try again.');
     } finally {
       setUploading(false);
     }
@@ -1067,6 +1082,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
     try {
       await adminDeleteService(serviceToDelete.id);
       setServices(services.filter((s) => s.id !== serviceToDelete.id));
+      toast.success('Service deleted successfully.');
       setServiceToDelete(null);
     } catch (err) {
       console.error('Failed to delete service:', err);
@@ -1266,6 +1282,7 @@ function ReviewsManager() {
     try {
       await adminDeleteReview(reviewToDelete.id);
       setReviews(reviews.filter((r) => r.id !== reviewToDelete.id));
+      toast.success('Review deleted successfully.');
       setReviewToDelete(null);
     } catch (err) {
       console.error('Failed to delete review:', err);

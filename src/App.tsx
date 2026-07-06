@@ -13,6 +13,7 @@ import Admin from './components/Admin';
 import ServiceLocationPage from './components/ServiceLocationPage';
 import SEOSchema from './components/SEOSchema';
 import type { Service } from './lib/supabase';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   const navigate = useNavigate();
@@ -42,6 +43,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-white">
+      <Toaster position="bottom-right" />
       <SEOSchema title="Lash & Brow Studio" description="Premium Lash and Brow services in Abuja. Book your luxury appointment today." />
       {!isAdmin && <Navbar onNavigate={handleNavigate} currentPage={page} />}
 
