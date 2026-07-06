@@ -133,6 +133,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   const [editingAppointment, setEditingAppointment] = useState<Appointment | null>(null);
   const [editApptForm, setEditApptForm] = useState<Partial<Appointment>>({});
   const [savingAppt, setSavingAppt] = useState(false);
+  const [aptToDelete, setAptToDelete] = useState<{ id: string, name: string } | null>(null);
 
   const checkAuth = (err: unknown) => {
     const msg = err instanceof Error ? err.message : String(err);
@@ -178,10 +179,15 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   };
 
   const handleDeleteAppointment = async (id: string, name: string) => {
-    if (!confirm(`Are you sure you want to completely delete ${name}'s appointment? This cannot be undone.`)) return;
+    setAptToDelete({ id, name });
+  };
+
+  const confirmDeleteAppointment = async () => {
+    if (!aptToDelete) return;
     try {
-      await adminDeleteAppointment(id);
-      setAppointments(appointments.filter(a => a.id !== id));
+      await adminDeleteAppointment(aptToDelete.id);
+      setAppointments(appointments.filter(a => a.id !== aptToDelete.id));
+      setAptToDelete(null);
     } catch (err) {
       console.error('Failed to delete appointment:', err);
       checkAuth(err);
@@ -440,54 +446,61 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
 
         {tab === 'gallery' && <GalleryManager />}
         {tab === 'reviews' && <ReviewsManager />}
-      </div>
 
-      {/* Edit Appointment Modal */}
       {editingAppointment && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(250, 247, 242, 0.85)' }}>
-          <div className="w-full max-w-xl rounded-2xl p-6 shadow-xl" style={{ background: 'rgba(223,191,174,0.98)', border: '1px solid rgba(179, 139, 158, 0.2)' }}>
-            <h3 className="font-serif text-2xl mb-6" style={{ color: '#3d2e36' }}>Edit Booking Details</h3>
-            <div className="space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+          <div className="w-full max-w-xl bg-white rounded-3xl p-8 shadow-2xl border border-gray-100 max-h-[90vh] overflow-y-auto scrollbar-hide">
+            <h3 className="font-extrabold text-2xl text-gray-900 tracking-tight mb-6">Edit Booking Details</h3>
+            <div className="space-y-5">
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1" style={{ color: '#b38b9e' }}>Client Name</label>
-                  <input type="text" value={editApptForm.client_name || ''} onChange={(e) => setEditApptForm({ ...editApptForm, client_name: e.target.value })} className="input-lux" />
+                  <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Client Name</label>
+                  <input type="text" value={editApptForm.client_name || ''} onChange={(e) => setEditApptForm({ ...editApptForm, client_name: e.target.value })} className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1" style={{ color: '#b38b9e' }}>Phone Number</label>
-                  <input type="text" value={editApptForm.client_phone || ''} onChange={(e) => setEditApptForm({ ...editApptForm, client_phone: e.target.value })} className="input-lux" />
+                  <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Phone Number</label>
+                  <input type="text" value={editApptForm.client_phone || ''} onChange={(e) => setEditApptForm({ ...editApptForm, client_phone: e.target.value })} className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900" />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1" style={{ color: '#b38b9e' }}>Email Address (Optional)</label>
-                <input type="email" value={editApptForm.client_email || ''} onChange={(e) => setEditApptForm({ ...editApptForm, client_email: e.target.value })} className="input-lux" />
+                <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Email Address (Optional)</label>
+                <input type="email" value={editApptForm.client_email || ''} onChange={(e) => setEditApptForm({ ...editApptForm, client_email: e.target.value })} className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900" />
               </div>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1" style={{ color: '#b38b9e' }}>Date</label>
-                  <input type="date" value={editApptForm.appointment_date || ''} onChange={(e) => setEditApptForm({ ...editApptForm, appointment_date: e.target.value })} className="input-lux" />
+                  <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Date</label>
+                  <input type="date" value={editApptForm.appointment_date || ''} onChange={(e) => setEditApptForm({ ...editApptForm, appointment_date: e.target.value })} className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1" style={{ color: '#b38b9e' }}>Time</label>
-                  <input type="time" value={editApptForm.start_time || ''} onChange={(e) => setEditApptForm({ ...editApptForm, start_time: e.target.value })} className="input-lux" />
+                  <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Time</label>
+                  <input type="time" value={editApptForm.start_time || ''} onChange={(e) => setEditApptForm({ ...editApptForm, start_time: e.target.value })} className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900" />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1" style={{ color: '#b38b9e' }}>Notes / Payment Ref</label>
-                <textarea value={editApptForm.notes || ''} onChange={(e) => setEditApptForm({ ...editApptForm, notes: e.target.value })} className="input-lux min-h-[80px]" />
+                <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Notes / Payment Ref</label>
+                <textarea value={editApptForm.notes || ''} onChange={(e) => setEditApptForm({ ...editApptForm, notes: e.target.value })} className="w-full bg-gray-50 border border-gray-200 rounded-xl p-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900 min-h-[80px]" />
               </div>
             </div>
-            <div className="flex gap-3 mt-6">
-              <button onClick={handleSaveEditAppointment} disabled={savingAppt} className="flex-1 btn-gold disabled:opacity-50">
-                {savingAppt ? <Loader2 className="w-5 h-5 animate-spin inline mr-2" /> : 'Save Changes'}
+            <div className="flex gap-3 mt-8">
+              <button onClick={handleSaveEditAppointment} disabled={savingAppt} className="flex-1 h-12 bg-black text-white font-bold rounded-xl hover:bg-gray-800 transition-colors disabled:opacity-50 shadow-sm flex items-center justify-center">
+                {savingAppt ? <Loader2 className="w-5 h-5 animate-spin inline" /> : 'Save Changes'}
               </button>
-              <button onClick={() => { setEditingAppointment(null); setEditApptForm({}); }} disabled={savingAppt} className="flex-1 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors" style={{ background: 'rgba(255,255,255,0.5)', color: '#b38b9e', border: '1px solid rgba(179, 139, 158, 0.08)' }}>
+              <button onClick={() => setEditingAppointment(null)} disabled={savingAppt} className="px-6 h-12 bg-white text-gray-600 font-bold rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors">
                 Cancel
               </button>
             </div>
           </div>
         </div>
       )}
+
+      <ConfirmModal
+        isOpen={!!aptToDelete}
+        title="Delete Appointment"
+        message={`Are you sure you want to completely delete ${aptToDelete?.name}'s appointment? This cannot be undone.`}
+        onConfirm={confirmDeleteAppointment}
+        onCancel={() => setAptToDelete(null)}
+      />
+      </div>
     </div>
   );
 }
@@ -645,6 +658,26 @@ function AppointmentRow({ apt, onStatusChange, onEdit, onDelete, compact }: {
   );
 }
 
+function ConfirmModal({ isOpen, title, message, onConfirm, onCancel, confirmText = 'Delete', isDanger = true }: { isOpen: boolean, title: string, message: string, onConfirm: () => void, onCancel: () => void, confirmText?: string, isDanger?: boolean }) {
+  if (!isOpen) return null;
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl border border-gray-100 scale-100 animate-in zoom-in-95 duration-200">
+        <h3 className="font-extrabold text-xl text-gray-900 tracking-tight mb-2">{title}</h3>
+        <p className="text-sm text-gray-500 font-medium mb-6 leading-relaxed">{message}</p>
+        <div className="flex gap-3">
+          <button onClick={onCancel} className="flex-1 h-12 bg-gray-50 text-gray-700 font-bold rounded-xl hover:bg-gray-100 transition-colors">
+            Cancel
+          </button>
+          <button onClick={onConfirm} className={`flex-1 h-12 text-white font-bold rounded-xl transition-colors ${isDanger ? 'bg-red-600 hover:bg-red-700' : 'bg-black hover:bg-gray-800'}`}>
+            {confirmText}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function GalleryManager() {
   const [items, setItems] = useState<{ id: string; title: string; category: string; image_url: string }[]>([]);
   const [loading, setLoading] = useState(true);
@@ -652,6 +685,8 @@ function GalleryManager() {
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [editingItem, setEditingItem] = useState<{ id: string; title: string; category: string; image_url: string } | null>(null);
+  const [itemToDelete, setItemToDelete] = useState<{ id: string, title: string } | null>(null);
 
   useEffect(() => {
     const fetch = async () => {
@@ -721,10 +756,27 @@ function GalleryManager() {
     }
   };
 
-  const deleteItem = async (id: string) => {
+  const handleSaveEdit = async () => {
+    if (!editingItem || !editingItem.title.trim()) return;
     try {
-      await adminDeleteGalleryItem(id);
-      setItems(items.filter((i) => i.id !== id));
+      await adminUpdateGalleryItem(editingItem.id, {
+        title: editingItem.title.trim(),
+        category: editingItem.category,
+        image_url: editingItem.image_url.trim(),
+      });
+      setItems(items.map((i) => i.id === editingItem.id ? editingItem : i));
+      setEditingItem(null);
+    } catch (err) {
+      console.error('Failed to update gallery item:', err);
+    }
+  };
+
+  const confirmDelete = async () => {
+    if (!itemToDelete) return;
+    try {
+      await adminDeleteGalleryItem(itemToDelete.id);
+      setItems(items.filter((i) => i.id !== itemToDelete.id));
+      setItemToDelete(null);
     } catch (err) {
       console.error('Failed to delete gallery item:', err);
     }
@@ -753,12 +805,22 @@ function GalleryManager() {
             <img src={item.image_url} alt={item.title} className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-4">
               <p className="text-white text-sm font-bold mb-3 text-center tracking-wide">{item.title}</p>
-              <button
-                onClick={() => deleteItem(item.id)}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg text-xs font-bold hover:bg-red-700 transition-colors shadow-sm flex items-center gap-2"
-              >
-                <Trash2 className="w-3.5 h-3.5" /> Delete
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setEditingItem(item)}
+                  className="w-10 h-10 bg-white text-black rounded-xl flex items-center justify-center hover:bg-gray-100 transition-colors shadow-sm"
+                  title="Edit"
+                >
+                  <Pencil className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setItemToDelete(item)}
+                  className="w-10 h-10 bg-red-600 text-white rounded-xl flex items-center justify-center hover:bg-red-700 transition-colors shadow-sm"
+                  title="Delete"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
             </div>
             <div className="absolute top-2 left-2 px-2 py-1 bg-white/90 backdrop-blur-sm rounded-md text-[10px] font-bold uppercase tracking-wider text-gray-800 shadow-sm">
               {item.category}
@@ -850,6 +912,44 @@ function GalleryManager() {
           </div>
         </div>
       )}
+
+      {editingItem && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+          <div className="w-full max-w-md bg-white rounded-3xl p-8 shadow-2xl border border-gray-100">
+            <h3 className="font-extrabold text-2xl text-gray-900 tracking-tight mb-6">Edit Gallery Image</h3>
+            <div className="space-y-5">
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Title / Description</label>
+                <input type="text" placeholder="e.g. Classic Wispy Set" value={editingItem.title} onChange={(e) => setEditingItem({ ...editingItem, title: e.target.value })} className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900" />
+              </div>
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Category</label>
+                <select value={editingItem.category} onChange={(e) => setEditingItem({...editingItem, category: e.target.value})} className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900">
+                  <option value="lash">LASH</option>
+                  <option value="brows">BROWS</option>
+                  <option value="lash-refill">LASH REFILL</option>
+                </select>
+              </div>
+              <div className="flex gap-3 mt-8">
+                <button onClick={handleSaveEdit} disabled={!editingItem.title.trim()} className="flex-1 h-12 bg-black text-white font-bold rounded-xl hover:bg-gray-800 transition-colors disabled:opacity-50 shadow-sm">
+                  Save Changes
+                </button>
+                <button onClick={() => setEditingItem(null)} className="px-6 h-12 bg-white text-gray-600 font-bold rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <ConfirmModal
+        isOpen={!!itemToDelete}
+        title="Delete Image"
+        message={`Are you sure you want to delete "${itemToDelete?.title}" from the gallery?`}
+        onConfirm={confirmDelete}
+        onCancel={() => setItemToDelete(null)}
+      />
     </div>
   );
 }
@@ -869,6 +969,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
   
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [serviceToDelete, setServiceToDelete] = useState<{ id: string, name: string } | null>(null);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, isEdit: boolean) => {
     const file = e.target.files?.[0];
@@ -961,11 +1062,12 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
     }
   };
 
-  const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`Are you sure you want to delete "${name}"? This action cannot be undone.`)) return;
+  const confirmDeleteService = async () => {
+    if (!serviceToDelete) return;
     try {
-      await adminDeleteService(id);
-      setServices(services.filter((s) => s.id !== id));
+      await adminDeleteService(serviceToDelete.id);
+      setServices(services.filter((s) => s.id !== serviceToDelete.id));
+      setServiceToDelete(null);
     } catch (err) {
       console.error('Failed to delete service:', err);
       checkAuth(err);
@@ -1092,7 +1194,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
               <button onClick={() => handleEdit(svc)} className="p-2 rounded-xl text-blue-600 hover:bg-blue-50 transition-colors" title="Edit service">
                 <Pencil className="w-5 h-5" />
               </button>
-              <button onClick={() => handleDelete(svc.id, svc.name)} className="p-2 rounded-xl text-red-600 hover:bg-red-50 transition-colors" title="Delete service">
+              <button onClick={() => setServiceToDelete({ id: svc.id, name: svc.name })} className="p-2 rounded-xl text-red-600 hover:bg-red-50 transition-colors" title="Delete service">
                 <Trash2 className="w-5 h-5" />
               </button>
             </div>
@@ -1120,6 +1222,14 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
           </div>
         </div>
       )}
+
+      <ConfirmModal
+        isOpen={!!serviceToDelete}
+        title="Delete Service"
+        message={`Are you sure you want to delete "${serviceToDelete?.name}"? This action cannot be undone.`}
+        onConfirm={confirmDeleteService}
+        onCancel={() => setServiceToDelete(null)}
+      />
     </div>
   );
 }
