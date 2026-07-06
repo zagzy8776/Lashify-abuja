@@ -36,10 +36,12 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
   const [error, setError] = useState('');
   const [confirmedAppointment, setConfirmedAppointment] = useState<Appointment | null>(null);
   const [paymentOption, setPaymentOption] = useState<'full' | 'half'>('full');
+  const [groupSize, setGroupSize] = useState(1);
 
-  const amountToPay = selectedService 
-    ? (paymentOption === 'full' ? selectedService.price : selectedService.price / 2) 
-    : 0;
+  const totalPrice = selectedService ? selectedService.price * groupSize : 0;
+  const totalDuration = selectedService ? selectedService.duration_minutes * groupSize : 0;
+
+  const amountToPay = paymentOption === 'full' ? totalPrice : totalPrice / 2;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -95,9 +97,9 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
     return timeSlots.find((s) => s.day_of_week === dayOfWeek && s.is_active) || null;
   };
 
-  const isSlotAvailable = (slotTime: string, service: Service): boolean => {
+  const isSlotAvailable = (slotTime: string): boolean => {
     const slotStart = timeToMinutes(slotTime);
-    const slotEnd = slotStart + service.duration_minutes;
+    const slotEnd = slotStart + totalDuration;
     for (const booked of bookedSlots) {
       const bookedStart = timeToMinutes(booked.start_time);
       const bookedEnd = timeToMinutes(booked.end_time);
@@ -113,14 +115,14 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
     const allSlots = generateTimeSlots(workingHours.start_time, workingHours.end_time, 30);
     const workingEnd = timeToMinutes(workingHours.end_time);
     return allSlots.filter((slot) => {
-      const slotEnd = timeToMinutes(slot) + selectedService.duration_minutes;
+      const slotEnd = timeToMinutes(slot) + totalDuration;
       if (slotEnd > workingEnd) return false;
       if (isToday(selectedDate)) {
         const now = new Date();
         const currentMinutes = now.getHours() * 60 + now.getMinutes();
         if (timeToMinutes(slot) <= currentMinutes + 60) return false;
       }
-      return isSlotAvailable(slot, selectedService);
+      return isSlotAvailable(slot);
     });
   };
 
@@ -146,20 +148,21 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
     setSubmitting(true);
     setError('');
 
-    const endTime = addMinutesToTime(selectedTime, selectedService.duration_minutes);
+    const endTime = addMinutesToTime(selectedTime, totalDuration);
+    const groupNote = groupSize > 1 ? `Booking for Group of ${groupSize}\n` : '';
     const appointmentData = {
       client_name: formData.name.trim(),
       client_phone: formData.phone.trim(),
       client_email: formData.email.trim() || null,
       service_id: selectedService.id,
       service_name: selectedService.name,
-      service_price: selectedService.price,
-      service_duration: selectedService.duration_minutes,
+      service_price: totalPrice,
+      service_duration: totalDuration,
       appointment_date: toDateString(selectedDate),
       start_time: selectedTime,
       end_time: endTime,
       status: 'pending' as const,
-      notes: (formData.notes.trim() ? formData.notes.trim() + '\n' : '') + `Payment Method: Manual Transfer (${paymentOption === 'full' ? 'Full' : 'Half'} Payment)`,
+      notes: groupNote + (formData.notes.trim() ? formData.notes.trim() + '\n' : '') + `Payment Method: Manual Transfer (${paymentOption === 'full' ? 'Full' : 'Half'} Payment)`,
     };
 
     try {
@@ -182,6 +185,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
     setSelectedService(null);
     setSelectedDate(null);
     setSelectedTime('');
+    setGroupSize(1);
     setFormData({ name: '', phone: '', email: '', notes: '' });
     setConfirmedAppointment(null);
     setError('');
@@ -347,20 +351,55 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
 
         {/* Step: Date & Time */}
         {step === 'datetime' && selectedService && (
-          <div className="card-lux p-8 md:p-10 animate-fade-up">
+          <div className="card-modern shadow-xl p-8 md:p-10 animate-fade-up border border-gray-100">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h3 className="font-serif text-2xl" style={{ color: '#3d2e36' }}>{selectedService.name}</h3>
-                <p className="text-sm" style={{ color: '#5a4850' }}>
-                  {formatNaira(selectedService.price)} · {formatDuration(selectedService.duration_minutes)}
+                <h3 className="text-2xl font-extrabold text-gray-900 tracking-tight">{selectedService.name}</h3>
+                <p className="text-sm text-gray-500 font-medium">
+                  {formatNaira(totalPrice)} · {formatDuration(totalDuration)}
+                  {groupSize > 1 ? ` (For ${groupSize} people)` : ''}
                 </p>
               </div>
-              <button onClick={() => setStep('service')} className="btn-ghost text-sm">
-                <ChevronLeft className="w-4 h-4" /> Change
+              <button onClick={() => setStep('service')} className="text-gray-500 hover:text-black font-medium text-sm flex items-center transition-colors">
+                <ChevronLeft className="w-4 h-4 mr-1" /> Change
               </button>
             </div>
 
-            <h4 className="text-sm font-semibold uppercase tracking-wider mb-4" style={{ color: '#b38b9e' }}>
+            <div className="mb-8 p-5 rounded-2xl border border-gray-100 bg-gray-50 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <h4 className="text-sm font-bold uppercase tracking-wider text-gray-900 mb-1">Booking Size</h4>
+                <p className="text-xs text-gray-500 font-medium">Will you be coming alone or with others?</p>
+              </div>
+              <div className="flex items-center bg-white rounded-full border border-gray-200 p-1">
+                <button 
+                  className={`px-6 py-2 text-sm font-bold rounded-full transition-all ${groupSize === 1 ? 'bg-black text-white shadow-md' : 'text-gray-500 hover:text-black'}`}
+                  onClick={() => { setGroupSize(1); setSelectedTime(''); }}
+                >
+                  Just Me
+                </button>
+                <div className={`flex items-center px-2 transition-all ${groupSize > 1 ? 'bg-black text-white rounded-full shadow-md' : 'text-gray-500'}`}>
+                  <button 
+                    className="p-2 hover:opacity-70 disabled:opacity-30"
+                    disabled={groupSize <= 1}
+                    onClick={() => { setGroupSize(prev => Math.max(1, prev - 1)); setSelectedTime(''); }}
+                  >
+                    -
+                  </button>
+                  <span className="text-sm font-bold w-12 text-center">
+                    {groupSize > 1 ? `${groupSize} Ppl` : 'Group'}
+                  </span>
+                  <button 
+                    className="p-2 hover:opacity-70 disabled:opacity-30"
+                    disabled={groupSize >= 6}
+                    onClick={() => { setGroupSize(prev => prev + 1); setSelectedTime(''); }}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <h4 className="text-sm font-bold uppercase tracking-wider text-gray-900 mb-4">
               Select a Date
             </h4>
             <DatePicker
@@ -504,9 +543,9 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
 
             <div className="space-y-1 mb-8">
               {[
-                { l: 'Service', v: selectedService.name },
+                { l: 'Service', v: selectedService.name + (groupSize > 1 ? ` (Group of ${groupSize})` : '') },
                 { l: 'Date', v: selectedDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }) },
-                { l: 'Time', v: `${formatTime(selectedTime)} – ${formatTime(addMinutesToTime(selectedTime, selectedService.duration_minutes))}` },
+                { l: 'Time', v: `${formatTime(selectedTime)} – ${formatTime(addMinutesToTime(selectedTime, totalDuration))}` },
                 { l: 'Name', v: formData.name },
                 { l: 'Phone', v: formData.phone },
                 ...(formData.email ? [{ l: 'Email', v: formData.email }] : []),
@@ -520,7 +559,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
               <div className="flex justify-between items-center py-3">
                 <span className="text-sm" style={{ color: '#5a4850' }}>Total</span>
                 <span className="font-serif text-2xl" style={{ color: '#b38b9e' }}>
-                  {formatNaira(selectedService.price)}
+                  {formatNaira(totalPrice)}
                 </span>
               </div>
             </div>
@@ -547,7 +586,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
                     />
                     <span className="text-sm font-medium" style={{ color: '#3d2e36' }}>Pay Full Amount</span>
                   </div>
-                  <span className="font-serif text-lg" style={{ color: '#b38b9e' }}>{formatNaira(selectedService.price)}</span>
+                  <span className="font-serif text-lg" style={{ color: '#b38b9e' }}>{formatNaira(totalPrice)}</span>
                 </label>
 
                 <label className={`flex items-center justify-between p-4 rounded-xl cursor-pointer transition-all border ${paymentOption === 'half' ? 'border-[#b38b9e] bg-white shadow-sm' : 'border-transparent hover:bg-white/50'}`}>
@@ -565,7 +604,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
                       <span className="text-xs" style={{ color: '#b38b9e' }}>Balance due at studio</span>
                     </div>
                   </div>
-                  <span className="font-serif text-lg" style={{ color: '#b38b9e' }}>{formatNaira(selectedService.price / 2)}</span>
+                  <span className="font-serif text-lg" style={{ color: '#b38b9e' }}>{formatNaira(totalPrice / 2)}</span>
                 </label>
               </div>
             </div>

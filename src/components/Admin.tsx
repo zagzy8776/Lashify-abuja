@@ -57,54 +57,54 @@ export default function Admin({ onNavigate }: Props) {
 
   if (session === null) {
     return (
-      <div className="pt-32 pb-24 min-h-screen section-light flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#b38b9e' }} />
+      <div className="pt-32 pb-24 min-h-screen bg-gray-50 flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
       </div>
     );
   }
 
   if (!session) {
     return (
-      <div className="pt-32 pb-24 min-h-screen section-light flex items-center justify-center px-6">
+      <div className="pt-32 pb-24 min-h-screen bg-gray-50 flex items-center justify-center px-6">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
-            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 overflow-hidden" style={{ border: '1px solid rgba(179, 139, 158, 0.3)', background: 'rgba(179, 139, 158, 0.08)' }}>
-              <Lock className="w-8 h-8" style={{ color: '#b38b9e' }} />
+            <div className="w-16 h-16 rounded-2xl bg-white border border-gray-200 shadow-sm flex items-center justify-center mx-auto mb-6 overflow-hidden">
+              <Lock className="w-8 h-8 text-gray-900" />
             </div>
-            <h1 className="font-serif text-3xl" style={{ color: '#3d2e36' }}>Admin Portal</h1>
-            <p className="text-sm mt-2" style={{ color: '#5a4850' }}>Sign in to manage LashifyAbuja</p>
+            <h1 className="font-extrabold text-3xl tracking-tight text-gray-900">Admin Portal</h1>
+            <p className="text-sm font-medium mt-2 text-gray-500">Sign in to manage LashifyAbuja</p>
           </div>
 
-          <form onSubmit={handleLogin} className="rounded-2xl p-8" style={{ background: 'rgba(223,191,174,0.8)', border: '1px solid rgba(179, 139, 158, 0.3)' }}>
+          <form onSubmit={handleLogin} className="rounded-[24px] bg-white p-8 border border-gray-200 shadow-xl">
             <div className="mb-5">
-              <label className="block text-sm font-medium mb-2" style={{ color: '#b38b9e' }}>Email</label>
+              <label className="block text-sm font-bold uppercase tracking-widest text-gray-600 mb-2">Email</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="input-lux"
+                className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900"
                 placeholder="admin@lashifyabuja.com"
                 required
               />
             </div>
             <div className="mb-6">
-              <label className="block text-sm font-medium mb-2" style={{ color: '#b38b9e' }}>Password</label>
+              <label className="block text-sm font-bold uppercase tracking-widest text-gray-600 mb-2">Password</label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="input-lux"
+                className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900"
                 placeholder="••••••••"
                 required
               />
             </div>
             {loginError && (
-              <p className="text-sm mb-4 text-center" style={{ color: 'rgba(200,80,80,0.8)' }}>{loginError}</p>
+              <p className="text-sm mb-4 text-center font-bold text-red-600 bg-red-50 py-2 rounded-lg">{loginError}</p>
             )}
             <button
               type="submit"
               disabled={loggingIn}
-              className="w-full btn-gold disabled:opacity-60"
+              className="w-full h-14 bg-black text-white font-bold rounded-xl hover:bg-gray-800 transition-colors disabled:opacity-60 flex items-center justify-center shadow-sm"
             >
               {loggingIn ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Sign In'}
             </button>
@@ -112,7 +112,7 @@ export default function Admin({ onNavigate }: Props) {
 
           <button
             onClick={() => onNavigate('home')}
-            className="w-full text-center text-sm mt-6 transition-colors" style={{ color: '#8f7882' }} onMouseEnter={(e) => (e.currentTarget.style.color = '#b38b9e')} onMouseLeave={(e) => (e.currentTarget.style.color = '#8f7882')}
+            className="w-full text-center text-sm font-bold mt-8 text-gray-400 hover:text-gray-900 transition-colors"
           >
             ← Back to website
           </button>
@@ -266,37 +266,36 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   }
 
   return (
-    <div className="pt-24 min-h-screen section-light">
+    <div className="pt-24 min-h-screen bg-gray-50">
       <div className="container-lux py-8">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="font-serif text-3xl" style={{ color: '#3d2e36' }}>Dashboard</h1>
-            <p className="text-sm mt-1" style={{ color: '#5a4850' }}>Welcome back, Lashify</p>
+            <h1 className="font-extrabold text-3xl tracking-tight text-gray-900">Dashboard</h1>
+            <p className="text-sm mt-1 font-medium text-gray-500">Welcome back, Lashify</p>
           </div>
           <button
             onClick={onLogout}
-            className="flex items-center gap-2 px-4 py-2 text-sm transition-colors" style={{ color: '#b38b9e' }}
+            className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-gray-600 hover:text-gray-900 transition-colors"
           >
             <LogOut className="w-4 h-4" /> Sign Out
           </button>
         </div>
 
-        <div className="flex gap-1 mb-8 overflow-x-auto scrollbar-hide">
+        <div className="flex gap-2 mb-8 overflow-x-auto scrollbar-hide pb-2">
           {tabs.map((t) => (
             <button
               key={t.key}
               onClick={() => setTab(t.key)}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all relative"
-              style={{
-                background: tab === t.key ? '#b38b9e' : 'rgba(255,255,255,0.4)',
-                color: tab === t.key ? '#d5b1a3' : '#b38b9e',
-                border: `1px solid ${tab === t.key ? '#b38b9e' : 'rgba(179, 139, 158, 0.08)'}`,
-              }}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all relative ${
+                tab === t.key
+                  ? 'bg-black text-white shadow-md'
+                  : 'bg-white text-gray-600 border border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+              }`}
             >
               <t.icon className="w-4 h-4" />
               {t.label}
               {(t.key === 'appointments' || t.key === 'inbox') && pendingCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white text-[10px] flex items-center justify-center font-bold border-2 border-[#3d2e36]">
+                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-red-500 text-white text-[10px] flex items-center justify-center font-bold shadow-sm">
                   {pendingCount}
                 </span>
               )}
@@ -305,7 +304,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
         </div>
 
         {tab === 'overview' && (
-          <div className="space-y-6">
+          <div className="space-y-8">
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <StatCard icon={Calendar} label="Today's Appointments" value={todayAppointments.length.toString()} color="gold" />
               <StatCard icon={Clock} label="Pending Requests" value={pendingCount.toString()} color="rose" />
@@ -313,12 +312,12 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
               <StatCard icon={DollarSign} label="Revenue (Completed)" value={formatNaira(totalRevenue)} color="green" />
             </div>
 
-            <div className="rounded-2xl p-6" style={{ background: 'rgba(223,191,174,0.7)', border: '1px solid rgba(74,35,17,0.12)' }}>
-              <h3 className="font-serif text-xl mb-5" style={{ color: '#3d2e36' }}>Upcoming Appointments</h3>
+            <div className="rounded-2xl p-6 bg-white border border-gray-200 shadow-sm">
+              <h3 className="font-extrabold tracking-tight text-xl mb-5 text-gray-900">Upcoming Appointments</h3>
               {upcomingAppointments.length === 0 ? (
-                <p className="text-sm py-8 text-center" style={{ color: '#5a4850' }}>No upcoming appointments.</p>
+                <p className="text-sm py-8 text-center text-gray-500 font-medium">No upcoming appointments.</p>
               ) : (
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {upcomingAppointments.slice(0, 5).map((apt) => (
                     <AppointmentRow
                       key={apt.id}
@@ -337,13 +336,13 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
 
         {tab === 'appointments' && (
           <div className="space-y-8">
-            <div className="rounded-2xl p-8" style={{ background: 'rgba(255,255,255,0.6)', border: '1px solid rgba(179, 139, 158, 0.08)' }}>
+            <div className="rounded-2xl p-8 bg-white border border-gray-200 shadow-sm">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                <h3 className="font-serif text-2xl" style={{ color: '#3d2e36' }}>Today's Bookings</h3>
+                <div className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
+                <h3 className="font-extrabold tracking-tight text-2xl text-gray-900">Today's Bookings</h3>
               </div>
               {todayAppointments.length === 0 ? (
-                <p className="text-sm py-4 italic" style={{ color: '#5a4850' }}>No appointments scheduled for today.</p>
+                <p className="text-sm py-4 italic text-gray-500 font-medium">No appointments scheduled for today.</p>
               ) : (
                 <div className="space-y-4">
                   {todayAppointments.map((apt) => (
@@ -353,10 +352,10 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
               )}
             </div>
 
-            <div className="rounded-2xl p-8" style={{ background: 'rgba(255,255,255,0.4)', border: '1px solid rgba(179, 139, 158, 0.08)' }}>
-              <h3 className="font-serif text-2xl mb-6" style={{ color: '#b38b9e' }}>Upcoming</h3>
+            <div className="rounded-2xl p-8 bg-white border border-gray-200 shadow-sm">
+              <h3 className="font-extrabold tracking-tight text-2xl mb-6 text-gray-900">Upcoming</h3>
               {upcomingAppointments.length === 0 ? (
-                <p className="text-sm py-4 italic" style={{ color: '#5a4850' }}>No future appointments found.</p>
+                <p className="text-sm py-4 italic text-gray-500 font-medium">No future appointments found.</p>
               ) : (
                 <div className="space-y-4">
                   {upcomingAppointments.map((apt) => (
@@ -366,12 +365,12 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
               )}
             </div>
 
-            <div className="rounded-2xl p-8" style={{ background: 'rgba(203,164,149,0.2)', border: '1px solid rgba(179, 139, 158, 0.04)' }}>
-              <h3 className="font-serif text-2xl mb-6" style={{ color: '#5a4850' }}>Past History</h3>
+            <div className="rounded-2xl p-8 bg-gray-50 border border-gray-200">
+              <h3 className="font-extrabold tracking-tight text-xl mb-6 text-gray-600">Past History</h3>
               {pastAppointments.length === 0 ? (
-                <p className="text-sm py-4 italic" style={{ color: '#5a4850' }}>No history yet.</p>
+                <p className="text-sm py-4 italic text-gray-500 font-medium">No history yet.</p>
               ) : (
-                <div className="space-y-4 opacity-75 hover:opacity-100 transition-opacity">
+                <div className="space-y-4 opacity-80 hover:opacity-100 transition-opacity">
                   {pastAppointments.slice(0, 10).map((apt) => (
                     <AppointmentRow key={apt.id} apt={apt} onStatusChange={handleUpdateAppointmentStatus} onEdit={handleEditAppointment} onDelete={handleDeleteAppointment} compact />
                   ))}
@@ -382,43 +381,43 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
         )}
 
         {tab === 'inbox' && (
-          <div className="rounded-2xl p-6" style={{ background: 'rgba(223,191,174,0.7)', border: '1px solid rgba(74,35,17,0.12)' }}>
-            <h3 className="font-serif text-xl mb-5" style={{ color: '#3d2e36' }}>Client Messages</h3>
+          <div className="rounded-2xl p-8 bg-white border border-gray-200 shadow-sm">
+            <h3 className="font-extrabold tracking-tight text-xl mb-6 text-gray-900">Client Messages</h3>
             {appointments.filter(a => a.notes).length === 0 ? (
-              <p className="text-sm py-8 text-center" style={{ color: '#5a4850' }}>No messages yet.</p>
+              <p className="text-sm py-8 text-center text-gray-500 font-medium">No messages yet.</p>
             ) : (
               <div className="space-y-4">
                 {appointments.filter(a => a.notes).map((apt) => (
-                  <div key={apt.id} className="p-5 rounded-xl border relative" style={{ background: 'rgba(255,255,255,0.4)', borderColor: apt.status === 'pending' ? 'rgba(179, 139, 158, 0.5)' : 'rgba(179, 139, 158, 0.08)' }}>
+                  <div key={apt.id} className={`p-5 rounded-2xl border relative ${apt.status === 'pending' ? 'bg-blue-50 border-blue-100' : 'bg-gray-50 border-gray-100'}`}>
                     {apt.status === 'pending' && (
-                      <span className="absolute top-4 right-4 w-2 h-2 rounded-full bg-red-500"></span>
+                      <span className="absolute top-4 right-4 w-2.5 h-2.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)] animate-pulse"></span>
                     )}
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ background: 'rgba(179, 139, 158, 0.08)' }}>
-                        <span className="font-serif text-lg text-ink-900">{apt.client_name.charAt(0).toUpperCase()}</span>
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 bg-white shadow-sm border border-gray-200">
+                        <span className="font-extrabold text-xl text-gray-900">{apt.client_name.charAt(0).toUpperCase()}</span>
                       </div>
                       <div>
-                        <h4 className="font-medium text-ink-900">{apt.client_name}</h4>
-                        <p className="text-xs" style={{ color: '#b38b9e' }}>{apt.client_email || apt.client_phone} · For {apt.service_name}</p>
+                        <h4 className="font-bold text-lg text-gray-900 leading-tight">{apt.client_name}</h4>
+                        <p className="text-xs font-medium text-gray-500 mt-0.5">{apt.client_email || apt.client_phone} · For <span className="text-gray-900">{apt.service_name}</span></p>
                       </div>
                     </div>
-                    <div className="p-4 rounded-lg text-sm text-ink-800 leading-relaxed mb-4" style={{ background: 'rgba(255,255,255,0.6)' }}>
+                    <div className="p-4 rounded-xl text-sm font-medium text-gray-700 leading-relaxed mb-4 bg-white border border-gray-200 shadow-sm">
                       "{apt.notes}"
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs mr-auto" style={{ color: '#b38b9e' }}>Booking Date: {new Date(apt.appointment_date).toLocaleDateString()}</span>
+                    <div className="flex items-center gap-3">
+                      <span className="text-xs font-bold text-gray-400 uppercase tracking-widest mr-auto">Booking Date: {new Date(apt.appointment_date).toLocaleDateString()}</span>
                       {apt.status === 'pending' && (
                         <>
-                          <button onClick={() => handleUpdateAppointmentStatus(apt.id, 'confirmed')} className="px-4 py-1.5 rounded-lg text-xs font-medium bg-blue-50 text-blue-600 border border-blue-200 hover:bg-blue-100 transition-colors">
+                          <button onClick={() => handleUpdateAppointmentStatus(apt.id, 'confirmed')} className="px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white hover:bg-blue-700 transition-colors shadow-sm">
                             Accept Booking
                           </button>
-                          <button onClick={() => handleUpdateAppointmentStatus(apt.id, 'cancelled')} className="px-4 py-1.5 rounded-lg text-xs font-medium bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 transition-colors">
+                          <button onClick={() => handleUpdateAppointmentStatus(apt.id, 'cancelled')} className="px-4 py-2 rounded-xl text-xs font-bold bg-white text-red-600 border border-red-200 hover:bg-red-50 transition-colors">
                             Decline
                           </button>
                         </>
                       )}
                       {apt.status !== 'pending' && (
-                        <span className="text-xs px-3 py-1 rounded-full bg-gray-100 text-gray-600 border border-gray-200">
+                        <span className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-md bg-white text-gray-500 border border-gray-200">
                           {apt.status.replace('_', ' ')}
                         </span>
                       )}
@@ -499,15 +498,15 @@ function StatCard({ icon: Icon, label, value, color }: {
   value: string;
   color: 'gold' | 'rose' | 'ink' | 'green';
 }) {
-  const iconColors: Record<string, string> = { gold: '#b38b9e', rose: 'rgba(200,80,80,0.8)', ink: '#5a4850', green: '#6be06b' };
+  const iconColors: Record<string, string> = { gold: '#3b82f6', rose: '#ef4444', ink: '#6b7280', green: '#10b981' };
+  const bgColors: Record<string, string> = { gold: 'bg-blue-50', rose: 'bg-red-50', ink: 'bg-gray-50', green: 'bg-green-50' };
   return (
-    <div className="bg-white rounded-2xl p-5" style={{ background: 'rgba(223,191,174,0.7)', border: '1px solid rgba(74,35,17,0.12)' }}>
-      <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3`}
-        style={{ background: 'rgba(179, 139, 158, 0.08)', border: '1px solid rgba(179, 139, 158, 0.3)' }}>
-        <Icon className="w-5 h-5" style={{ color: iconColors[color] }} />
+    <div className="bg-white rounded-2xl p-5 border border-gray-200 shadow-sm transition-all hover:shadow-md">
+      <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${bgColors[color]}`}>
+        <Icon className="w-6 h-6" style={{ color: iconColors[color] }} />
       </div>
-      <div className="font-serif text-2xl" style={{ color: '#3d2e36' }}>{value}</div>
-      <div className="text-xs mt-1" style={{ color: '#5a4850' }}>{label}</div>
+      <div className="font-extrabold text-3xl text-gray-900 tracking-tight">{value}</div>
+      <div className="text-sm font-bold text-gray-500 uppercase tracking-widest mt-1">{label}</div>
     </div>
   );
 }
@@ -520,76 +519,70 @@ function AppointmentRow({ apt, onStatusChange, onEdit, onDelete, compact }: {
   compact?: boolean;
 }) {
   const [expanded, setExpanded] = useState(false);
-  const statusColors: Record<string, { bg: string; color: string; border: string }> = {
-    pending:   { bg: 'rgba(223,191,174,0.3)', color: '#b38b9e', border: 'rgba(223,191,174,0.6)' },
-    confirmed: { bg: 'rgba(179, 139, 158, 0.08)',  color: '#b38b9e', border: 'rgba(179, 139, 158, 0.2)' },
-    completed: { bg: 'rgba(46,64,46,0.06)',   color: '#2E402E', border: 'rgba(46,64,46,0.15)' },
-    cancelled: { bg: 'rgba(139,90,90,0.06)',  color: '#8b5a5a', border: 'rgba(139,90,90,0.15)' },
-    no_show:   { bg: 'transparent', color: '#5a4850', border: 'transparent' },
+  const statusColors: Record<string, { bg: string; text: string }> = {
+    pending:   { bg: 'bg-yellow-100', text: 'text-yellow-800' },
+    confirmed: { bg: 'bg-blue-100', text: 'text-blue-800' },
+    completed: { bg: 'bg-green-100', text: 'text-green-800' },
+    cancelled: { bg: 'bg-red-100', text: 'text-red-800' },
+    no_show:   { bg: 'bg-gray-100', text: 'text-gray-800' },
   };
 
   const date = new Date(apt.appointment_date + 'T00:00:00');
 
   return (
-    <div className="p-4 sm:p-5 rounded-xl transition-all duration-300 hover:shadow-md" style={{ background: 'white', border: '1px solid rgba(179, 139, 158, 0.08)' }}>
+    <div className="p-4 sm:p-5 rounded-2xl transition-all duration-300 bg-white border border-gray-200 hover:border-gray-300 hover:shadow-sm">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6">
         <div className="flex items-center gap-3 sm:gap-6 flex-grow">
-          <div className="text-center shrink-0 w-12 sm:w-16">
-            <div className="text-[10px] uppercase font-bold tracking-widest" style={{ color: '#5a4850' }}>{DAYS_SHORT[date.getDay()]}</div>
-            <div className="font-serif text-2xl sm:text-3xl my-0.5" style={{ color: '#3d2e36' }}>{date.getDate()}</div>
-            <div className="text-[10px] uppercase font-bold tracking-widest" style={{ color: '#5a4850' }}>{date.toLocaleDateString('en-US', { month: 'short' })}</div>
+          <div className="text-center shrink-0 w-14 sm:w-16 bg-gray-50 rounded-xl py-2 border border-gray-100">
+            <div className="text-[10px] uppercase font-bold tracking-widest text-gray-500">{DAYS_SHORT[date.getDay()]}</div>
+            <div className="font-extrabold text-2xl sm:text-3xl text-gray-900 my-0.5">{date.getDate()}</div>
+            <div className="text-[10px] uppercase font-bold tracking-widest text-gray-500">{date.toLocaleDateString('en-US', { month: 'short' })}</div>
           </div>
           
-          <div className="w-px h-12 hidden sm:block" style={{ background: 'rgba(179, 139, 158, 0.08)' }}></div>
-          
           <div className="flex-grow min-w-0">
-            <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3 mb-1.5">
-              <h4 className="font-serif text-base sm:text-lg text-ink-900 truncate" style={{ color: '#3d2e36' }}>{apt.service_name}</h4>
-              <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full w-fit shrink-0" 
-                    style={{ background: statusColors[apt.status].bg, color: statusColors[apt.status].color, border: `1px solid ${statusColors[apt.status].border}` }}>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-1.5">
+              <h4 className="font-bold text-base sm:text-lg text-gray-900 truncate">{apt.service_name}</h4>
+              <span className={`text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-md w-fit shrink-0 ${statusColors[apt.status].bg} ${statusColors[apt.status].text}`}>
                 {apt.status.replace('_', ' ')}
               </span>
             </div>
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs sm:text-sm">
-              <span className="font-medium" style={{ color: '#5a4850' }}>{apt.client_name}</span>
-              <span className="hidden sm:inline" style={{ color: '#5a4850' }}>•</span>
-              <span style={{ color: '#b38b9e' }}>{formatTime(apt.start_time)}</span>
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-medium">
+              <span className="text-gray-900">{apt.client_name}</span>
+              <span className="hidden sm:inline text-gray-300">•</span>
+              <span className="text-gray-500">{formatTime(apt.start_time)}</span>
               {!compact && (
                 <>
-                  <span className="hidden sm:inline" style={{ color: '#5a4850' }}>•</span>
-                  <span className="font-serif" style={{ color: '#b38b9e' }}>{formatNaira(Number(apt.service_price))}</span>
+                  <span className="hidden sm:inline text-gray-300">•</span>
+                  <span className="text-gray-900">{formatNaira(Number(apt.service_price))}</span>
                 </>
               )}
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto pt-2 sm:pt-0 border-t sm:border-t-0 w-full sm:w-auto justify-end mt-2 sm:mt-0" style={{ borderColor: 'rgba(179, 139, 158, 0.08)' }}>
+        <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto pt-4 sm:pt-0 border-t sm:border-t-0 w-full sm:w-auto justify-end border-gray-100 mt-2 sm:mt-0">
           {apt.status === 'pending' && (
             <button
               onClick={() => onStatusChange(apt.id, 'confirmed')}
               title="Accept Appointment"
-              className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:-translate-y-0.5"
-                style={{ background: '#b38b9e', color: '#f4e6e0', boxShadow: '0 4px 10px rgba(179, 139, 158, 0.2)' }}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-bold bg-blue-600 text-white hover:bg-blue-700 transition-colors shadow-sm"
             >
-              <Check className="w-4 h-4" />
+              <Check className="w-4 h-4" /> Accept
             </button>
           )}
           {(apt.status === 'pending' || apt.status === 'confirmed') && (
             <button
               onClick={() => onStatusChange(apt.id, 'completed')}
               title="Mark as Completed"
-              className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:-translate-y-0.5"
-                style={{ background: 'rgba(46,64,46,0.1)', color: '#2E402E' }}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-bold bg-green-600 text-white hover:bg-green-700 transition-colors shadow-sm"
             >
-              <Check className="w-4 h-4" />
+              <Check className="w-4 h-4" /> Complete
             </button>
           )}
           {apt.status !== 'cancelled' && apt.status !== 'completed' && (
             <button
               onClick={() => onStatusChange(apt.id, 'cancelled')}
               title="Decline / Cancel"
-              className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:-translate-y-0.5"
-                style={{ background: 'rgba(139,90,90,0.1)', color: '#8b5a5a' }}
+              className="w-10 h-10 rounded-xl flex items-center justify-center transition-colors bg-gray-100 text-gray-600 hover:bg-red-100 hover:text-red-600"
             >
               <X className="w-4 h-4" />
             </button>
@@ -598,8 +591,7 @@ function AppointmentRow({ apt, onStatusChange, onEdit, onDelete, compact }: {
             <button
               onClick={() => onEdit(apt)}
               title="Edit Details"
-              className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:-translate-y-0.5"
-                style={{ background: 'rgba(179, 139, 158, 0.08)', color: '#b38b9e' }}
+              className="w-10 h-10 rounded-xl flex items-center justify-center transition-colors bg-gray-100 text-gray-600 hover:bg-gray-200"
             >
               <Pencil className="w-4 h-4" />
             </button>
@@ -608,8 +600,7 @@ function AppointmentRow({ apt, onStatusChange, onEdit, onDelete, compact }: {
             <button
               onClick={() => onDelete(apt.id, apt.client_name)}
               title="Delete Forever"
-              className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:-translate-y-0.5"
-                style={{ background: 'rgba(200,60,60,0.1)', color: 'rgba(200,80,80,0.8)' }}
+              className="w-10 h-10 rounded-xl flex items-center justify-center transition-colors bg-red-50 text-red-600 hover:bg-red-100"
             >
               <Trash2 className="w-4 h-4" />
             </button>
@@ -617,30 +608,35 @@ function AppointmentRow({ apt, onStatusChange, onEdit, onDelete, compact }: {
           {!compact && (
             <button
               onClick={() => setExpanded(!expanded)}
-              className="w-9 h-9 rounded-full flex items-center justify-center transition-colors hover:bg-gray-50"
+              className="w-10 h-10 rounded-xl flex items-center justify-center transition-colors bg-gray-50 text-gray-500 hover:bg-gray-100"
             >
-              <ChevronRight className="w-4 h-4 transition-transform" style={{ color: '#5a4850', transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)' }} />
+              <ChevronRight className={`w-4 h-4 transition-transform ${expanded ? 'rotate-90' : ''}`} />
             </button>
           )}
         </div>
       </div>
       {expanded && !compact && (
-        <div className="mt-4 pt-4 grid sm:grid-cols-2 gap-3 text-sm" style={{ borderTop: '1px solid rgba(179, 139, 158, 0.08)' }}>
-          <div className="flex items-center gap-2 text-ink-600">
-            <Phone className="w-4 h-4" style={{ color: '#b38b9e' }} /> <span style={{ color: '#b38b9e' }}>{apt.client_phone}</span>
+        <div className="mt-4 pt-4 grid sm:grid-cols-2 gap-4 text-sm border-t border-gray-100 bg-gray-50 p-4 rounded-xl">
+          <div className="flex items-center gap-2 text-gray-700">
+            <Phone className="w-4 h-4 text-gray-400" /> <span className="font-medium">{apt.client_phone}</span>
           </div>
           {apt.client_email && (
-            <div className="flex items-center gap-2 text-ink-600">
-              <Mail className="w-4 h-4" style={{ color: '#b38b9e' }} /> <span style={{ color: '#b38b9e' }}>{apt.client_email}</span>
+            <div className="flex items-center gap-2 text-gray-700">
+              <Mail className="w-4 h-4 text-gray-400" /> <span className="font-medium">{apt.client_email}</span>
             </div>
           )}
-          <div className="text-ink-600">
-            Duration: {formatDuration(apt.service_duration)} · {formatTime(apt.start_time)} – {formatTime(apt.end_time)}
+          <div className="text-gray-700">
+            <span className="text-gray-400 mr-2">Duration:</span>
+            <span className="font-medium">{formatDuration(apt.service_duration)} · {formatTime(apt.start_time)} – {formatTime(apt.end_time)}</span>
           </div>
-          <div className="text-ink-600">Price: {formatNaira(Number(apt.service_price))}</div>
+          <div className="text-gray-700">
+            <span className="text-gray-400 mr-2">Price:</span>
+            <span className="font-bold text-gray-900">{formatNaira(Number(apt.service_price))}</span>
+          </div>
           {apt.notes && (
-            <div className="sm:col-span-2 text-ink-600">
-              <span className="text-ink-400">Notes:</span> {apt.notes}
+            <div className="sm:col-span-2 text-gray-700">
+              <span className="text-gray-400 mr-2">Notes:</span> 
+              <span className="font-medium">{apt.notes}</span>
             </div>
           )}
         </div>

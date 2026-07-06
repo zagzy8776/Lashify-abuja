@@ -64,7 +64,7 @@ export default function About({ onNavigate }: Props) {
           <div>
             <span className="section-label">
               <span className="w-8 h-px" style={{ background: 'rgba(179, 139, 158, 0.5)' }} />
-              Meet Lashify
+              Meet Amaya
             </span>
             <h2 className="heading-serif text-4xl md:text-5xl mt-4 mb-6" style={{ color: '#3d2e36' }}>
               The Artist Behind
@@ -72,14 +72,17 @@ export default function About({ onNavigate }: Props) {
               <span className="italic" style={{ color: '#b38b9e' }}>LashifyAbuja</span>
             </h2>
             <p className="leading-relaxed mb-3" style={{ color: '#5a4850', lineHeight: 1.8 }}>
-              Abuja's trusted lash and brow specialist — known for precision,
+              Abuja's trusted lash and brow specialist known for precision,
               care, and results that speak for themselves.
             </p>
-            <p className="leading-relaxed" style={{ color: '#5a4850', lineHeight: 1.8 }}>
+            <p className="leading-relaxed mb-3" style={{ color: '#5a4850', lineHeight: 1.8 }}>
               Every set is custom-crafted to your features and lifestyle. Your appointment
               is a personal experience, not a transaction.
             </p>
-            <span className="font-script text-3xl block mt-8" style={{ color: '#b38b9e' }}>Lashify</span>
+            <p className="leading-relaxed" style={{ color: '#5a4850', lineHeight: 1.8 }}>
+              Enhance your look with natural-looking lower lash extensions that add subtle definition and balance to your eyes. This gentle service is perfect for creating a fuller, more complete lash appearance while maintaining a soft and polished finish. Ideal for everyday elegance or special occasions.
+            </p>
+            <span className="font-script text-3xl block mt-8" style={{ color: '#b38b9e' }}>Amaya</span>
             <span className="text-xs uppercase tracking-widest" style={{ color: '#8f7882' }}>
               Founder & Lead Artist
             </span>
