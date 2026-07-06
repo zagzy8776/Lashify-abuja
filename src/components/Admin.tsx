@@ -651,6 +651,7 @@ function GalleryManager() {
   const [newItem, setNewItem] = useState({ title: '', category: 'lashes', image_url: '' });
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [showAddModal, setShowAddModal] = useState(false);
 
   useEffect(() => {
     const fetch = async () => {
@@ -673,11 +674,9 @@ function GalleryManager() {
     setUploadProgress(0);
 
     try {
-      // Convert file to base64
       const reader = new FileReader();
       reader.onloadend = async () => {
         const base64String = reader.result as string;
-        
         const token = localStorage.getItem('admin_token');
         const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/admin/upload`, {
           method: 'POST',
@@ -688,21 +687,15 @@ function GalleryManager() {
           body: JSON.stringify({ file: base64String }),
         });
 
-        if (!response.ok) {
-          throw new Error('Upload failed');
-        }
-
+        if (!response.ok) throw new Error('Upload failed');
         const data = await response.json();
         setNewItem({ ...newItem, image_url: data.url });
         setUploadProgress(100);
       };
       
       reader.onprogress = (e) => {
-        if (e.lengthComputable) {
-          setUploadProgress(Math.round((e.loaded / e.total) * 100));
-        }
+        if (e.lengthComputable) setUploadProgress(Math.round((e.loaded / e.total) * 100));
       };
-      
       reader.readAsDataURL(file);
     } catch (err) {
       console.error('Failed to upload image:', err);
@@ -722,6 +715,7 @@ function GalleryManager() {
       });
       setItems([data, ...items]);
       setNewItem({ title: '', category: 'lashes', image_url: '' });
+      setShowAddModal(false);
     } catch (err) {
       console.error('Failed to add gallery item:', err);
     }
@@ -736,76 +730,130 @@ function GalleryManager() {
     }
   };
 
-  if (loading) return <Loader2 className="w-6 h-6 animate-spin" style={{ color: '#b38b9e' }} />;
+  if (loading) return <div className="flex justify-center py-12"><Loader2 className="w-8 h-8 animate-spin text-gray-400" /></div>;
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl p-6" style={{ background: 'rgba(223,191,174,0.7)', border: '1px solid rgba(74,35,17,0.12)' }}>
-        <h3 className="font-serif text-xl mb-5" style={{ color: '#3d2e36' }}>Add Gallery Item</h3>
-        <div className="space-y-4">
-          <div className="grid sm:grid-cols-2 gap-3">
-            <input
-              type="text"
-              placeholder="Title"
-              value={newItem.title}
-              onChange={(e) => setNewItem({ ...newItem, title: e.target.value })}
-              className="input-lux"
-            />
-            <select
-              value={newItem.category}
-              onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
-              className="input-lux"
-            >
-              <option value="lashes">Lashes</option>
-              <option value="brows">Brows</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-          
-          <div>
-            <label className="label-lux">Upload Image</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              disabled={uploading}
-              className="input-lux"
-            />
-            {uploading && (
-              <div className="mt-2 text-sm" style={{ color: '#b38b9e' }}>
-                Uploading... {uploadProgress}%
-              </div>
-            )}
-          </div>
-
-          {newItem.image_url && (
-            <div className="relative aspect-square max-w-xs rounded-xl overflow-hidden" style={{ border: '1px solid rgba(179, 139, 158, 0.2)' }}>
-              <img src={newItem.image_url} alt="Preview" className="w-full h-full object-cover" />
-            </div>
-          )}
-
-          <button onClick={addItem} disabled={!newItem.title.trim() || !newItem.image_url.trim()} className="btn-gold text-sm disabled:opacity-50">
-            Add to Gallery
-          </button>
+      <div className="flex justify-between items-center bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+        <div>
+          <h3 className="font-extrabold tracking-tight text-xl text-gray-900">Portfolio Gallery</h3>
+          <p className="text-sm text-gray-500 font-medium mt-1">Manage the images shown on your website's gallery.</p>
         </div>
+        <button
+          onClick={() => setShowAddModal(true)}
+          className="px-5 py-2.5 bg-black text-white text-sm font-bold rounded-xl hover:bg-gray-800 transition-colors shadow-sm flex items-center gap-2"
+        >
+          <span>+</span> Add Image
+        </button>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {items.map((item) => (
-          <div key={item.id} className="group relative aspect-square rounded-xl overflow-hidden">
+          <div key={item.id} className="group relative aspect-square rounded-2xl overflow-hidden border border-gray-200 bg-gray-50 shadow-sm">
             <img src={item.image_url} alt={item.title} className="w-full h-full object-cover" />
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-3" style={{ background: 'rgba(250, 247, 242, 0.85)' }}>
-              <p className="text-[#3d2e36] text-sm font-medium mb-2 text-center">{item.title}</p>
+            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-4">
+              <p className="text-white text-sm font-bold mb-3 text-center tracking-wide">{item.title}</p>
               <button
                 onClick={() => deleteItem(item.id)}
-                className="px-3 py-1.5 bg-rose-500 text-[#3d2e36] rounded-lg text-xs font-medium hover:bg-rose-600"
+                className="px-4 py-2 bg-red-600 text-white rounded-lg text-xs font-bold hover:bg-red-700 transition-colors shadow-sm flex items-center gap-2"
               >
-                Delete
+                <Trash2 className="w-3.5 h-3.5" /> Delete
               </button>
+            </div>
+            <div className="absolute top-2 left-2 px-2 py-1 bg-white/90 backdrop-blur-sm rounded-md text-[10px] font-bold uppercase tracking-wider text-gray-800 shadow-sm">
+              {item.category}
             </div>
           </div>
         ))}
+        {items.length === 0 && (
+          <div className="col-span-full py-12 text-center text-gray-500 font-medium">No images in your gallery yet.</div>
+        )}
       </div>
+
+      {showAddModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+          <div className="w-full max-w-md bg-white rounded-3xl p-8 shadow-2xl border border-gray-100">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="font-extrabold text-2xl text-gray-900 tracking-tight">Add Gallery Image</h3>
+              <button onClick={() => setShowAddModal(false)} className="text-gray-400 hover:text-gray-900 transition-colors">
+                <Trash2 className="w-5 h-5 opacity-0" /> {/* Spacer */}
+              </button>
+            </div>
+            
+            <div className="space-y-5">
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Title / Description</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Classic Wispy Set"
+                  value={newItem.title}
+                  onChange={(e) => setNewItem({ ...newItem, title: e.target.value })}
+                  className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Category</label>
+                <select
+                  value={newItem.category}
+                  onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
+                  className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900"
+                >
+                  <option value="lashes">Lashes</option>
+                  <option value="brows">Brows</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Upload Picture</label>
+                <div className="relative border-2 border-dashed border-gray-300 rounded-2xl p-6 hover:border-gray-400 transition-colors bg-gray-50 text-center cursor-pointer">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    disabled={uploading}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                  />
+                  {uploading ? (
+                    <div className="flex flex-col items-center">
+                      <Loader2 className="w-6 h-6 animate-spin text-gray-400 mb-2" />
+                      <span className="text-sm font-bold text-gray-500">Uploading... {uploadProgress}%</span>
+                    </div>
+                  ) : newItem.image_url ? (
+                    <div className="aspect-video w-full rounded-xl overflow-hidden shadow-sm">
+                      <img src={newItem.image_url} alt="Preview" className="w-full h-full object-cover" />
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center">
+                      <div className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center mb-2 shadow-sm">
+                        <span className="text-gray-400">+</span>
+                      </div>
+                      <span className="text-sm font-bold text-gray-500">Click or drag image here</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex gap-3 mt-8">
+                <button 
+                  onClick={addItem} 
+                  disabled={!newItem.title.trim() || !newItem.image_url.trim() || uploading} 
+                  className="flex-1 h-12 bg-black text-white font-bold rounded-xl hover:bg-gray-800 transition-colors disabled:opacity-50 shadow-sm"
+                >
+                  Save Image
+                </button>
+                <button 
+                  onClick={() => setShowAddModal(false)} 
+                  className="px-6 h-12 bg-white text-gray-600 font-bold rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -820,7 +868,9 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
   const [editForm, setEditForm] = useState<Partial<Service>>({});
   const [saving, setSaving] = useState(false);
 
+  const [showAddModal, setShowAddModal] = useState(false);
   const [newItem, setNewItem] = useState<Partial<Service>>({ name: '', description: '', price: 0, duration_minutes: 60, category: 'lashes', image_url: '' });
+  
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
 
@@ -875,6 +925,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
       const data = await adminCreateService(newItem);
       setServices([...services, data]);
       setNewItem({ name: '', description: '', price: 0, duration_minutes: 60, category: 'lashes', image_url: '' });
+      setShowAddModal(false);
     } catch (err) {
       console.error('Failed to create service:', err);
       checkAuth(err);
@@ -925,138 +976,139 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
     }
   };
 
-  return (
-    <div className="space-y-6">
-      {/* Add Service Section */}
-      <div className="rounded-2xl p-6" style={{ background: 'rgba(223,191,174,0.7)', border: '1px solid rgba(74,35,17,0.12)' }}>
-        <h3 className="font-serif text-xl mb-5" style={{ color: '#3d2e36' }}>Add New Service</h3>
-        <div className="space-y-4">
-          <div className="grid sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: '#b38b9e' }}>Service Name</label>
-              <input type="text" value={newItem.name} onChange={(e) => setNewItem({...newItem, name: e.target.value})} className="input-lux" />
+  const ServiceForm = ({ form, setForm, isEdit, onSave, onCancel }: any) => (
+    <div className="space-y-5">
+      <div>
+        <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Service Name</label>
+        <input type="text" placeholder="e.g. Volume Lashes" value={form.name || ''} onChange={(e) => setForm({...form, name: e.target.value})} className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900" />
+      </div>
+      <div>
+        <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Category</label>
+        <select value={form.category || 'lashes'} onChange={(e) => setForm({...form, category: e.target.value})} className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900">
+          <option value="lashes">Lashes</option>
+          <option value="brows">Brows</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div>
+        <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Description</label>
+        <textarea placeholder="Describe the service..." value={form.description || ''} onChange={(e) => setForm({...form, description: e.target.value})} className="w-full bg-gray-50 border border-gray-200 rounded-xl p-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900 min-h-[100px]" />
+      </div>
+      <div className="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Price (₦)</label>
+          <input type="number" placeholder="0" value={form.price || ''} onChange={(e) => setForm({...form, price: Number(e.target.value)})} className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900" />
+        </div>
+        <div>
+          <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Duration (min)</label>
+          <input type="number" placeholder="60" value={form.duration_minutes || ''} onChange={(e) => setForm({...form, duration_minutes: Number(e.target.value)})} className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900" />
+        </div>
+      </div>
+      <div>
+        <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Service Image</label>
+        <div className="relative border-2 border-dashed border-gray-300 rounded-2xl p-6 hover:border-gray-400 transition-colors bg-gray-50 text-center cursor-pointer">
+          <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, isEdit)} disabled={uploading} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+          {uploading ? (
+            <div className="flex flex-col items-center">
+              <Loader2 className="w-6 h-6 animate-spin text-gray-400 mb-2" />
+              <span className="text-sm font-bold text-gray-500">Uploading... {uploadProgress}%</span>
             </div>
-            <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: '#b38b9e' }}>Category</label>
-              <select value={newItem.category} onChange={(e) => setNewItem({...newItem, category: e.target.value})} className="input-lux">
-                <option value="lashes">Lashes</option>
-                <option value="brows">Brows</option>
-                <option value="other">Other</option>
-              </select>
+          ) : form.image_url ? (
+            <div className="aspect-video w-full rounded-xl overflow-hidden shadow-sm">
+              <img src={form.image_url} alt="Preview" className="w-full h-full object-cover" />
             </div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1" style={{ color: '#b38b9e' }}>Description</label>
-            <textarea value={newItem.description} onChange={(e) => setNewItem({...newItem, description: e.target.value})} className="input-lux min-h-[60px]" />
-          </div>
-          <div className="grid sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: '#b38b9e' }}>Price (₦)</label>
-              <input type="number" value={newItem.price || ''} onChange={(e) => setNewItem({...newItem, price: Number(e.target.value)})} className="input-lux" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: '#b38b9e' }}>Duration (min)</label>
-              <input type="number" value={newItem.duration_minutes || ''} onChange={(e) => setNewItem({...newItem, duration_minutes: Number(e.target.value)})} className="input-lux" />
-            </div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1" style={{ color: '#b38b9e' }}>Upload Image</label>
-            <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, false)} disabled={uploading} className="input-lux" />
-            {uploading && <div className="mt-2 text-sm" style={{ color: '#b38b9e' }}>Uploading... {uploadProgress}%</div>}
-          </div>
-          {newItem.image_url && (
-            <div className="relative aspect-video max-w-xs rounded-xl overflow-hidden" style={{ border: '1px solid rgba(179, 139, 158, 0.2)' }}>
-              <img src={newItem.image_url} alt="Preview" className="w-full h-full object-cover" />
+          ) : (
+            <div className="flex flex-col items-center">
+              <div className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center mb-2 shadow-sm"><span className="text-gray-400">+</span></div>
+              <span className="text-sm font-bold text-gray-500">Click or drag image here</span>
             </div>
           )}
-          <button onClick={handleAddService} disabled={saving || !newItem.name?.trim() || !newItem.price} className="btn-gold text-sm disabled:opacity-50 mt-4">
-            {saving ? <Loader2 className="w-4 h-4 animate-spin inline mr-2" /> : 'Add Service'}
-          </button>
         </div>
       </div>
+      <div className="flex gap-3 mt-8">
+        <button onClick={onSave} disabled={saving || !form.name?.trim() || !form.price} className="flex-1 h-14 bg-black text-white font-bold rounded-xl hover:bg-gray-800 transition-colors disabled:opacity-50 flex items-center justify-center shadow-sm">
+          {saving ? <Loader2 className="w-5 h-5 animate-spin inline" /> : 'Save Service'}
+        </button>
+        <button onClick={onCancel} disabled={saving} className="px-6 h-14 bg-white text-gray-600 font-bold rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors">
+          Cancel
+        </button>
+      </div>
+    </div>
+  );
 
-      {/* List Services Section */}
-      <div className="rounded-2xl p-6" style={{ background: 'rgba(223,191,174,0.7)', border: '1px solid rgba(74,35,17,0.12)' }}>
-        <h3 className="font-serif text-xl mb-5" style={{ color: '#3d2e36' }}>Manage Services</h3>
-        <div className="space-y-3">
-          {services.map((svc) => (
-            <div key={svc.id} className="flex items-center justify-between p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.4)', border: '1px solid rgba(179, 139, 158, 0.08)' }}>
-              <div className="flex-grow flex items-center gap-4">
-                {svc.image_url && (
-                  <img src={svc.image_url} alt={svc.name} className="w-16 h-16 object-cover rounded-lg" style={{ border: '1px solid rgba(179, 139, 158, 0.2)' }} />
-                )}
-                <div>
-                  <div className="flex items-center gap-3 mb-1">
-                    <h4 className="font-medium" style={{ color: '#3d2e36' }}>{svc.name}</h4>
-                    <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: svc.is_active ? 'rgba(60,180,60,0.15)' : 'rgba(255,255,255,0.6)', color: svc.is_active ? '#6be06b' : '#5a4850' }}>
-                      {svc.is_active ? 'Active' : 'Inactive'}
-                    </span>
-                  </div>
-                  <p className="text-sm" style={{ color: '#5a4850' }}>{svc.description}</p>
-                  <p className="text-sm mt-1" style={{ color: '#5a4850' }}>{formatDuration(svc.duration_minutes)} • {formatNaira(svc.price)}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <button onClick={() => handleEdit(svc)} className="p-2 rounded-lg transition-colors hover:bg-opacity-80" style={{ background: 'rgba(179, 139, 158, 0.3)', color: '#b38b9e' }} title="Edit service"><Pencil className="w-4 h-4" /></button>
-                <button onClick={() => handleDelete(svc.id, svc.name)} className="p-2 rounded-lg transition-colors hover:bg-opacity-80" style={{ background: 'rgba(200,60,60,0.1)', color: 'rgba(200,80,80,0.8)' }} title="Delete service"><Trash2 className="w-4 h-4" /></button>
-                <button onClick={() => toggleServiceActive(svc.id, svc.is_active)} className="relative w-11 h-6 rounded-full transition-colors" style={{ background: svc.is_active ? '#b38b9e' : 'rgba(255,255,255,0.7)' }} title={svc.is_active ? 'Deactivate' : 'Activate'}>
-                  <span className="absolute top-0.5 w-5 h-5 rounded-full transition-transform" style={{ background: '#3d2e36', transform: svc.is_active ? 'translateX(20px)' : 'translateX(2px)' }} />
-                </button>
-              </div>
-            </div>
-          ))}
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+        <div>
+          <h3 className="font-extrabold tracking-tight text-xl text-gray-900">Manage Services</h3>
+          <p className="text-sm text-gray-500 font-medium mt-1">Add, edit, or deactivate your offerings.</p>
         </div>
+        <button
+          onClick={() => setShowAddModal(true)}
+          className="px-5 py-2.5 bg-black text-white text-sm font-bold rounded-xl hover:bg-gray-800 transition-colors shadow-sm flex items-center gap-2"
+        >
+          <span>+</span> Add Service
+        </button>
       </div>
 
-      {/* Edit Modal */}
-      {editingService && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(250, 247, 242, 0.85)' }}>
-          <div className="w-full max-w-2xl rounded-2xl p-6" style={{ background: 'rgba(223,191,174,0.98)', border: '1px solid rgba(179, 139, 158, 0.2)' }}>
-            <h3 className="font-serif text-2xl mb-6" style={{ color: '#3d2e36' }}>Edit Service</h3>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium mb-2" style={{ color: '#b38b9e' }}>Service Name</label>
-                <input type="text" value={editForm.name || ''} onChange={(e) => setEditForm({ ...editForm, name: e.target.value })} className="input-lux" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2" style={{ color: '#b38b9e' }}>Description</label>
-                <textarea value={editForm.description || ''} onChange={(e) => setEditForm({ ...editForm, description: e.target.value })} className="input-lux min-h-[100px]" />
-              </div>
-              <div className="grid sm:grid-cols-3 gap-4">
-                <div>
-                  <label className="block text-sm font-medium mb-2" style={{ color: '#b38b9e' }}>Price (₦)</label>
-                  <input type="number" value={editForm.price || ''} onChange={(e) => setEditForm({ ...editForm, price: Number(e.target.value) })} className="input-lux" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2" style={{ color: '#b38b9e' }}>Duration (min)</label>
-                  <input type="number" value={editForm.duration_minutes || ''} onChange={(e) => setEditForm({ ...editForm, duration_minutes: Number(e.target.value) })} className="input-lux" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2" style={{ color: '#b38b9e' }}>Category</label>
-                  <select value={editForm.category || 'lashes'} onChange={(e) => setEditForm({ ...editForm, category: e.target.value })} className="input-lux">
-                    <option value="lashes">Lashes</option>
-                    <option value="brows">Brows</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2" style={{ color: '#b38b9e' }}>Upload Image (Optional)</label>
-                <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, true)} disabled={uploading} className="input-lux" />
-                {uploading && <div className="mt-2 text-sm" style={{ color: '#b38b9e' }}>Uploading... {uploadProgress}%</div>}
-              </div>
-              {editForm.image_url && (
-                <div className="relative aspect-video max-w-xs rounded-xl overflow-hidden" style={{ border: '1px solid rgba(179, 139, 158, 0.2)' }}>
-                  <img src={editForm.image_url} alt="Preview" className="w-full h-full object-cover" />
+      <div className="space-y-3">
+        {services.map((svc) => (
+          <div key={svc.id} className="flex items-center justify-between p-4 bg-white rounded-2xl border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+            <div className="flex-grow flex items-center gap-5">
+              {svc.image_url ? (
+                <img src={svc.image_url} alt={svc.name} className="w-16 h-16 object-cover rounded-2xl shadow-sm border border-gray-100 shrink-0" />
+              ) : (
+                <div className="w-16 h-16 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center shrink-0">
+                  <span className="text-gray-300 text-xs font-bold uppercase">No Img</span>
                 </div>
               )}
+              <div>
+                <div className="flex items-center gap-3 mb-1">
+                  <h4 className="font-bold text-gray-900 text-lg leading-tight">{svc.name}</h4>
+                  <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md ${svc.is_active ? 'bg-green-50 text-green-600 border border-green-200' : 'bg-gray-100 text-gray-500 border border-gray-200'}`}>
+                    {svc.is_active ? 'Active' : 'Inactive'}
+                  </span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-gray-100 text-gray-600 border border-gray-200">
+                    {svc.category}
+                  </span>
+                </div>
+                <p className="text-sm font-medium text-gray-500 mb-1">{svc.description?.substring(0, 80)}{svc.description?.length > 80 ? '...' : ''}</p>
+                <p className="text-sm font-bold text-gray-900">{formatNaira(svc.price)} <span className="text-gray-400 font-medium">· {formatDuration(svc.duration_minutes)}</span></p>
+              </div>
             </div>
-            <div className="flex gap-3 mt-6">
-              <button onClick={handleSaveEdit} disabled={saving || !editForm.name?.trim()} className="flex-1 btn-gold disabled:opacity-50">
-                {saving ? <Loader2 className="w-5 h-5 animate-spin inline" /> : 'Save Changes'}
+            <div className="flex items-center gap-3 pl-4 border-l border-gray-100">
+              <button onClick={() => toggleServiceActive(svc.id, svc.is_active)} className={`relative w-12 h-6 rounded-full transition-colors focus:outline-none ${svc.is_active ? 'bg-black' : 'bg-gray-200'}`} title={svc.is_active ? 'Deactivate' : 'Activate'}>
+                <span className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform shadow-sm ${svc.is_active ? 'left-[26px]' : 'left-1'}`} />
               </button>
-              <button onClick={() => { setEditingService(null); setEditForm({}); }} disabled={saving} className="flex-1 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors" style={{ background: 'rgba(255,255,255,0.5)', color: '#b38b9e', border: '1px solid rgba(179, 139, 158, 0.08)' }}>Cancel</button>
+              <div className="w-px h-6 bg-gray-100 mx-1"></div>
+              <button onClick={() => handleEdit(svc)} className="p-2 rounded-xl text-blue-600 hover:bg-blue-50 transition-colors" title="Edit service">
+                <Pencil className="w-5 h-5" />
+              </button>
+              <button onClick={() => handleDelete(svc.id, svc.name)} className="p-2 rounded-xl text-red-600 hover:bg-red-50 transition-colors" title="Delete service">
+                <Trash2 className="w-5 h-5" />
+              </button>
             </div>
+          </div>
+        ))}
+        {services.length === 0 && (
+          <div className="py-12 text-center text-gray-500 font-medium bg-gray-50 rounded-2xl border border-gray-200">No services found. Add your first service!</div>
+        )}
+      </div>
+
+      {showAddModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+          <div className="w-full max-w-2xl bg-white rounded-[24px] p-8 shadow-2xl border border-gray-100 max-h-[90vh] overflow-y-auto scrollbar-hide">
+            <h3 className="font-extrabold text-2xl text-gray-900 tracking-tight mb-6">Add New Service</h3>
+            <ServiceForm form={newItem} setForm={setNewItem} isEdit={false} onSave={handleAddService} onCancel={() => setShowAddModal(false)} />
+          </div>
+        </div>
+      )}
+
+      {editingService && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+          <div className="w-full max-w-2xl bg-white rounded-[24px] p-8 shadow-2xl border border-gray-100 max-h-[90vh] overflow-y-auto scrollbar-hide">
+            <h3 className="font-extrabold text-2xl text-gray-900 tracking-tight mb-6">Edit Service</h3>
+            <ServiceForm form={editForm} setForm={setEditForm} isEdit={true} onSave={handleSaveEdit} onCancel={() => { setEditingService(null); setEditForm({}); }} />
           </div>
         </div>
       )}
@@ -1099,50 +1151,55 @@ function ReviewsManager() {
     }
   };
 
-  if (loading) return <Loader2 className="w-6 h-6 animate-spin" style={{ color: '#b38b9e' }} />;
+  if (loading) return <div className="flex justify-center py-12"><Loader2 className="w-8 h-8 animate-spin text-gray-400" /></div>;
 
   return (
-    <div className="space-y-3">
-      {reviews.length === 0 ? (
-        <p className="text-center py-8" style={{ color: '#5a4850' }}>No reviews yet.</p>
-      ) : (
-        reviews.map((review) => (
-          <div key={review.id} className="rounded-2xl p-5" style={{ background: 'rgba(223,191,174,0.7)', border: '1px solid rgba(74,35,17,0.12)' }}>
-            <div className="flex items-start justify-between mb-3">
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <h4 className="font-medium" style={{ color: '#3d2e36' }}>{review.client_name}</h4>
-                  <div className="flex gap-0.5">
-                    {[...Array(review.rating)].map((_, i) => (
-                      <Star key={i} className="w-3.5 h-3.5" style={{ fill: '#b38b9e', color: '#b38b9e' }} />
-                    ))}
+    <div className="space-y-6">
+      <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+        <h3 className="font-extrabold tracking-tight text-xl text-gray-900">Manage Reviews</h3>
+        <p className="text-sm text-gray-500 font-medium mt-1">Publish or hide client feedback from your public page.</p>
+      </div>
+
+      <div className="space-y-4">
+        {reviews.length === 0 ? (
+          <div className="py-12 text-center text-gray-500 font-medium bg-gray-50 rounded-2xl border border-gray-200">No reviews yet.</div>
+        ) : (
+          reviews.map((review) => (
+            <div key={review.id} className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <div className="flex items-center gap-3 mb-2">
+                    <h4 className="font-bold text-gray-900 text-lg leading-tight">{review.client_name}</h4>
+                    <div className="flex gap-1">
+                      {[...Array(review.rating)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                      ))}
+                    </div>
                   </div>
+                  <p className="text-sm font-medium text-gray-700 leading-relaxed max-w-3xl">"{review.comment}"</p>
                 </div>
-                <p className="text-sm" style={{ color: '#b38b9e' }}>{review.comment}</p>
+                <span className={`text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-md shrink-0 ${review.is_published ? 'bg-green-50 text-green-600 border border-green-200' : 'bg-gray-100 text-gray-500 border border-gray-200'}`}>
+                  {review.is_published ? 'Published' : 'Hidden'}
+                </span>
               </div>
-              <span className="text-xs px-2 py-1 rounded-full shrink-0" style={{ background: review.is_published ? 'rgba(60,180,60,0.15)' : 'rgba(255,255,255,0.6)', color: review.is_published ? '#6be06b' : '#5a4850' }}>
-                {review.is_published ? 'Published' : 'Hidden'}
-              </span>
+              <div className="flex gap-3 mt-6 pt-4 border-t border-gray-100">
+                <button
+                  onClick={() => togglePublish(review.id, review.is_published)}
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors ${review.is_published ? 'bg-gray-100 text-gray-600 hover:bg-gray-200' : 'bg-blue-50 text-blue-600 border border-blue-200 hover:bg-blue-100'}`}
+                >
+                  {review.is_published ? 'Hide Review' : 'Publish Review'}
+                </button>
+                <button
+                  onClick={() => deleteReview(review.id)}
+                  className="px-4 py-2 rounded-xl text-xs font-bold bg-white text-red-600 border border-red-200 hover:bg-red-50 transition-colors flex items-center gap-2"
+                >
+                  <Trash2 className="w-3.5 h-3.5" /> Delete
+                </button>
+              </div>
             </div>
-            <div className="flex gap-2">
-              <button
-                onClick={() => togglePublish(review.id, review.is_published)}
-                className="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
-                style={{ background: 'rgba(255,255,255,0.5)', color: '#b38b9e', border: '1px solid rgba(179, 139, 158, 0.08)' }}
-              >
-                {review.is_published ? 'Hide' : 'Publish'}
-              </button>
-              <button
-                onClick={() => deleteReview(review.id)}
-                className="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
-                style={{ background: 'rgba(200,60,60,0.1)', color: 'rgba(200,80,80,0.8)', border: '1px solid rgba(200,60,60,0.15)' }}
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        ))
-      )}
+          ))
+        )}
+      </div>
     </div>
   );
 }
