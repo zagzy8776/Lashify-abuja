@@ -53,6 +53,16 @@ export default function Services({ onNavigate, onBookService, compact }: Props) 
     loadServices();
   }, []);
 
+  // Disable body scroll when modal is open
+  useEffect(() => {
+    if (selectedCategory) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => { document.body.style.overflow = 'unset'; };
+  }, [selectedCategory]);
+
   if (loading) {
     return (
       <section className="py-24 bg-gray-50">
@@ -66,16 +76,6 @@ export default function Services({ onNavigate, onBookService, compact }: Props) 
       </section>
     );
   }
-
-  // Disable body scroll when modal is open
-  useEffect(() => {
-    if (selectedCategory) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => { document.body.style.overflow = 'unset'; };
-  }, [selectedCategory]);
 
   const activeCategory = CATEGORIES.find(c => c.id === selectedCategory);
   const modalServices = servicesList.filter(s => s.category === selectedCategory && s.is_active !== false);
