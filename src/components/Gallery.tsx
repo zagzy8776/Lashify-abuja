@@ -131,7 +131,10 @@ export default function Gallery() {
               <img
                 src={item.image_url}
                 alt={item.title}
-                loading="lazy"
+                loading={idx < 4 ? 'eager' : 'lazy'}
+                decoding="async"
+                width="400"
+                height="400"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 style={{ filter: 'brightness(0.8) saturate(0.9)' }}
               />

@@ -154,8 +154,10 @@ function GlowCircle() {
         }}
       >
         <img
-          src="/images/studio.jpg"
+          src="/images/studio.webp"
           alt="LashifyAbuja Studio"
+          width="380"
+          height="380"
           className="w-full h-full object-cover"
           style={{
             filter: 'brightness(1.0) contrast(1.05) saturate(0.9)',

@@ -80,8 +80,10 @@ export default function Navbar({ onNavigate, currentPage }: Props) {
         <button onClick={handleLogoTap} className="flex items-center gap-3 group">
           <div className="w-11 h-11 transition-all duration-300">
             <img
-              src="/images/logo.png"
+              src="/images/logo.webp"
               alt="LashifyAbuja Logo"
+              width="44"
+              height="44"
               className="w-full h-full object-contain"
             />
           </div>

@@ -14,19 +14,19 @@ const CATEGORIES = [
     id: 'lash',
     title: 'Lash Services',
     description: 'Luxurious lash extensions tailored to your eye shape.',
-    image: 'https://images.unsplash.com/photo-1588514106606-d083bc5dfac7?q=80&w=800&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1588514106606-d083bc5dfac7?auto=format&fit=crop&q=75&w=600',
   },
   {
     id: 'brows',
     title: 'Brow Services',
     description: 'Expert brow shaping, tinting, and microblading.',
-    image: 'https://images.unsplash.com/photo-1596704017254-9b121068fb31?q=80&w=800&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1596704017254-9b121068fb31?auto=format&fit=crop&q=75&w=600',
   },
   {
     id: 'lash-refill',
     title: 'Lash Fills',
     description: 'Maintain your gorgeous lashes with regular refills.',
-    image: 'https://images.unsplash.com/photo-1512496015851-a1dc8a477d5b?q=80&w=800&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1512496015851-a1dc8a477d5b?auto=format&fit=crop&q=75&w=600',
   }
 ];
 
@@ -103,6 +103,10 @@ export default function Services({ onNavigate, onBookService, compact }: Props) 
                 <img 
                   src={cat.image} 
                   alt={cat.title} 
+                  loading="lazy"
+                  decoding="async"
+                  width="600"
+                  height="800"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-300" />
