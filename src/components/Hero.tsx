@@ -87,7 +87,7 @@ export default function Hero({ onNavigate, onBookService }: Props) {
 
             <button 
               onClick={handleSearch}
-              className="w-full md:w-auto mt-2 md:mt-0 bg-black hover:bg-gray-800 text-white font-bold text-lg px-10 h-14 md:h-16 rounded-xl md:rounded-full transition-all duration-200 active:scale-95 flex items-center justify-center flex-shrink-0"
+              className="w-full md:w-auto mt-2 md:mt-0 bg-rose-500 hover:bg-rose-600 text-white font-bold text-lg px-10 h-14 md:h-16 rounded-xl md:rounded-full transition-all duration-200 active:scale-95 flex items-center justify-center flex-shrink-0"
             >
               Search
             </button>

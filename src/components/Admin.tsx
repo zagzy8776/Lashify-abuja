@@ -82,7 +82,7 @@ export default function Admin({ onNavigate }: Props) {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900"
+                className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-all font-medium text-gray-900"
                 placeholder="admin@lashifyabuja.com"
                 required
               />
@@ -93,7 +93,7 @@ export default function Admin({ onNavigate }: Props) {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900"
+                className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-all font-medium text-gray-900"
                 placeholder="••••••••"
                 required
               />
@@ -104,7 +104,7 @@ export default function Admin({ onNavigate }: Props) {
             <button
               type="submit"
               disabled={loggingIn}
-              className="w-full h-14 bg-black text-white font-bold rounded-xl hover:bg-gray-800 transition-colors disabled:opacity-60 flex items-center justify-center shadow-sm"
+              className="w-full h-14 bg-rose-500 text-white font-bold rounded-xl hover:bg-rose-600 transition-colors disabled:opacity-60 flex items-center justify-center shadow-sm"
             >
               {loggingIn ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Sign In'}
             </button>
@@ -294,7 +294,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
               onClick={() => setTab(t.key)}
               className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all relative ${
                 tab === t.key
-                  ? 'bg-black text-white shadow-md'
+                  ? 'bg-rose-500 text-white shadow-md'
                   : 'bg-white text-gray-600 border border-gray-200 hover:border-gray-300 hover:bg-gray-50'
               }`}
             >
@@ -448,41 +448,41 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
         {tab === 'reviews' && <ReviewsManager />}
 
       {editingAppointment && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-rose-500/40 backdrop-blur-sm">
           <div className="w-full max-w-xl bg-white rounded-3xl p-8 shadow-2xl border border-gray-100 max-h-[90vh] overflow-y-auto scrollbar-hide">
             <h3 className="font-extrabold text-2xl text-gray-900 tracking-tight mb-6">Edit Booking Details</h3>
             <div className="space-y-5">
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Client Name</label>
-                  <input type="text" value={editApptForm.client_name || ''} onChange={(e) => setEditApptForm({ ...editApptForm, client_name: e.target.value })} className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900" />
+                  <input type="text" value={editApptForm.client_name || ''} onChange={(e) => setEditApptForm({ ...editApptForm, client_name: e.target.value })} className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-all font-medium text-gray-900" />
                 </div>
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Phone Number</label>
-                  <input type="text" value={editApptForm.client_phone || ''} onChange={(e) => setEditApptForm({ ...editApptForm, client_phone: e.target.value })} className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900" />
+                  <input type="text" value={editApptForm.client_phone || ''} onChange={(e) => setEditApptForm({ ...editApptForm, client_phone: e.target.value })} className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-all font-medium text-gray-900" />
                 </div>
               </div>
               <div>
                 <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Email Address (Optional)</label>
-                <input type="email" value={editApptForm.client_email || ''} onChange={(e) => setEditApptForm({ ...editApptForm, client_email: e.target.value })} className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900" />
+                <input type="email" value={editApptForm.client_email || ''} onChange={(e) => setEditApptForm({ ...editApptForm, client_email: e.target.value })} className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-all font-medium text-gray-900" />
               </div>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Date</label>
-                  <input type="date" value={editApptForm.appointment_date || ''} onChange={(e) => setEditApptForm({ ...editApptForm, appointment_date: e.target.value })} className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900" />
+                  <input type="date" value={editApptForm.appointment_date || ''} onChange={(e) => setEditApptForm({ ...editApptForm, appointment_date: e.target.value })} className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-all font-medium text-gray-900" />
                 </div>
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Time</label>
-                  <input type="time" value={editApptForm.start_time || ''} onChange={(e) => setEditApptForm({ ...editApptForm, start_time: e.target.value })} className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900" />
+                  <input type="time" value={editApptForm.start_time || ''} onChange={(e) => setEditApptForm({ ...editApptForm, start_time: e.target.value })} className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-all font-medium text-gray-900" />
                 </div>
               </div>
               <div>
                 <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Notes / Payment Ref</label>
-                <textarea value={editApptForm.notes || ''} onChange={(e) => setEditApptForm({ ...editApptForm, notes: e.target.value })} className="w-full bg-gray-50 border border-gray-200 rounded-xl p-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900 min-h-[80px]" />
+                <textarea value={editApptForm.notes || ''} onChange={(e) => setEditApptForm({ ...editApptForm, notes: e.target.value })} className="w-full bg-gray-50 border border-gray-200 rounded-xl p-4 outline-none focus:bg-white focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-all font-medium text-gray-900 min-h-[80px]" />
               </div>
             </div>
             <div className="flex gap-3 mt-8">
-              <button onClick={handleSaveEditAppointment} disabled={savingAppt} className="flex-1 h-12 bg-black text-white font-bold rounded-xl hover:bg-gray-800 transition-colors disabled:opacity-50 shadow-sm flex items-center justify-center">
+              <button onClick={handleSaveEditAppointment} disabled={savingAppt} className="flex-1 h-12 bg-rose-500 text-white font-bold rounded-xl hover:bg-rose-600 transition-colors disabled:opacity-50 shadow-sm flex items-center justify-center">
                 {savingAppt ? <Loader2 className="w-5 h-5 animate-spin inline" /> : 'Save Changes'}
               </button>
               <button onClick={() => setEditingAppointment(null)} disabled={savingAppt} className="px-6 h-12 bg-white text-gray-600 font-bold rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors">
@@ -661,7 +661,7 @@ function AppointmentRow({ apt, onStatusChange, onEdit, onDelete, compact }: {
 function ConfirmModal({ isOpen, title, message, onConfirm, onCancel, confirmText = 'Delete', isDanger = true }: { isOpen: boolean, title: string, message: string, onConfirm: () => void, onCancel: () => void, confirmText?: string, isDanger?: boolean }) {
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-rose-500/50 backdrop-blur-sm animate-in fade-in duration-200">
       <div className="w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl border border-gray-100 scale-100 animate-in zoom-in-95 duration-200">
         <h3 className="font-extrabold text-xl text-gray-900 tracking-tight mb-2">{title}</h3>
         <p className="text-sm text-gray-500 font-medium mb-6 leading-relaxed">{message}</p>
@@ -669,7 +669,7 @@ function ConfirmModal({ isOpen, title, message, onConfirm, onCancel, confirmText
           <button onClick={onCancel} className="flex-1 h-12 bg-gray-50 text-gray-700 font-bold rounded-xl hover:bg-gray-100 transition-colors">
             Cancel
           </button>
-          <button onClick={onConfirm} className={`flex-1 h-12 text-white font-bold rounded-xl transition-colors ${isDanger ? 'bg-red-600 hover:bg-red-700' : 'bg-black hover:bg-gray-800'}`}>
+          <button onClick={onConfirm} className={`flex-1 h-12 text-white font-bold rounded-xl transition-colors ${isDanger ? 'bg-red-600 hover:bg-red-700' : 'bg-rose-500 hover:bg-rose-600'}`}>
             {confirmText}
           </button>
         </div>
@@ -793,7 +793,7 @@ function GalleryManager() {
         </div>
         <button
           onClick={() => setShowAddModal(true)}
-          className="px-5 py-2.5 bg-black text-white text-sm font-bold rounded-xl hover:bg-gray-800 transition-colors shadow-sm flex items-center gap-2"
+          className="px-5 py-2.5 bg-rose-500 text-white text-sm font-bold rounded-xl hover:bg-rose-600 transition-colors shadow-sm flex items-center gap-2"
         >
           <span>+</span> Add Image
         </button>
@@ -803,7 +803,7 @@ function GalleryManager() {
         {items.map((item) => (
           <div key={item.id} className="group relative aspect-square rounded-2xl overflow-hidden border border-gray-200 bg-gray-50 shadow-sm">
             <img src={item.image_url} alt={item.title} className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-4">
+            <div className="absolute inset-0 bg-rose-500/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-4">
               <p className="text-white text-sm font-bold mb-3 text-center tracking-wide">{item.title}</p>
               <div className="flex gap-2">
                 <button
@@ -833,7 +833,7 @@ function GalleryManager() {
       </div>
 
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-rose-500/40 backdrop-blur-sm">
           <div className="w-full max-w-md bg-white rounded-3xl p-8 shadow-2xl border border-gray-100">
             <div className="flex justify-between items-center mb-6">
               <h3 className="font-extrabold text-2xl text-gray-900 tracking-tight">Add Gallery Image</h3>
@@ -850,13 +850,13 @@ function GalleryManager() {
                   placeholder="e.g. Classic Wispy Set"
                   value={newItem.title}
                   onChange={(e) => setNewItem({ ...newItem, title: e.target.value })}
-                  className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900"
+                  className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-all font-medium text-gray-900"
                 />
               </div>
               
               <div>
                 <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Category</label>
-                <select value={newItem.category} onChange={(e) => setNewItem({...newItem, category: e.target.value})} className="w-full h-12 bg-white border border-gray-200 rounded-lg px-4 outline-none focus:border-black focus:ring-1 focus:ring-black">
+                <select value={newItem.category} onChange={(e) => setNewItem({...newItem, category: e.target.value})} className="w-full h-12 bg-white border border-gray-200 rounded-lg px-4 outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500">
                   <option value="lash">LASH</option>
                   <option value="brows">BROWS</option>
                   <option value="lash-refill">LASH REFILL</option>
@@ -897,7 +897,7 @@ function GalleryManager() {
                 <button 
                   onClick={addItem} 
                   disabled={!newItem.title.trim() || !newItem.image_url.trim() || uploading} 
-                  className="flex-1 h-12 bg-black text-white font-bold rounded-xl hover:bg-gray-800 transition-colors disabled:opacity-50 shadow-sm"
+                  className="flex-1 h-12 bg-rose-500 text-white font-bold rounded-xl hover:bg-rose-600 transition-colors disabled:opacity-50 shadow-sm"
                 >
                   Save Image
                 </button>
@@ -914,24 +914,24 @@ function GalleryManager() {
       )}
 
       {editingItem && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-rose-500/40 backdrop-blur-sm">
           <div className="w-full max-w-md bg-white rounded-3xl p-8 shadow-2xl border border-gray-100">
             <h3 className="font-extrabold text-2xl text-gray-900 tracking-tight mb-6">Edit Gallery Image</h3>
             <div className="space-y-5">
               <div>
                 <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Title / Description</label>
-                <input type="text" placeholder="e.g. Classic Wispy Set" value={editingItem.title} onChange={(e) => setEditingItem({ ...editingItem, title: e.target.value })} className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900" />
+                <input type="text" placeholder="e.g. Classic Wispy Set" value={editingItem.title} onChange={(e) => setEditingItem({ ...editingItem, title: e.target.value })} className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-all font-medium text-gray-900" />
               </div>
               <div>
                 <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Category</label>
-                <select value={editingItem.category} onChange={(e) => setEditingItem({...editingItem, category: e.target.value})} className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900">
+                <select value={editingItem.category} onChange={(e) => setEditingItem({...editingItem, category: e.target.value})} className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-all font-medium text-gray-900">
                   <option value="lash">LASH</option>
                   <option value="brows">BROWS</option>
                   <option value="lash-refill">LASH REFILL</option>
                 </select>
               </div>
               <div className="flex gap-3 mt-8">
-                <button onClick={handleSaveEdit} disabled={!editingItem.title.trim()} className="flex-1 h-12 bg-black text-white font-bold rounded-xl hover:bg-gray-800 transition-colors disabled:opacity-50 shadow-sm">
+                <button onClick={handleSaveEdit} disabled={!editingItem.title.trim()} className="flex-1 h-12 bg-rose-500 text-white font-bold rounded-xl hover:bg-rose-600 transition-colors disabled:opacity-50 shadow-sm">
                   Save Changes
                 </button>
                 <button onClick={() => setEditingItem(null)} className="px-6 h-12 bg-white text-gray-600 font-bold rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors">
@@ -1079,11 +1079,11 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
     <div className="space-y-5">
       <div>
         <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Service Name</label>
-        <input type="text" placeholder="e.g. Volume Lashes" value={form.name || ''} onChange={(e) => setForm({...form, name: e.target.value})} className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900" />
+        <input type="text" placeholder="e.g. Volume Lashes" value={form.name || ''} onChange={(e) => setForm({...form, name: e.target.value})} className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-all font-medium text-gray-900" />
       </div>
       <div>
         <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Category</label>
-        <select value={form.category || 'lash'} onChange={(e) => setForm({...form, category: e.target.value})} className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900">
+        <select value={form.category || 'lash'} onChange={(e) => setForm({...form, category: e.target.value})} className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-all font-medium text-gray-900">
           <option value="lash">LASH</option>
           <option value="brows">BROWS</option>
           <option value="lash-refill">LASH REFILL</option>
@@ -1091,20 +1091,20 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
       </div>
       <div>
         <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Description</label>
-        <textarea placeholder="Describe the service..." value={form.description || ''} onChange={(e) => setForm({...form, description: e.target.value})} className="w-full bg-gray-50 border border-gray-200 rounded-xl p-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900 min-h-[100px]" />
+        <textarea placeholder="Describe the service..." value={form.description || ''} onChange={(e) => setForm({...form, description: e.target.value})} className="w-full bg-gray-50 border border-gray-200 rounded-xl p-4 outline-none focus:bg-white focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-all font-medium text-gray-900 min-h-[100px]" />
       </div>
       <div className="grid sm:grid-cols-3 gap-4">
         <div>
           <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Price (₦)</label>
-          <input type="number" placeholder="0" value={form.price || ''} onChange={(e) => setForm({...form, price: Number(e.target.value)})} className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900" />
+          <input type="number" placeholder="0" value={form.price || ''} onChange={(e) => setForm({...form, price: Number(e.target.value)})} className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-all font-medium text-gray-900" />
         </div>
         <div>
           <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Time (mins)</label>
-          <input type="number" placeholder="60" value={form.duration_minutes || ''} onChange={(e) => setForm({...form, duration_minutes: Number(e.target.value)})} className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900" />
+          <input type="number" placeholder="60" value={form.duration_minutes || ''} onChange={(e) => setForm({...form, duration_minutes: Number(e.target.value)})} className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-all font-medium text-gray-900" />
         </div>
         <div>
           <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Custom Time Label</label>
-          <input type="text" placeholder="e.g. 2hrs" value={form.duration_text || ''} onChange={(e) => setForm({...form, duration_text: e.target.value})} className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900" />
+          <input type="text" placeholder="e.g. 2hrs" value={form.duration_text || ''} onChange={(e) => setForm({...form, duration_text: e.target.value})} className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-all font-medium text-gray-900" />
         </div>
       </div>
       <div>
@@ -1129,7 +1129,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
         </div>
       </div>
       <div className="flex gap-3 mt-8">
-        <button onClick={onSave} disabled={saving || !form.name?.trim() || !form.price} className="flex-1 h-14 bg-black text-white font-bold rounded-xl hover:bg-gray-800 transition-colors disabled:opacity-50 flex items-center justify-center shadow-sm">
+        <button onClick={onSave} disabled={saving || !form.name?.trim() || !form.price} className="flex-1 h-14 bg-rose-500 text-white font-bold rounded-xl hover:bg-rose-600 transition-colors disabled:opacity-50 flex items-center justify-center shadow-sm">
           {saving ? <Loader2 className="w-5 h-5 animate-spin inline" /> : 'Save Service'}
         </button>
         <button onClick={onCancel} disabled={saving} className="px-6 h-14 bg-white text-gray-600 font-bold rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors">
@@ -1148,7 +1148,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
         </div>
         <button
           onClick={() => setShowAddModal(true)}
-          className="px-5 py-2.5 bg-black text-white text-sm font-bold rounded-xl hover:bg-gray-800 transition-colors shadow-sm flex items-center gap-2"
+          className="px-5 py-2.5 bg-rose-500 text-white text-sm font-bold rounded-xl hover:bg-rose-600 transition-colors shadow-sm flex items-center gap-2"
         >
           <span>+</span> Add Service
         </button>
@@ -1187,7 +1187,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
               </div>
             </div>
             <div className="flex items-center gap-3 pl-4 border-l border-gray-100">
-              <button onClick={() => toggleServiceActive(svc.id, svc.is_active)} className={`relative w-12 h-6 rounded-full transition-colors focus:outline-none ${svc.is_active ? 'bg-black' : 'bg-gray-200'}`} title={svc.is_active ? 'Deactivate' : 'Activate'}>
+              <button onClick={() => toggleServiceActive(svc.id, svc.is_active)} className={`relative w-12 h-6 rounded-full transition-colors focus:outline-none ${svc.is_active ? 'bg-rose-500' : 'bg-gray-200'}`} title={svc.is_active ? 'Deactivate' : 'Activate'}>
                 <span className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform shadow-sm ${svc.is_active ? 'left-[26px]' : 'left-1'}`} />
               </button>
               <div className="w-px h-6 bg-gray-100 mx-1"></div>
@@ -1206,7 +1206,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
       </div>
 
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-rose-500/40 backdrop-blur-sm">
           <div className="w-full max-w-2xl bg-white rounded-[24px] p-8 shadow-2xl border border-gray-100 max-h-[90vh] overflow-y-auto scrollbar-hide">
             <h3 className="font-extrabold text-2xl text-gray-900 tracking-tight mb-6">Add New Service</h3>
             <ServiceForm form={newItem} setForm={setNewItem} isEdit={false} onSave={handleAddService} onCancel={() => setShowAddModal(false)} />
@@ -1215,7 +1215,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
       )}
 
       {editingService && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-rose-500/40 backdrop-blur-sm">
           <div className="w-full max-w-2xl bg-white rounded-[24px] p-8 shadow-2xl border border-gray-100 max-h-[90vh] overflow-y-auto scrollbar-hide">
             <h3 className="font-extrabold text-2xl text-gray-900 tracking-tight mb-6">Edit Service</h3>
             <ServiceForm form={editForm} setForm={setEditForm} isEdit={true} onSave={handleSaveEdit} onCancel={() => { setEditingService(null); setEditForm({}); }} />
@@ -1237,6 +1237,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
 function ReviewsManager() {
   const [reviews, setReviews] = useState<{ id: string; client_name: string; rating: number; comment: string; is_published: boolean }[]>([]);
   const [loading, setLoading] = useState(true);
+  const [reviewToDelete, setReviewToDelete] = useState<{ id: string; name: string } | null>(null);
 
   useEffect(() => {
     const fetch = async () => {
@@ -1260,10 +1261,12 @@ function ReviewsManager() {
     }
   };
 
-  const deleteReview = async (id: string) => {
+  const confirmDeleteReview = async () => {
+    if (!reviewToDelete) return;
     try {
-      await adminDeleteReview(id);
-      setReviews(reviews.filter((r) => r.id !== id));
+      await adminDeleteReview(reviewToDelete.id);
+      setReviews(reviews.filter((r) => r.id !== reviewToDelete.id));
+      setReviewToDelete(null);
     } catch (err) {
       console.error('Failed to delete review:', err);
     }
@@ -1308,7 +1311,7 @@ function ReviewsManager() {
                   {review.is_published ? 'Hide Review' : 'Publish Review'}
                 </button>
                 <button
-                  onClick={() => deleteReview(review.id)}
+                  onClick={() => setReviewToDelete({ id: review.id, name: review.client_name })}
                   className="px-4 py-2 rounded-xl text-xs font-bold bg-white text-red-600 border border-red-200 hover:bg-red-50 transition-colors flex items-center gap-2"
                 >
                   <Trash2 className="w-3.5 h-3.5" /> Delete
@@ -1318,6 +1321,14 @@ function ReviewsManager() {
           ))
         )}
       </div>
+
+      <ConfirmModal
+        isOpen={!!reviewToDelete}
+        title="Delete Review"
+        message={`Are you sure you want to delete the review from ${reviewToDelete?.name}? This action cannot be undone.`}
+        onConfirm={confirmDeleteReview}
+        onCancel={() => setReviewToDelete(null)}
+      />
     </div>
   );
 }

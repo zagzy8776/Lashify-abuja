@@ -372,12 +372,12 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
               </div>
               <div className="flex items-center bg-white rounded-full border border-gray-200 p-1">
                 <button 
-                  className={`px-6 py-2 text-sm font-bold rounded-full transition-all ${groupSize === 1 ? 'bg-black text-white shadow-md' : 'text-gray-500 hover:text-black'}`}
+                  className={`px-6 py-2 text-sm font-bold rounded-full transition-all ${groupSize === 1 ? 'bg-rose-500 text-white shadow-md' : 'text-gray-500 hover:text-black'}`}
                   onClick={() => { setGroupSize(1); setSelectedTime(''); }}
                 >
                   Just Me
                 </button>
-                <div className={`flex items-center px-2 transition-all ${groupSize > 1 ? 'bg-black text-white rounded-full shadow-md' : 'text-gray-500'}`}>
+                <div className={`flex items-center px-2 transition-all ${groupSize > 1 ? 'bg-rose-500 text-white rounded-full shadow-md' : 'text-gray-500'}`}>
                   <button 
                     className="p-2 hover:opacity-70 disabled:opacity-30"
                     disabled={groupSize <= 1}
