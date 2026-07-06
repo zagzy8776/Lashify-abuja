@@ -691,6 +691,7 @@ function GalleryManager() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingItem, setEditingItem] = useState<{ id: string; title: string; category: string; image_url: string } | null>(null);
   const [itemToDelete, setItemToDelete] = useState<{ id: string, title: string } | null>(null);
+  const [savingItem, setSavingItem] = useState(false);
 
   useEffect(() => {
     const fetch = async () => {
@@ -744,7 +745,6 @@ function GalleryManager() {
     }
   };
 
-  const [savingItem, setSavingItem] = useState(false);
 
   const addItem = async () => {
     if (!newItem.title.trim() || !newItem.image_url.trim()) return;
