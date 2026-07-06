@@ -7,6 +7,7 @@ export type Service = {
   description: string;
   price: number;
   duration_minutes: number;
+  duration_text?: string;
   category: string;
   image_url: string | null;
   is_active: boolean;
@@ -299,15 +300,28 @@ export async function adminDeleteReview(id: string): Promise<void> {
 }
 
 export const services: Service[] = [
-  { id: 'p1', name: 'Classic Lashes', slug: 'classic-lashes', category: 'lashes', price: 20000, duration_minutes: 90, description: 'A single extension applied to each natural lash for a subtle, natural enhancement.', is_active: true, created_at: '', sort_order: 1, image_url: null },
-  { id: 'p2', name: 'Hybrid Lashes', slug: 'hybrid-lashes', category: 'lashes', price: 25000, duration_minutes: 120, description: 'A perfect blend of Classic and Volume lashes for a textured, fuller look.', is_active: true, created_at: '', sort_order: 2, image_url: null },
-  { id: 'p3', name: 'Russian Lashes', slug: 'russian-lashes', category: 'lashes', price: 30000, duration_minutes: 150, description: 'Multiple lightweight extensions applied to each natural lash for dramatic fluff and volume.', is_active: true, created_at: '', sort_order: 3, image_url: null },
-  { id: 'p4', name: 'Mega Volume', slug: 'mega-volume', category: 'lashes', price: 35000, duration_minutes: 180, description: 'The most dramatic, dense, and dark lash look available. Maximum fullness.', is_active: true, created_at: '', sort_order: 4, image_url: null },
-  { id: 'p5', name: 'Wispy Lashes', slug: 'wispy-lashes', category: 'lashes', price: 28000, duration_minutes: 135, description: 'Spiky, textured, and customized styling for a trendy, wispy effect.', is_active: true, created_at: '', sort_order: 5, image_url: null },
-  { id: 'p6', name: 'Microblading', slug: 'microblading', category: 'brows', price: 50000, duration_minutes: 120, description: 'Semi-permanent brow tattoo using hair-like strokes for a natural, fuller brow.', is_active: true, created_at: '', sort_order: 6, image_url: null },
-  { id: 'p7', name: 'Ombre Powder Brows', slug: 'ombre-powder-brows', category: 'brows', price: 60000, duration_minutes: 150, description: 'A soft, shaded brow pencil look that is semi-permanent and heals beautifully.', is_active: true, created_at: '', sort_order: 7, image_url: null },
-  { id: 'p8', name: 'Brow Lamination', slug: 'brow-lamination', category: 'brows', price: 25000, duration_minutes: 60, description: 'A perm for your brows that gives them a set, uniform shape for an extended period.', is_active: true, created_at: '', sort_order: 8, image_url: null },
-  { id: 'p10', name: 'Brow Shaping', slug: 'brow-shaping', category: 'brows', price: 8000, duration_minutes: 30, description: 'Expert brow mapping and shaping using high-quality wax.', is_active: true, created_at: '', sort_order: 10, image_url: null }
+  // BROWS
+  { id: 'b1', name: 'Ombré brows', slug: 'ombre-brows', category: 'brows', price: 50000, duration_minutes: 0, description: 'A soft, misty, powder-filled brow resembling the look of makeup. Perfect for a defined, flawless finish that lasts.', is_active: true, created_at: '', sort_order: 1, image_url: null },
+  { id: 'b2', name: 'Combo brows', slug: 'combo-brows', category: 'brows', price: 60000, duration_minutes: 0, description: 'The ultimate brow transformation combining the natural hair strokes of microblading with the soft shading of Ombré for beautiful dimension.', is_active: true, created_at: '', sort_order: 2, image_url: null },
+  { id: 'b3', name: 'Micro blading', slug: 'micro-blading', category: 'brows', price: 50000, duration_minutes: 0, description: 'Precise, semi-permanent hair-like strokes customized to enhance your natural brow shape for a fuller, ultra-realistic look.', is_active: true, created_at: '', sort_order: 3, image_url: null },
+  { id: 'b4', name: 'Brow laminating and tint', slug: 'brow-laminating-and-tint', category: 'brows', price: 25000, duration_minutes: 0, description: 'A gentle lift for your brows that creates a full, sleek, brushed-up look, paired with a custom tint for striking definition.', is_active: true, created_at: '', sort_order: 4, image_url: null },
+  { id: 'b5', name: 'Ombré brows touch up over 8 weeks', slug: 'ombre-brows-touch-up-over-8-weeks', category: 'brows', price: 25000, duration_minutes: 0, description: 'A necessary color and shape boost to keep your Ombré brows looking sharp, crisp, and beautifully pigmented.', is_active: true, created_at: '', sort_order: 5, image_url: null },
+  { id: 'b6', name: 'Ombré brows touch up over 8 months', slug: 'ombre-brows-touch-up-over-8-months', category: 'brows', price: 45000, duration_minutes: 0, description: 'An extended maintenance session to restore vibrancy, depth, and perfect definition to your existing Ombré brows.', is_active: true, created_at: '', sort_order: 6, image_url: null },
+
+  // LASH
+  { id: 'l1', name: 'Classic sets', slug: 'classic-sets', category: 'lash', price: 20000, duration_minutes: 120, duration_text: '2hrs', description: 'A timeless 1:1 application where a single extension is applied to each natural lash. Ideal for a subtle, elegant, mascara-like finish.', is_active: true, created_at: '', sort_order: 7, image_url: null },
+  { id: 'l2', name: 'Hybrid set', slug: 'hybrid-set', category: 'lash', price: 21500, duration_minutes: 120, duration_text: '2hrs', description: 'The perfect middle ground. A textured blend of classic and volume lashes for those who want a bit more fluff and everyday glamour.', is_active: true, created_at: '', sort_order: 8, image_url: null },
+  { id: 'l3', name: 'Volume sets', slug: 'volume-sets', category: 'lash', price: 25000, duration_minutes: 210, duration_text: '3:30', description: 'Hand-made fans applied to each natural lash, delivering incredible fullness, depth, and a dramatic, fluffy finish.', is_active: true, created_at: '', sort_order: 9, image_url: null },
+  { id: 'l4', name: 'Customize sets', slug: 'customize-sets', category: 'lash', price: 37000, duration_minutes: 210, duration_text: '3:30', description: 'A completely bespoke lash map tailored to your unique eye shape and style preference. The pinnacle of personalized luxury.', is_active: true, created_at: '', sort_order: 10, image_url: null },
+  { id: 'l5', name: 'Mega volume', slug: 'mega-volume', category: 'lash', price: 30000, duration_minutes: 210, duration_text: '3:30', description: 'Unapologetically bold. Ultra-fine fans for maximum density, darkness, and an intensely glamorous, show-stopping look.', is_active: true, created_at: '', sort_order: 11, image_url: null },
+  { id: 'l6', name: 'Bottom lashes', slug: 'bottom-lashes', category: 'lash', price: 7000, duration_minutes: 30, duration_text: '30m', description: 'A delicate enhancement applied to your lower lash line to balance your top set and subtly open up your eyes.', is_active: true, created_at: '', sort_order: 12, image_url: null },
+  { id: 'l7', name: 'Wispy hybrid set', slug: 'wispy-hybrid-set', category: 'lash', price: 27500, duration_minutes: 120, duration_text: '2hr', description: 'A highly textured, fluttery look featuring varying lengths and "spikes" to create a modern, effortlessly chic style.', is_active: true, created_at: '', sort_order: 13, image_url: null },
+  { id: 'l8', name: 'Anime set', slug: 'anime-set', category: 'lash', price: 23500, duration_minutes: 180, duration_text: '3hrs', description: 'A striking, defined style mimicking the spiky lash look of anime characters. Perfect for a doll-like, captivating gaze.', is_active: true, created_at: '', sort_order: 14, image_url: null },
+  { id: 'l9', name: 'Lash removal', slug: 'lash-removal', category: 'lash', price: 5000, duration_minutes: 30, duration_text: '30m', description: 'A gentle and safe professional removal of your lash extensions, ensuring the health and integrity of your natural lashes.', is_active: true, created_at: '', sort_order: 15, image_url: null },
+
+  // LASH REFILL
+  { id: 'r1', name: 'Volume set refill', slug: 'volume-set-refill', category: 'lash-refill', price: 14000, duration_minutes: 0, description: 'Maintenance to replace outgrown volume lashes and fill in gaps, restoring your set to its original fluffy glory.', is_active: true, created_at: '', sort_order: 16, image_url: null },
+  { id: 'r2', name: 'Hybrid refill', slug: 'hybrid-refill', category: 'lash-refill', price: 11500, duration_minutes: 0, description: 'A customized top-up of your classic and volume fans to refresh your textured, hybrid look and keep it flawless.', is_active: true, created_at: '', sort_order: 17, image_url: null }
 ];
 
 export const defaultTimeSlots: TimeSlot[] = [

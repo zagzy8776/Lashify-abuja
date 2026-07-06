@@ -4,20 +4,20 @@ import { X, ZoomIn } from 'lucide-react';
 
 const categoryLabels: Record<string, string> = {
   all: 'All Work',
-  lashes: 'Lashes',
-  brows: 'Brows',
-  other: 'Other',
+  'lash': 'Lash',
+  'brows': 'Brows',
+  'lash-refill': 'Lash Refill',
 };
 
 const fallbackImages = [
-  { url: '/images/studio.jpg', cat: 'lashes', title: 'Classic Set' },
-  { url: '/images/studio.jpg', cat: 'lashes', title: 'Volume Set' },
-  { url: '/images/studio.jpg', cat: 'lashes', title: 'Hybrid Set' },
+  { url: '/images/studio.jpg', cat: 'lash', title: 'Classic Set' },
+  { url: '/images/studio.jpg', cat: 'lash', title: 'Volume Set' },
+  { url: '/images/studio.jpg', cat: 'lash', title: 'Hybrid Set' },
   { url: '/images/studio.jpg', cat: 'brows', title: 'Brow Lamination' },
-  { url: '/images/studio.jpg', cat: 'lashes', title: 'Mega Volume' },
+  { url: '/images/studio.jpg', cat: 'lash', title: 'Mega Volume' },
   { url: '/images/studio.jpg', cat: 'brows', title: 'Brow Shaping' },
-  { url: '/images/studio.jpg', cat: 'lashes', title: 'Lash Refill' },
-  { url: '/images/studio.jpg', cat: 'other', title: 'Combo Set' },
+  { url: '/images/studio.jpg', cat: 'lash-refill', title: 'Lash Refill' },
+  { url: '/images/studio.jpg', cat: 'brows', title: 'Combo Brows' },
 ];
 
 export default function Gallery() {
@@ -65,7 +65,7 @@ export default function Gallery() {
   }, []);
 
   const filtered = filter === 'all' ? items : items.filter((i) => i.category === filter);
-  const categories = ['all', 'lashes', 'brows', 'other'];
+  const categories = ['all', 'lash', 'brows', 'lash-refill'];
 
   if (loading) {
     return (

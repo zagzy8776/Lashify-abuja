@@ -10,9 +10,9 @@ type Props = {
 };
 
 const categoryLabels: Record<string, string> = {
-  lashes: 'Lash Extensions',
-  brows: 'Brow Artistry',
-  other: 'Signature Packages',
+  'lash': 'LASH',
+  'brows': 'BROWS',
+  'lash-refill': 'LASH REFILL',
 };
 
 export default function Services({ onNavigate, onBookService, compact }: Props) {
@@ -37,7 +37,7 @@ export default function Services({ onNavigate, onBookService, compact }: Props) 
     loadServices();
   }, []);
 
-  const categories = ['lashes', 'brows', 'other'];
+  const categories = ['lash', 'brows', 'lash-refill'];
   const displayCount = compact ? 6 : undefined;
 
   if (loading) {
@@ -110,10 +110,14 @@ export default function Services({ onNavigate, onBookService, compact }: Props) 
                       </p>
 
                       <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                        <span className="flex items-center gap-1.5 text-sm font-semibold text-gray-600">
-                          <Clock className="w-4 h-4 text-gray-400" />
-                          {formatDuration(service.duration_minutes)}
-                        </span>
+                        {service.duration_text || service.duration_minutes > 0 ? (
+                          <span className="flex items-center gap-1.5 text-sm font-semibold text-gray-600">
+                            <Clock className="w-4 h-4 text-gray-400" />
+                            {service.duration_text || formatDuration(service.duration_minutes)}
+                          </span>
+                        ) : (
+                          <span />
+                        )}
                         
                         <button className="flex items-center gap-2 text-sm font-bold text-gray-900 transition-colors group-hover:translate-x-1 duration-300">
                           Book

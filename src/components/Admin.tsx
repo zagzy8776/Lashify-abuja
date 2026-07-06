@@ -648,7 +648,7 @@ function AppointmentRow({ apt, onStatusChange, onEdit, onDelete, compact }: {
 function GalleryManager() {
   const [items, setItems] = useState<{ id: string; title: string; category: string; image_url: string }[]>([]);
   const [loading, setLoading] = useState(true);
-  const [newItem, setNewItem] = useState({ title: '', category: 'lashes', image_url: '' });
+  const [newItem, setNewItem] = useState({ title: '', category: 'lash', image_url: '' });
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -714,7 +714,7 @@ function GalleryManager() {
         image_url: newItem.image_url.trim(),
       });
       setItems([data, ...items]);
-      setNewItem({ title: '', category: 'lashes', image_url: '' });
+      setNewItem({ title: '', category: 'lash', image_url: '' });
       setShowAddModal(false);
     } catch (err) {
       console.error('Failed to add gallery item:', err);
@@ -794,14 +794,10 @@ function GalleryManager() {
               
               <div>
                 <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Category</label>
-                <select
-                  value={newItem.category}
-                  onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
-                  className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900"
-                >
-                  <option value="lashes">Lashes</option>
-                  <option value="brows">Brows</option>
-                  <option value="other">Other</option>
+                <select value={newItem.category} onChange={(e) => setNewItem({...newItem, category: e.target.value})} className="w-full h-12 bg-white border border-gray-200 rounded-lg px-4 outline-none focus:border-black focus:ring-1 focus:ring-black">
+                  <option value="lash">LASH</option>
+                  <option value="brows">BROWS</option>
+                  <option value="lash-refill">LASH REFILL</option>
                 </select>
               </div>
               
@@ -869,7 +865,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
   const [saving, setSaving] = useState(false);
 
   const [showAddModal, setShowAddModal] = useState(false);
-  const [newItem, setNewItem] = useState<Partial<Service>>({ name: '', description: '', price: 0, duration_minutes: 60, category: 'lashes', image_url: '' });
+  const [newItem, setNewItem] = useState<Partial<Service>>({ name: '', description: '', price: 0, duration_minutes: 0, duration_text: '', category: 'lash', image_url: '' });
   
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -924,7 +920,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
     try {
       const data = await adminCreateService(newItem);
       setServices([...services, data]);
-      setNewItem({ name: '', description: '', price: 0, duration_minutes: 60, category: 'lashes', image_url: '' });
+      setNewItem({ name: '', description: '', price: 0, duration_minutes: 0, duration_text: '', category: 'lash', image_url: '' });
       setShowAddModal(false);
     } catch (err) {
       console.error('Failed to create service:', err);
@@ -942,6 +938,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
       description: service.description,
       price: service.price,
       duration_minutes: service.duration_minutes,
+      duration_text: service.duration_text,
       category: service.category,
       image_url: service.image_url,
     });
@@ -984,24 +981,28 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
       </div>
       <div>
         <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Category</label>
-        <select value={form.category || 'lashes'} onChange={(e) => setForm({...form, category: e.target.value})} className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900">
-          <option value="lashes">Lashes</option>
-          <option value="brows">Brows</option>
-          <option value="other">Other</option>
+        <select value={form.category || 'lash'} onChange={(e) => setForm({...form, category: e.target.value})} className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900">
+          <option value="lash">LASH</option>
+          <option value="brows">BROWS</option>
+          <option value="lash-refill">LASH REFILL</option>
         </select>
       </div>
       <div>
         <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Description</label>
         <textarea placeholder="Describe the service..." value={form.description || ''} onChange={(e) => setForm({...form, description: e.target.value})} className="w-full bg-gray-50 border border-gray-200 rounded-xl p-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900 min-h-[100px]" />
       </div>
-      <div className="grid sm:grid-cols-2 gap-4">
+      <div className="grid sm:grid-cols-3 gap-4">
         <div>
           <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Price (₦)</label>
           <input type="number" placeholder="0" value={form.price || ''} onChange={(e) => setForm({...form, price: Number(e.target.value)})} className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900" />
         </div>
         <div>
-          <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Duration (min)</label>
+          <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Time (mins)</label>
           <input type="number" placeholder="60" value={form.duration_minutes || ''} onChange={(e) => setForm({...form, duration_minutes: Number(e.target.value)})} className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900" />
+        </div>
+        <div>
+          <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Custom Time Label</label>
+          <input type="text" placeholder="e.g. 2hrs" value={form.duration_text || ''} onChange={(e) => setForm({...form, duration_text: e.target.value})} className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition-all font-medium text-gray-900" />
         </div>
       </div>
       <div>
@@ -1069,11 +1070,18 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
                     {svc.is_active ? 'Active' : 'Inactive'}
                   </span>
                   <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-gray-100 text-gray-600 border border-gray-200">
-                    {svc.category}
+                    {svc.category.replace('-', ' ')}
                   </span>
                 </div>
                 <p className="text-sm font-medium text-gray-500 mb-1">{svc.description?.substring(0, 80)}{svc.description?.length > 80 ? '...' : ''}</p>
-                <p className="text-sm font-bold text-gray-900">{formatNaira(svc.price)} <span className="text-gray-400 font-medium">· {formatDuration(svc.duration_minutes)}</span></p>
+                <p className="text-sm font-bold text-gray-900">
+                  {formatNaira(svc.price)} 
+                  {(svc.duration_text || svc.duration_minutes > 0) && (
+                    <span className="text-gray-400 font-medium">
+                      · {svc.duration_text || formatDuration(svc.duration_minutes)}
+                    </span>
+                  )}
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-3 pl-4 border-l border-gray-100">
