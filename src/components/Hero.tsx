@@ -44,7 +44,7 @@ export default function Hero({ onNavigate, onBookService }: Props) {
   const categories = Array.from(new Set(servicesList.map(s => s.category)));
 
   return (
-    <section className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden bg-white pt-24 pb-20">
+    <section className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden pt-24 pb-20" style={{ backgroundColor: '#faf5f0' }}>
       
       {/* Animated Spotlights */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -56,10 +56,13 @@ export default function Hero({ onNavigate, onBookService }: Props) {
         
         <div className={`transition-all duration-1000 w-full ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <h1 className="text-5xl md:text-7xl lg:text-[5rem] font-extrabold tracking-tight text-gray-900 mb-6 leading-[1.05]">
-            Book local selfcare services
+            ABUJA'S #1 LASH STUDIO
           </h1>
-          <p className="text-lg md:text-xl text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed">
-            Discover top-rated lash extensions, brow artistry, and beauty experts at Abuja's most trusted specialist.
+          <p className="text-lg md:text-xl text-gray-600 mb-4 max-w-2xl mx-auto leading-relaxed font-medium">
+            Where your eyes become art
+          </p>
+          <p className="text-base md:text-lg text-gray-500 mb-12 max-w-2xl mx-auto leading-relaxed">
+            Luxury lash extensions &amp; brow artistry by Lashify — Abuja's most trusted specialist.
           </p>
 
           {/* The Booking/Search Bar */}
@@ -71,7 +74,7 @@ export default function Hero({ onNavigate, onBookService }: Props) {
             >
               <Search className="w-6 h-6 text-gray-400 group-hover:text-gray-900 transition-colors flex-shrink-0" />
               <div className="flex flex-col items-start w-full overflow-hidden">
-                <span className="text-[11px] font-bold text-gray-900 uppercase tracking-widest mb-0.5">Treatment</span>
+                <span className="text-[11px] font-bold text-gray-900 uppercase tracking-widest mb-0.5">Book Appointment</span>
                 <span className={`text-base font-medium truncate w-full text-left ${selectedService ? 'text-gray-900' : 'text-gray-500'}`}>
                   {selectedService ? selectedService.name : 'All treatments'}
                 </span>

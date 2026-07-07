@@ -5,7 +5,7 @@
 @layer base {
   html, body {
     overflow-x: hidden;
-    background-color: #ffffff; /* Crisp white like Fresha */
+    background-color: #faf5f0; /* Warm creamy beige */
   }
   html {
     scroll-behavior: smooth;
