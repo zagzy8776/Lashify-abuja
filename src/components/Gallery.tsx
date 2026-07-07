@@ -11,14 +11,14 @@ const categoryLabels: Record<string, string> = {
 };
 
 const fallbackImages = [
-  { url: 'https://images.unsplash.com/photo-1588514106606-d083bc5dfac7?auto=format&fit=crop&q=80&w=400', cat: 'lash', title: 'Classic Set' },
-  { url: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&q=80&w=400', cat: 'lash', title: 'Volume Set' },
-  { url: 'https://images.unsplash.com/photo-1583001931096-959e9a1a6223?auto=format&fit=crop&q=80&w=400', cat: 'lash', title: 'Hybrid Set' },
-  { url: 'https://images.unsplash.com/photo-1596704017254-9b121068fb31?auto=format&fit=crop&q=80&w=400', cat: 'brows', title: 'Brow Lamination' },
-  { url: 'https://images.unsplash.com/photo-1512496015851-a1dc8a477d5b?auto=format&fit=crop&q=80&w=400', cat: 'lash', title: 'Mega Volume' },
-  { url: 'https://images.unsplash.com/photo-1620052329712-40ce367ffda1?auto=format&fit=crop&q=80&w=400', cat: 'brows', title: 'Brow Shaping' },
-  { url: 'https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?auto=format&fit=crop&q=80&w=400', cat: 'lash-refill', title: 'Lash Refill' },
-  { url: 'https://images.unsplash.com/photo-1512495962295-d2274b76df4d?auto=format&fit=crop&q=80&w=400', cat: 'brows', title: 'Combo Brows' },
+  { url: '/images/category-lash.jpg', cat: 'lash', title: 'Lash Extensions' },
+  { url: '/images/category-lash-refill.jpg', cat: 'lash', title: 'Classic Set' },
+  { url: '/images/category-brow.jpg', cat: 'brows', title: 'Brow Lamination' },
+  { url: '/images/category-lash.jpg', cat: 'lash-refill', title: 'Lash Refill' },
+  { url: '/images/category-lash-refill.jpg', cat: 'lash', title: 'Volume Set' },
+  { url: '/images/category-brow.jpg', cat: 'brows', title: 'Brow Shaping' },
+  { url: '/images/category-lash.jpg', cat: 'lash', title: 'Hybrid Set' },
+  { url: '/images/category-lash-refill.jpg', cat: 'lash-refill', title: 'Lash Refill Session' },
 ];
 
 export default function Gallery() {
@@ -31,23 +31,18 @@ export default function Gallery() {
     const loadGallery = async () => {
       try {
         const data = await fetchGallery();
-        if (data && data.length > 0) {
-          setItems(data);
+        // Only use database items that have real lash/brow Cloudinary image URLs
+        const validItems = data?.filter(item =>
+          item.image_url &&
+          item.image_url.includes('cloudinary') &&
+          (item.category === 'lash' || item.category === 'brows' || item.category === 'lash-refill')
+        );
+        if (validItems && validItems.length > 0) {
+          setItems(validItems);
         } else {
-          const fallback: GalleryItem[] = fallbackImages.map((f, i) => ({
-            id: `fallback-${i}`,
-            title: f.title,
-            category: f.cat,
-            image_url: f.url,
-            description: null,
-            is_featured: i < 3,
-            sort_order: i,
-            created_at: new Date().toISOString(),
-          }));
-          setItems(fallback);
+          throw new Error('No valid gallery items');
         }
       } catch (err) {
-        console.error('Failed to fetch gallery:', err);
         const fallback: GalleryItem[] = fallbackImages.map((f, i) => ({
           id: `fallback-${i}`,
           title: f.title,
@@ -192,4 +187,3 @@ export default function Gallery() {
     </section>
   );
 }
-
