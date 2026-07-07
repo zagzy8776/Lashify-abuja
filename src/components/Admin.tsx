@@ -718,7 +718,7 @@ function GalleryManager() {
       reader.onloadend = async () => {
         const base64String = reader.result as string;
         const token = localStorage.getItem('admin_token');
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/admin/upload`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/api/admin/upload`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -998,7 +998,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
       reader.onloadend = async () => {
         const base64String = reader.result as string;
         const token = localStorage.getItem('admin_token');
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/admin/upload`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/api/admin/upload`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
