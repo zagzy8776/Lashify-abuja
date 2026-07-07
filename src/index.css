@@ -6,6 +6,7 @@
   html, body {
     overflow-x: hidden;
     background-color: #faf5f0; /* Warm creamy beige */
+    scrollbar-gutter: stable; /* Prevents layout shift when scrollbar appears */
   }
   html {
     scroll-behavior: smooth;

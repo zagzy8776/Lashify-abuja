@@ -14,19 +14,19 @@ const CATEGORIES = [
     id: 'lash',
     title: 'Lash Services',
     description: 'Luxurious lash extensions tailored to your eye shape.',
-    image: 'https://images.unsplash.com/photo-1588514106606-d083bc5dfac7?auto=format&fit=crop&q=75&w=600',
+    image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&q=80&w=600',
   },
   {
     id: 'brows',
     title: 'Brow Services',
     description: 'Expert brow shaping, tinting, and microblading.',
-    image: 'https://images.unsplash.com/photo-1596704017254-9b121068fb31?auto=format&fit=crop&q=75&w=600',
+    image: 'https://images.unsplash.com/photo-1596704017254-9b121068fb31?auto=format&fit=crop&q=80&w=600',
   },
   {
     id: 'lash-refill',
     title: 'Lash Fills',
     description: 'Maintain your gorgeous lashes with regular refills.',
-    image: 'https://images.unsplash.com/photo-1512496015851-a1dc8a477d5b?auto=format&fit=crop&q=75&w=600',
+    image: 'https://images.unsplash.com/photo-1583001931096-959e9a1a6223?auto=format&fit=crop&q=80&w=600',
   }
 ];
 
@@ -98,9 +98,9 @@ export default function Services({ onNavigate, onBookService, compact }: Props) 
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
               className="group cursor-pointer rounded-[32px] overflow-hidden relative shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
-              style={{ backgroundColor: '#3d2e36' }}
+              style={{ backgroundColor: '#3d2e36', willChange: 'transform' }}
             >
-              <div className="relative w-full" style={{ paddingBottom: '133%' }}>
+              <div className="relative w-full" style={{ paddingBottom: '133%', minHeight: '300px' }}>
                 <img 
                   src={cat.image} 
                   alt={cat.title} 

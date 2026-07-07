@@ -46,10 +46,10 @@ export default function Hero({ onNavigate, onBookService }: Props) {
   return (
     <section className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden pt-24 pb-20" style={{ backgroundColor: '#faf5f0' }}>
       
-      {/* Animated Spotlights */}
+      {/* Animated Spotlights — will-change prevents layout reflow */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="spotlight-1 absolute w-[600px] h-[600px] -top-20 -left-20 animate-pulse" style={{ animationDuration: '4s' }} />
-        <div className="spotlight-2 absolute w-[600px] h-[600px] top-40 -right-20 animate-pulse" style={{ animationDuration: '6s' }} />
+        <div className="spotlight-1 absolute w-[600px] h-[600px] -top-20 -left-20 animate-pulse" style={{ animationDuration: '4s', willChange: 'opacity' }} />
+        <div className="spotlight-2 absolute w-[600px] h-[600px] top-40 -right-20 animate-pulse" style={{ animationDuration: '6s', willChange: 'opacity' }} />
       </div>
 
       <div className="container-lux relative z-10 flex flex-col items-center text-center max-w-4xl w-full">
@@ -74,9 +74,9 @@ export default function Hero({ onNavigate, onBookService }: Props) {
             >
               <Search className="w-6 h-6 text-gray-400 group-hover:text-gray-900 transition-colors flex-shrink-0" />
               <div className="flex flex-col items-start w-full overflow-hidden">
-                <span className="text-[11px] font-bold text-gray-900 uppercase tracking-widest mb-0.5">Book Appointment</span>
+                <span className="text-[11px] font-bold text-gray-900 uppercase tracking-widest mb-0.5">Service</span>
                 <span className={`text-base font-medium truncate w-full text-left ${selectedService ? 'text-gray-900' : 'text-gray-500'}`}>
-                  {selectedService ? selectedService.name : 'Book Appointment'}
+                  {selectedService ? selectedService.name : 'Select a service'}
                 </span>
               </div>
             </div>
@@ -131,12 +131,6 @@ export default function Hero({ onNavigate, onBookService }: Props) {
               </button>
             </div>
             <div className="overflow-y-auto p-2 pb-6">
-              <button 
-                onClick={() => { setSelectedService(null); setShowModal(false); }}
-                className="w-full text-left px-4 py-4 hover:bg-gray-50 text-gray-900 font-bold transition-colors border-b border-gray-50 uppercase tracking-tight"
-              >
-                BOOK APPOINTMENT
-              </button>
               {categories.map(cat => (
                 <div key={cat} className="mt-2">
                   <div className="px-4 pt-4 pb-2 text-[11px] font-bold text-gray-500 uppercase tracking-widest">
