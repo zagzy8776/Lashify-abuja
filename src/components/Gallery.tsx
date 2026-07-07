@@ -10,14 +10,14 @@ const categoryLabels: Record<string, string> = {
 };
 
 const fallbackImages = [
-  { url: '/images/studio.jpg', cat: 'lash', title: 'Classic Set' },
-  { url: '/images/studio.jpg', cat: 'lash', title: 'Volume Set' },
-  { url: '/images/studio.jpg', cat: 'lash', title: 'Hybrid Set' },
-  { url: '/images/studio.jpg', cat: 'brows', title: 'Brow Lamination' },
-  { url: '/images/studio.jpg', cat: 'lash', title: 'Mega Volume' },
-  { url: '/images/studio.jpg', cat: 'brows', title: 'Brow Shaping' },
-  { url: '/images/studio.jpg', cat: 'lash-refill', title: 'Lash Refill' },
-  { url: '/images/studio.jpg', cat: 'brows', title: 'Combo Brows' },
+  { url: 'https://images.unsplash.com/photo-1588514106606-d083bc5dfac7?auto=format&fit=crop&q=80&w=400', cat: 'lash', title: 'Classic Set' },
+  { url: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&q=80&w=400', cat: 'lash', title: 'Volume Set' },
+  { url: 'https://images.unsplash.com/photo-1583001931096-959e9a1a6223?auto=format&fit=crop&q=80&w=400', cat: 'lash', title: 'Hybrid Set' },
+  { url: 'https://images.unsplash.com/photo-1596704017254-9b121068fb31?auto=format&fit=crop&q=80&w=400', cat: 'brows', title: 'Brow Lamination' },
+  { url: 'https://images.unsplash.com/photo-1512496015851-a1dc8a477d5b?auto=format&fit=crop&q=80&w=400', cat: 'lash', title: 'Mega Volume' },
+  { url: 'https://images.unsplash.com/photo-1620052329712-40ce367ffda1?auto=format&fit=crop&q=80&w=400', cat: 'brows', title: 'Brow Shaping' },
+  { url: 'https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?auto=format&fit=crop&q=80&w=400', cat: 'lash-refill', title: 'Lash Refill' },
+  { url: 'https://images.unsplash.com/photo-1512495962295-d2274b76df4d?auto=format&fit=crop&q=80&w=400', cat: 'brows', title: 'Combo Brows' },
 ];
 
 export default function Gallery() {
@@ -108,9 +108,9 @@ export default function Gallery() {
               onClick={() => setFilter(cat)}
               className="px-5 py-2 rounded-full text-sm font-medium tracking-wide transition-all duration-300"
               style={{
-                background: filter === cat ? '#b38b9e' : 'rgba(18, 17, 19, 0.4)',
+                background: filter === cat ? '#b38b9e' : 'transparent',
                 color: filter === cat ? '#faf7f2' : '#5a4850',
-                border: `1px solid ${filter === cat ? '#b38b9e' : 'rgba(179, 139, 158, 0.2)'}`,
+                border: `1px solid ${filter === cat ? '#b38b9e' : 'rgba(179, 139, 158, 0.4)'}`,
               }}
             >
               {categoryLabels[cat] || cat}

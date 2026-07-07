@@ -43,19 +43,11 @@ export default function About({ onNavigate }: Props) {
             </div>
 
             <div
-              className="absolute z-20"
-              style={{
-                top: '16px',
-                left: '0',
-                width: '68px',
-                height: '68px',
-                animation: 'fadeUp 1s ease-out 0.3s both',
-              }}
-            >
+              className="md:w-1/2 relative h-[500px] rounded-[32px] overflow-hidden" style={{ border: '1px solid rgba(179, 139, 158, 0.2)' }}>
               <img
-                src="/images/logo.png"
-                alt="LashifyAbuja Logo"
-                className="w-full h-full object-contain"
+                src="/images/logo.webp"
+                alt="Amaya, Founder of Lashify Abuja"
+                className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
               />
             </div>
           </div>
@@ -78,9 +70,6 @@ export default function About({ onNavigate }: Props) {
             <p className="leading-relaxed mb-3" style={{ color: '#5a4850', lineHeight: 1.8 }}>
               Every set is custom-crafted to your features and lifestyle. Your appointment
               is a personal experience, not a transaction.
-            </p>
-            <p className="leading-relaxed" style={{ color: '#5a4850', lineHeight: 1.8 }}>
-              Enhance your look with natural-looking lower lash extensions that add subtle definition and balance to your eyes. This gentle service is perfect for creating a fuller, more complete lash appearance while maintaining a soft and polished finish. Ideal for everyday elegance or special occasions.
             </p>
             <span className="font-script text-3xl block mt-8" style={{ color: '#b38b9e' }}>Amaya</span>
             <span className="text-xs uppercase tracking-widest" style={{ color: '#8f7882' }}>

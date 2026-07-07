@@ -32,7 +32,7 @@ export default function ServiceLocationPage({ onNavigate: _, onBookService }: Pr
   const description = `Looking for ${serviceName} near ${locationName}? Lashify Abuja offers premium, luxury ${serviceName} services. Book your appointment today.`;
 
   return (
-    <div className="min-h-screen" style={{ background: '#ede3d5' }}>
+    <div className="min-h-screen" style={{ background: '#faf5f0' }}>
       <SEOSchema 
         title={title}
         description={description}

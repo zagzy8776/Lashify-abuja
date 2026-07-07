@@ -8,6 +8,12 @@
     background-color: #faf5f0; /* Warm creamy beige */
     scrollbar-gutter: stable; /* Prevents layout shift when scrollbar appears */
   }
+  
+  /* Force consistent background color everywhere */
+  .section-light, .section-cream, .section-blush {
+    background-color: #faf5f0 !important;
+  }
+  
   html {
     scroll-behavior: smooth;
   }

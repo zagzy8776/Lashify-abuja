@@ -55,21 +55,21 @@ export default function Hero({ onNavigate, onBookService }: Props) {
       <div className="container-lux relative z-10 flex flex-col items-center text-center max-w-4xl w-full">
         
         <div className={`transition-all duration-1000 w-full ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <h1 className="text-5xl md:text-7xl lg:text-[5rem] font-extrabold tracking-tight text-gray-900 mb-6 leading-[1.05]">
+          <h1 className="text-5xl md:text-7xl lg:text-[5rem] font-serif tracking-tight text-gray-900 mb-6 leading-[1.05]">
             ABUJA'S #1 LASH STUDIO
           </h1>
           <p className="text-lg md:text-xl text-gray-600 mb-4 max-w-2xl mx-auto leading-relaxed font-medium">
-            Where your eyes become art
+            <span className="italic" style={{ color: '#b38b9e' }}>Where your eyes become art</span>
           </p>
           <p className="text-base md:text-lg text-gray-500 mb-12 max-w-2xl mx-auto leading-relaxed">
             Luxury lash extensions &amp; brow artistry by Lashify — Abuja's most trusted specialist.
           </p>
 
           {/* The Booking/Search Bar */}
-          <div className="w-full max-w-3xl mx-auto bg-white p-2 rounded-2xl md:rounded-full shadow-[0_12px_40px_rgb(0,0,0,0.08)] border border-gray-100 flex flex-col md:flex-row items-center gap-2 mb-16 transition-all hover:shadow-[0_16px_50px_rgb(0,0,0,0.12)]">
+          <div className="w-full max-w-3xl mx-auto bg-white p-2 rounded-2xl md:rounded-full shadow-[0_12px_40px_rgb(0,0,0,0.08)] border border-[rgba(179,139,158,0.2)] flex flex-col md:flex-row items-center gap-2 mb-16 transition-all hover:shadow-[0_16px_50px_rgb(0,0,0,0.12)]">
             
             <div 
-              className="flex-1 w-full flex items-center gap-3 px-5 py-3 md:py-0 md:h-16 border-b md:border-b-0 md:border-r border-gray-100 cursor-pointer group hover:bg-gray-50 md:rounded-l-full transition-colors" 
+              className="flex-1 w-full flex items-center gap-3 px-5 py-3 md:py-0 md:h-16 cursor-pointer group hover:bg-gray-50 md:rounded-l-full transition-colors" 
               onClick={() => setShowModal(true)}
             >
               <Search className="w-6 h-6 text-gray-400 group-hover:text-gray-900 transition-colors flex-shrink-0" />
@@ -77,19 +77,6 @@ export default function Hero({ onNavigate, onBookService }: Props) {
                 <span className="text-[11px] font-bold text-gray-900 uppercase tracking-widest mb-0.5">Service</span>
                 <span className={`text-base font-medium truncate w-full text-left ${selectedService ? 'text-gray-900' : 'text-gray-500'}`}>
                   {selectedService ? selectedService.name : 'Select a service'}
-                </span>
-              </div>
-            </div>
-
-            <div 
-              className="flex-1 w-full flex items-center gap-3 px-5 py-3 md:py-0 md:h-16 cursor-pointer group hover:bg-gray-50 transition-colors" 
-              onClick={() => onNavigate('book')}
-            >
-              <Calendar className="w-6 h-6 text-gray-400 group-hover:text-gray-900 transition-colors flex-shrink-0" />
-              <div className="flex flex-col items-start w-full overflow-hidden">
-                <span className="text-[11px] font-bold text-gray-900 uppercase tracking-widest mb-0.5">Date</span>
-                <span className="text-base text-gray-500 font-medium truncate w-full text-left">
-                  Any time
                 </span>
               </div>
             </div>
@@ -103,7 +90,7 @@ export default function Hero({ onNavigate, onBookService }: Props) {
           </div>
 
           {/* Social Proof / Counters */}
-          <div className="flex flex-wrap justify-center gap-10 md:gap-20 border-t border-gray-100 pt-10">
+          <div className="flex flex-wrap justify-center gap-10 md:gap-20 border-t border-[rgba(179,139,158,0.2)] pt-10">
             <div className="text-center">
               <div className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-2">500+</div>
               <div className="text-sm font-semibold text-gray-500 uppercase tracking-wider">Happy Clients</div>
