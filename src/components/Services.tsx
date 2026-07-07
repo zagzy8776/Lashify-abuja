@@ -65,11 +65,11 @@ export default function Services({ onNavigate, onBookService, compact }: Props) 
 
   if (loading) {
     return (
-      <section className="py-24 bg-gray-50">
+      <section className="py-24" style={{ backgroundColor: '#faf5f0' }}>
         <div className="container-lux">
           <div className="grid md:grid-cols-3 gap-8">
             {[...Array(3)].map((_, i) => (
-              <div key={i} className="h-96 rounded-[32px] bg-gray-200 animate-pulse" />
+              <div key={i} className="h-96 rounded-[32px] animate-pulse" style={{ backgroundColor: 'rgba(179,139,158,0.1)' }} />
             ))}
           </div>
         </div>
@@ -81,7 +81,7 @@ export default function Services({ onNavigate, onBookService, compact }: Props) 
   const modalServices = servicesList.filter(s => s.category === selectedCategory && s.is_active !== false);
 
   return (
-    <section className="py-24 bg-white relative">
+    <section className="py-24 relative" style={{ backgroundColor: '#faf5f0' }}>
       <div className="container-lux">
         <div className="text-center mb-16 max-w-3xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900 mb-6">
@@ -97,17 +97,19 @@ export default function Services({ onNavigate, onBookService, compact }: Props) 
             <div
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
-              className="group cursor-pointer rounded-[32px] overflow-hidden relative shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 bg-white"
+              className="group cursor-pointer rounded-[32px] overflow-hidden relative shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+              style={{ backgroundColor: '#3d2e36' }}
             >
-              <div className="aspect-[3/4] relative">
+              <div className="relative w-full" style={{ paddingBottom: '133%' }}>
                 <img 
                   src={cat.image} 
                   alt={cat.title} 
-                  loading="lazy"
+                  loading="eager"
                   decoding="async"
                   width="600"
                   height="800"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.3'; }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-300" />
                 

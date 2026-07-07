@@ -76,7 +76,7 @@ export default function Hero({ onNavigate, onBookService }: Props) {
               <div className="flex flex-col items-start w-full overflow-hidden">
                 <span className="text-[11px] font-bold text-gray-900 uppercase tracking-widest mb-0.5">Book Appointment</span>
                 <span className={`text-base font-medium truncate w-full text-left ${selectedService ? 'text-gray-900' : 'text-gray-500'}`}>
-                  {selectedService ? selectedService.name : 'All treatments'}
+                  {selectedService ? selectedService.name : 'Book Appointment'}
                 </span>
               </div>
             </div>
@@ -135,7 +135,7 @@ export default function Hero({ onNavigate, onBookService }: Props) {
                 onClick={() => { setSelectedService(null); setShowModal(false); }}
                 className="w-full text-left px-4 py-4 hover:bg-gray-50 text-gray-900 font-bold transition-colors border-b border-gray-50 uppercase tracking-tight"
               >
-                ALL TREATMENTS
+                BOOK APPOINTMENT
               </button>
               {categories.map(cat => (
                 <div key={cat} className="mt-2">

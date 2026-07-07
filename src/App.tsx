@@ -60,7 +60,7 @@ function App() {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen" style={{ backgroundColor: '#faf5f0' }}>
       <Toaster position="bottom-right" />
       <SEOSchema title="Lash &amp; Brow Studio" description="Premium Lash and Brow services in Abuja. Book your luxury appointment today." />
       {!isAdmin && <Navbar onNavigate={handleNavigate} currentPage={page} />}
