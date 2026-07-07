@@ -1,20 +1,21 @@
+"use client";
+
 import { useEffect, useState, useRef } from 'react';
 import { Menu, X, Calendar } from 'lucide-react';
-
-type Props = {
-  onNavigate: (page: string) => void;
-  currentPage: string;
-};
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 
 const navLinks = [
-  { label: 'Home', page: 'home' },
-  { label: 'Services', page: 'services' },
-  { label: 'Gallery', page: 'gallery' },
-  { label: 'About', page: 'about' },
-  { label: 'Contact', page: 'contact' },
+  { label: 'Home', page: '/' },
+  { label: 'Services', page: '/services' },
+  { label: 'Gallery', page: '/gallery' },
+  { label: 'About', page: '/about' },
+  { label: 'Contact', page: '/contact' },
 ];
 
-export default function Navbar({ onNavigate, currentPage }: Props) {
+export default function Navbar() {
+  const pathname = usePathname();
+  const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
@@ -43,8 +44,7 @@ export default function Navbar({ onNavigate, currentPage }: Props) {
     };
   }, [mobileOpen]);
 
-  const handleNav = (page: string) => {
-    onNavigate(page);
+  const handleNav = (href: string) => {
     setMobileOpen(false);
   };
 
@@ -54,12 +54,13 @@ export default function Navbar({ onNavigate, currentPage }: Props) {
     if (tapTimer.current) clearTimeout(tapTimer.current);
     if (tapCount.current >= 3) {
       tapCount.current = 0;
-      onNavigate('admin');
+      router.push('/admin');
       setMobileOpen(false);
       return;
     }
     tapTimer.current = setTimeout(() => { tapCount.current = 0; }, 1500);
-    handleNav('home');
+    router.push('/');
+    setMobileOpen(false);
   };
 
   return (
@@ -100,23 +101,23 @@ export default function Navbar({ onNavigate, currentPage }: Props) {
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-1">
           {navLinks.map((link) => (
-            <button
+            <Link
               key={link.page}
-              onClick={() => handleNav(link.page)}
+              href={link.page}
               className="px-4 py-2 text-sm font-medium tracking-wide rounded-full transition-all duration-300"
               style={{
-                color: currentPage === link.page ? '#b38b9e' : '#5a4850',
+                color: pathname === link.page ? '#b38b9e' : '#5a4850',
               }}
-              onMouseEnter={(e) => { if (currentPage !== link.page) (e.target as HTMLElement).style.color = '#b38b9e'; }}
-              onMouseLeave={(e) => { if (currentPage !== link.page) (e.target as HTMLElement).style.color = '#5a4850'; }}
+              onMouseEnter={(e) => { if (pathname !== link.page) (e.target as HTMLElement).style.color = '#b38b9e'; }}
+              onMouseLeave={(e) => { if (pathname !== link.page) (e.target as HTMLElement).style.color = '#5a4850'; }}
             >
               {link.label}
-            </button>
+            </Link>
           ))}
-          <button onClick={() => handleNav('book')} className="btn-gold ml-3 text-sm">
+          <Link href="/book" className="btn-gold ml-3 text-sm">
             <Calendar className="w-4 h-4" />
             Book Now
-          </button>
+          </Link>
         </div>
  
         {/* Mobile toggle */}
@@ -136,22 +137,23 @@ export default function Navbar({ onNavigate, currentPage }: Props) {
           style={{ background: 'rgba(250, 247, 242, 0.95)', borderColor: 'rgba(179, 139, 158, 0.12)', backdropFilter: 'blur(12px)' }}>
           <div className="container-lux py-6 flex flex-col gap-2">
             {navLinks.map((link) => (
-              <button
+              <Link
                 key={link.page}
+                href={link.page}
                 onClick={() => handleNav(link.page)}
                 className="px-4 py-4 text-left text-base font-medium rounded-lg transition-colors"
                 style={{
-                  color: currentPage === link.page ? '#b38b9e' : '#5a4850',
-                  background: currentPage === link.page ? 'rgba(179, 139, 158, 0.1)' : 'transparent',
+                  color: pathname === link.page ? '#b38b9e' : '#5a4850',
+                  background: pathname === link.page ? 'rgba(179, 139, 158, 0.1)' : 'transparent',
                 }}
               >
                 {link.label}
-              </button>
+              </Link>
             ))}
-            <button onClick={() => handleNav('book')} className="btn-gold mt-4 py-4">
-              <Calendar className="w-4 h-4" />
+            <Link href="/book" onClick={() => setMobileOpen(false)} className="btn-gold mt-4 py-4 text-center justify-center">
+              <Calendar className="w-4 h-4 inline-block mr-2" />
               Book Now
-            </button>
+            </Link>
           </div>
         </div>
       )}

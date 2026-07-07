@@ -1,13 +1,16 @@
+"use client";
+
 import { useState, useEffect } from 'react';
 import { Search, Calendar, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { fetchServices, services as defaultServices, type Service } from '../lib/supabase';
 
 type Props = {
-  onNavigate: (page: string) => void;
   onBookService?: (service: Service) => void;
 };
 
-export default function Hero({ onNavigate, onBookService }: Props) {
+export default function Hero({ onBookService }: Props) {
+  const router = useRouter();
   const [visible, setVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [servicesList, setServicesList] = useState<Service[]>([]);
@@ -31,7 +34,7 @@ export default function Hero({ onNavigate, onBookService }: Props) {
     if (selectedService && onBookService) {
       onBookService(selectedService);
     } else {
-      onNavigate('book');
+      router.push('/book');
     }
   };
 

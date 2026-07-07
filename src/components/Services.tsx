@@ -1,10 +1,12 @@
+"use client";
+
 import { useEffect, useState } from 'react';
 import { Clock, ArrowRight, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { fetchServices, services as fallbackServices, type Service } from '../lib/supabase';
 import { formatNaira, formatDuration } from '../lib/utils';
 
 type Props = {
-  onNavigate: (page: string) => void;
   onBookService?: (service: Service) => void;
   compact?: boolean;
 };
@@ -30,7 +32,8 @@ const CATEGORIES = [
   }
 ];
 
-export default function Services({ onNavigate, onBookService, compact }: Props) {
+export default function Services({ onBookService, compact }: Props) {
+  const router = useRouter();
   const [servicesList, setServicesList] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -166,7 +169,7 @@ export default function Services({ onNavigate, onBookService, compact }: Props) 
                     <div
                       key={service.id}
                       className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:border-rose-200 hover:shadow-md transition-all group flex flex-col cursor-pointer"
-                      onClick={() => onBookService ? onBookService(service) : onNavigate('book')}
+                      onClick={() => onBookService ? onBookService(service) : router.push('/book?service=' + service.slug)}
                     >
                       <div className="flex items-start justify-between mb-3">
                         <h4 className="text-lg sm:text-xl font-bold text-gray-900 leading-tight pr-4">
