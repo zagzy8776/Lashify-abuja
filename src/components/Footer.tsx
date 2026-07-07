@@ -1,3 +1,4 @@
+"use client";
 import { Instagram, Mail } from 'lucide-react';
 import { TikTokIcon } from './TikTokIcon';
 
@@ -73,3 +74,4 @@ export default function Footer() {
     </footer>
   );
 }
+

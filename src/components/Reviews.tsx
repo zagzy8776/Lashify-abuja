@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from 'react';
 import { Star, Quote } from 'lucide-react';
 import { fetchReviews, type Review } from '../lib/supabase';
@@ -73,3 +74,4 @@ export default function Reviews() {
     </section>
   );
 }
+

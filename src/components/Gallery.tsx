@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from 'react';
 import { fetchGallery, type GalleryItem } from '../lib/supabase';
 import { X, ZoomIn } from 'lucide-react';
@@ -191,3 +192,4 @@ export default function Gallery() {
     </section>
   );
 }
+

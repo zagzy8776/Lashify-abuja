@@ -1,3 +1,4 @@
+"use client";
 import { Instagram, Mail, MapPin, Clock, MessageCircle } from 'lucide-react';
 import { TikTokIcon } from './TikTokIcon';
 
@@ -122,4 +123,5 @@ export default function Contact() {
     </section>
   );
 }
+
 
