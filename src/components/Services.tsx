@@ -16,19 +16,19 @@ const CATEGORIES = [
     id: 'lash',
     title: 'Lash Services',
     description: 'Luxurious lash extensions tailored to your eye shape.',
-    image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&q=80&w=600',
+    image: '/images/category-lash.jpg',
   },
   {
     id: 'brows',
     title: 'Brow Services',
     description: 'Expert brow shaping, tinting, and microblading.',
-    image: 'https://images.unsplash.com/photo-1596704017254-9b121068fb31?auto=format&fit=crop&q=80&w=600',
+    image: '/images/category-brow.jpg',
   },
   {
     id: 'lash-refill',
-    title: 'Lash Fills',
+    title: 'Lash Refill',
     description: 'Maintain your gorgeous lashes with regular refills.',
-    image: 'https://images.unsplash.com/photo-1583001931096-959e9a1a6223?auto=format&fit=crop&q=80&w=600',
+    image: '/images/category-lash-refill.jpg',
   }
 ];
 
