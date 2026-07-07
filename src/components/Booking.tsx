@@ -14,14 +14,16 @@ import {
   toDateString, isPast, isToday
 } from '../lib/utils';
 
+import { useRouter } from 'next/navigation';
+
 type Props = {
-  onNavigate: (page: string) => void;
   preselectedService?: Service | null;
 };
 
 type Step = 'service' | 'datetime' | 'details' | 'confirm' | 'success';
 
-export default function Booking({ onNavigate, preselectedService }: Props) {
+export default function Booking({ preselectedService }: Props) {
+  const router = useRouter();
   const [step, setStep] = useState<Step>('service');
   const [services, setServices] = useState<Service[]>([]);
   const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
@@ -266,7 +268,7 @@ export default function Booking({ onNavigate, preselectedService }: Props) {
               >
                 Get Directions to Studio
               </a>
-              <button onClick={() => onNavigate('home')} className="btn-outline text-sm flex-1">
+              <button onClick={() => router.push('/')} className="btn-outline text-sm flex-1">
                 Back to Home
               </button>
             </div>

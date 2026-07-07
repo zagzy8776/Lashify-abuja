@@ -1,10 +1,10 @@
+'use client';
+
 import { Award, Heart, Leaf, Sparkles } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
-type Props = {
-  onNavigate: (page: string) => void;
-};
-
-export default function About({ onNavigate }: Props) {
+export default function About() {
+  const router = useRouter();
   const values = [
     { icon: Award,    title: 'Certified',    desc: 'Advanced lash techniques, continuously updated.' },
     { icon: Heart,    title: 'Personalized', desc: 'Custom-mapped to your eye shape and lifestyle.' },
@@ -76,7 +76,7 @@ export default function About({ onNavigate }: Props) {
               Founder & Lead Artist
             </span>
             <br />
-            <button onClick={() => onNavigate('book')} className="btn-gold mt-6">
+            <button onClick={() => router.push('/book')} className="btn-gold mt-6">
               Book Now
             </button>
           </div>

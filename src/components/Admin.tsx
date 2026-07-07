@@ -18,13 +18,12 @@ import {
   formatNaira, formatDuration, formatTime, DAYS_SHORT, addMinutesToTime
 } from '../lib/utils';
 
-type Props = {
-  onNavigate: (page: string) => void;
-};
+import { useRouter } from 'next/navigation';
 
 type Tab = 'overview' | 'appointments' | 'inbox' | 'services' | 'gallery' | 'reviews';
 
-export default function Admin({ onNavigate }: Props) {
+export default function Admin() {
+  const router = useRouter();
   const [session, setSession] = useState<boolean | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -51,7 +50,7 @@ export default function Admin({ onNavigate }: Props) {
   const handleLogout = async () => {
     await adminLogout();
     setSession(false);
-    onNavigate('home');
+    router.push('/');
   };
 
 
@@ -112,7 +111,7 @@ export default function Admin({ onNavigate }: Props) {
           </form>
 
           <button
-            onClick={() => onNavigate('home')}
+            onClick={() => router.push('/')}
             className="w-full text-center text-sm font-bold mt-8 text-gray-400 hover:text-gray-900 transition-colors"
           >
             ← Back to website

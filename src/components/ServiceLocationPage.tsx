@@ -1,19 +1,19 @@
-import { useParams } from 'react-router-dom';
+import { useParams } from 'next/navigation';
 import SEOSchema from './SEOSchema';
 import { services } from '../lib/supabase'; // Assuming services are defined here or we can mock them
 import type { Service } from '../lib/supabase';
 import { Sparkles, MapPin, CheckCircle2, Clock } from 'lucide-react';
 
-type Props = {
-  onNavigate: (page: string) => void;
   onBookService: (service: Service) => void;
 };
 
 // Map URL slugs back to proper names
 const formatSlug = (slug: string) => slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 
-export default function ServiceLocationPage({ onNavigate: _, onBookService }: Props) {
-  const { serviceSlug, locationSlug } = useParams<{ serviceSlug: string; locationSlug: string }>();
+export default function ServiceLocationPage({ onBookService }: Props) {
+  const params = useParams();
+  const serviceSlug = typeof params?.serviceSlug === 'string' ? params.serviceSlug : '';
+  const locationSlug = typeof params?.locationSlug === 'string' ? params.locationSlug : '';
 
   const serviceName = formatSlug(serviceSlug || '');
   const locationName = formatSlug(locationSlug || '');
