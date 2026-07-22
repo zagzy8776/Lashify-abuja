@@ -6,6 +6,7 @@ export type Service = {
   slug: string;
   description: string;
   price: number;
+  original_price?: number | null;
   duration_minutes: number;
   duration_text?: string;
   category: string;
@@ -244,10 +245,22 @@ export async function adminApplyBulkDiscount(discountPercentage: number = 15): P
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ discountPercentage }),
+    body: JSON.stringify({ action: 'apply', discountPercentage }),
   });
   if (!res.ok) throw new Error('Failed to apply discount');
 }
+
+export async function adminRemoveBulkDiscount(): Promise<void> {
+  const res = await fetch(`${API_URL}/api/admin/services/apply-promo`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ action: 'remove' }),
+  });
+  if (!res.ok) throw new Error('Failed to remove discount');
+}
+
 
 
 export async function adminFetchReviews(): Promise<Review[]> {

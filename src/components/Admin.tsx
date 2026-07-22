@@ -12,7 +12,7 @@ import {
   adminUpdateService, adminCreateService, adminDeleteService, updateAppointmentStatus,
   adminDeleteAppointment, adminUpdateAppointmentDetails,
   adminFetchGallery, adminAddGalleryItem, adminUpdateGalleryItem, adminDeleteGalleryItem,
-  adminFetchReviews, adminUpdateReview, adminDeleteReview, adminApplyBulkDiscount,
+  adminFetchReviews, adminUpdateReview, adminDeleteReview, adminApplyBulkDiscount, adminRemoveBulkDiscount,
   type Service, type Appointment, type AppointmentStatus
 } from '../lib/api';
 import {
@@ -918,6 +918,10 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
 
   const [showPromoModal, setShowPromoModal] = useState(false);
   const [applyingPromo, setApplyingPromo] = useState(false);
+  const [showRemovePromoModal, setShowRemovePromoModal] = useState(false);
+  const [removingPromo, setRemovingPromo] = useState(false);
+
+  const hasActivePromo = services.some(s => s.original_price && s.original_price > s.price);
 
   const handleApplyPromo = async () => {
     setApplyingPromo(true);
@@ -935,6 +939,24 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
       setApplyingPromo(false);
     }
   };
+
+  const handleRemovePromo = async () => {
+    setRemovingPromo(true);
+    try {
+      await adminRemoveBulkDiscount();
+      const updatedServices = await adminFetchAllServices();
+      setServices(updatedServices);
+      toast.success('Promo removed! Original prices restored.');
+      setShowRemovePromoModal(false);
+    } catch (err) {
+      console.error('Failed to remove promo:', err);
+      checkAuth(err);
+      toast.error('Failed to remove promo.');
+    } finally {
+      setRemovingPromo(false);
+    }
+  };
+
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, isEdit: boolean) => {
 
@@ -1109,6 +1131,14 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
           <p className="text-sm text-gray-500 font-medium mt-1">Add, edit, deactivate, or apply promotional pricing to your offerings.</p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
+          {hasActivePromo && (
+            <button
+              onClick={() => setShowRemovePromoModal(true)}
+              className="px-4 py-2.5 bg-gray-600 text-white text-sm font-bold rounded-xl hover:bg-gray-700 transition-colors shadow-sm flex items-center gap-2"
+            >
+              <X className="w-4 h-4" /> Remove Promo (Reset Prices)
+            </button>
+          )}
           <button
             onClick={() => setShowPromoModal(true)}
             className="px-4 py-2.5 bg-amber-500 text-white text-sm font-bold rounded-xl hover:bg-amber-600 transition-colors shadow-sm flex items-center gap-2"
@@ -1148,9 +1178,15 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
                 </div>
                 <p className="text-sm font-medium text-gray-500 mb-1">{svc.description?.substring(0, 80)}{svc.description?.length > 80 ? '...' : ''}</p>
                 <p className="text-sm font-bold text-gray-900">
-                  {formatNaira(svc.price)} 
+                  {formatNaira(svc.price)}
+                  {svc.original_price && svc.original_price > svc.price && (
+                    <span className="ml-2">
+                      <span className="line-through text-gray-400 font-normal text-xs">{formatNaira(svc.original_price)}</span>
+                      <span className="ml-1 text-[10px] bg-amber-100 text-amber-800 font-bold px-1.5 py-0.5 rounded uppercase">15% OFF</span>
+                    </span>
+                  )}
                   {(svc.duration_text || svc.duration_minutes > 0) && (
-                    <span className="text-gray-400 font-medium">
+                    <span className="text-gray-400 font-medium ml-2">
                       · {svc.duration_text || formatDuration(svc.duration_minutes)}
                     </span>
                   )}
@@ -1205,15 +1241,26 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
       <ConfirmModal
         isOpen={showPromoModal}
         title="Apply 15% Promo Discount"
-        message="Are you sure you want to apply a 15% discount to all service prices? This will update the prices in your database."
+        message="Are you sure you want to apply a 15% discount to all service prices? Base prices will be safely backed up."
         onConfirm={handleApplyPromo}
         onCancel={() => setShowPromoModal(false)}
         confirmText={applyingPromo ? 'Applying...' : 'Apply 15% Promo'}
         isDanger={false}
       />
+
+      <ConfirmModal
+        isOpen={showRemovePromoModal}
+        title="Remove Promo & Restore Base Prices"
+        message="Are you sure you want to remove the promotional pricing? All service prices will revert to their original values."
+        onConfirm={handleRemovePromo}
+        onCancel={() => setShowRemovePromoModal(false)}
+        confirmText={removingPromo ? 'Restoring...' : 'Remove Promo'}
+        isDanger={false}
+      />
     </div>
   );
 }
+
 
 
 function ReviewsManager() {

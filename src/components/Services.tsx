@@ -191,8 +191,13 @@ export default function Services({ onBookService, compact }: Props) {
                           {service.name}
                         </h4>
                         <div className="text-right shrink-0">
-                          <div className="text-lg font-extrabold text-gray-900 bg-gray-50 px-3 py-1 rounded-lg">
-                            {formatNaira(service.price)}
+                          <div className="text-lg font-extrabold text-gray-900 bg-gray-50 px-3 py-1 rounded-lg flex items-center gap-2">
+                            {service.original_price && service.original_price > service.price && (
+                              <span className="line-through text-gray-400 text-xs font-normal">
+                                {formatNaira(service.original_price)}
+                              </span>
+                            )}
+                            <span>{formatNaira(service.price)}</span>
                           </div>
                         </div>
                       </div>

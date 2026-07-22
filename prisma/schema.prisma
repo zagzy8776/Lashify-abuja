@@ -13,6 +13,7 @@ model Service {
   slug             String   @unique
   description      String
   price            Float
+  original_price   Float?
   duration_minutes Int
   duration_text    String?
   category         String
