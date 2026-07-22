@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body {
+    overflow-x: hidden;
+    background-color: #faf5f0; /* Warm creamy beige */
+    scrollbar-gutter: stable; /* Prevents layout shift when scrollbar appears */
+  }
+  
+  /* Force consistent background color everywhere */
+  .section-light, .section-cream, .section-blush {
+    background-color: #faf5f0 !important;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    color: #111827; /* Darker, high contrast text */
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    width: 100%;
+    position: relative;
+    letter-spacing: -0.01em; /* Tighter tracking for modern feel */
+  }
+  ::selection {
+    background-color: #000000;
+    color: #ffffff;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+}
+
+@layer components {
+  .container-lux {
+    @apply max-w-[1200px] mx-auto px-6 md:px-10;
+  }
+  
+  /* The main primary button mimicking Fresha's bold action buttons */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4 font-bold text-base rounded-2xl transition-all duration-200 active:scale-[0.98];
+    background-color: #000000;
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* A lighter, secondary button */
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4 font-bold text-base rounded-2xl transition-all duration-200 active:scale-[0.98];
+    background-color: #f3f4f6;
+    color: #111827;
+  }
+  .btn-secondary:hover {
+    background-color: #e5e7eb;
+  }
+
+  /* Outline variant for secondary actions */
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4 font-bold text-base rounded-2xl transition-all duration-200 active:scale-[0.98];
+    border: 1.5px solid #e5e7eb;
+    color: #111827;
+  }
+  .btn-outline:hover {
+    border-color: #d1d5db;
+    background-color: #f9fafb;
+  }
+
+  /* The booking bar search input */
+  .booking-input-wrapper {
+    @apply flex items-center bg-white border border-gray-200 rounded-2xl h-16 px-4 transition-all duration-200 relative;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+  }
+  .booking-input-wrapper:hover {
+    border-color: #d1d5db;
+  }
+  .booking-input-wrapper:focus-within {
+    border-color: #000000;
+    box-shadow: 0 0 0 1px #000000, 0 4px 20px rgba(0,0,0,0.08);
+  }
+
+  .booking-input {
+    @apply w-full h-full bg-transparent border-none outline-none text-base font-medium text-gray-900 placeholder:text-gray-400 placeholder:font-normal px-3;
+  }
+
+  /* Smooth glassmorphic card for services/results */
+  .card-modern {
+    @apply bg-white rounded-2xl transition-all duration-300;
+    border: 1px solid #f3f4f6;
+  }
+  .card-modern:hover {
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+    transform: translateY(-2px);
+  }
+
+  /* Fresha-style modal popups */
+  .modal-overlay {
+    @apply fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 transition-all duration-300;
+  }
+  .modal-fresha {
+    @apply bg-white rounded-[24px] w-full max-w-[480px] max-h-[85vh] flex flex-col overflow-hidden shadow-2xl;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .spotlight-1 {
+    background: radial-gradient(circle at center, rgba(168, 85, 247, 0.2) 0%, transparent 60%);
+    filter: blur(60px);
+    border-radius: 50%;
+  }
+  .spotlight-2 {
+    background: radial-gradient(circle at center, rgba(236, 72, 153, 0.2) 0%, transparent 60%);
+    filter: blur(60px);
+    border-radius: 50%;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+}
