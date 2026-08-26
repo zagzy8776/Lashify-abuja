@@ -19,16 +19,14 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
-  const tapCount = useRef(0);
-  const tapTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', onScroll);
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Close menu when tapping outside & lock body scroll
   useEffect(() => {
     if (mobileOpen) {
       document.body.style.overflow = 'hidden';
@@ -51,26 +49,39 @@ export default function Navbar() {
     };
   }, [mobileOpen]);
 
-  const handleNav = (href: string) => {
+  const handleNav = () => {
     setMobileOpen(false);
   };
 
   return (
     <header
       ref={headerRef}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? 'py-3' : 'py-5'
+      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
+        scrolled || mobileOpen ? 'py-3 shadow-sm' : 'py-4'
       }`}
       style={{
-        background: scrolled
-          ? 'rgba(255, 255, 255, 0.55)'
-          : 'transparent',
-        backdropFilter: scrolled ? 'blur(20px)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(179, 139, 158, 0.15)' : 'none',
+        // Always solid enough to read — sticky feels real on mobile
+        background:
+          scrolled || mobileOpen
+            ? 'rgba(250, 245, 240, 0.92)'
+            : 'rgba(250, 245, 240, 0.85)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        borderBottom:
+          scrolled || mobileOpen
+            ? '1px solid rgba(179, 139, 158, 0.18)'
+            : '1px solid rgba(179, 139, 158, 0.08)',
       }}
     >
       <nav className="container-lux flex items-center justify-between" aria-label="Main navigation">
-        <button onClick={() => { router.push('/'); setMobileOpen(false); }} aria-label="Go to homepage" className="flex items-center gap-3 group">
+        <button
+          onClick={() => {
+            router.push('/');
+            setMobileOpen(false);
+          }}
+          aria-label="Go to homepage"
+          className="flex items-center gap-3 group"
+        >
           <div className="w-11 h-11 transition-all duration-300">
             <img
               src="/images/logo.webp"
@@ -89,8 +100,7 @@ export default function Navbar() {
             </div>
           </div>
         </button>
- 
-        {/* Desktop nav */}
+
         <div className="hidden md:flex items-center gap-1">
           {navLinks.map((link) => (
             <Link
@@ -101,8 +111,12 @@ export default function Navbar() {
               style={{
                 color: pathname === link.page ? '#b38b9e' : '#5a4850',
               }}
-              onMouseEnter={(e) => { if (pathname !== link.page) (e.target as HTMLElement).style.color = '#b38b9e'; }}
-              onMouseLeave={(e) => { if (pathname !== link.page) (e.target as HTMLElement).style.color = '#5a4850'; }}
+              onMouseEnter={(e) => {
+                if (pathname !== link.page) (e.target as HTMLElement).style.color = '#b38b9e';
+              }}
+              onMouseLeave={(e) => {
+                if (pathname !== link.page) (e.target as HTMLElement).style.color = '#5a4850';
+              }}
             >
               {link.label}
             </Link>
@@ -112,28 +126,34 @@ export default function Navbar() {
             Book Now
           </Link>
         </div>
- 
-        {/* Mobile toggle */}
+
         <button
           className="md:hidden p-3"
           style={{ color: '#b38b9e' }}
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
+          aria-expanded={mobileOpen}
         >
           {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </nav>
- 
-      {/* Mobile menu */}
+
       {mobileOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 border-t animate-fade-down"
-          style={{ background: 'rgba(250, 247, 242, 0.95)', borderColor: 'rgba(179, 139, 158, 0.12)', backdropFilter: 'blur(12px)' }}>
+        <div
+          className="md:hidden absolute top-full left-0 right-0 border-t animate-fade-down"
+          style={{
+            background: 'rgba(250, 245, 240, 0.98)',
+            borderColor: 'rgba(179, 139, 158, 0.12)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+          }}
+        >
           <div className="container-lux py-6 flex flex-col gap-2">
             {navLinks.map((link) => (
               <Link
                 key={link.page}
                 href={link.page}
-                onClick={() => handleNav(link.page)}
+                onClick={handleNav}
                 className="px-4 py-4 text-left text-base font-medium rounded-lg transition-colors"
                 style={{
                   color: pathname === link.page ? '#b38b9e' : '#5a4850',
@@ -143,7 +163,11 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <Link href="/book" onClick={() => setMobileOpen(false)} className="btn-gold mt-4 py-4 text-center justify-center">
+            <Link
+              href="/book"
+              onClick={() => setMobileOpen(false)}
+              className="btn-gold mt-4 py-4 text-center justify-center"
+            >
               <Calendar className="w-4 h-4 inline-block mr-2" />
               Book Now
             </Link>
