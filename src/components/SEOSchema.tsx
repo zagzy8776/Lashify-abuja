@@ -15,7 +15,7 @@ export default function SEOSchema({ title, description, serviceName, neighborhoo
     "image": "https://lashifyabuja.com/logo.png",
     "@id": "https://lashifyabuja.com",
     "url": "https://lashifyabuja.com",
-    "telephone": "+2340000000000",
+    "telephone": "+2348087026970",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Plot 2079 Nonso Benson Udeh Street",
@@ -24,7 +24,7 @@ export default function SEOSchema({ title, description, serviceName, neighborhoo
     },
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": 9.0765, // Example Abuja coordinates, can be updated
+      "latitude": 9.0765,
       "longitude": 7.3986
     },
     "areaServed": neighborhood ? [neighborhood, "Abuja"] : ["Wuse", "Maitama", "Asokoro", "Gwarinpa", "Jabi", "Abuja"],
