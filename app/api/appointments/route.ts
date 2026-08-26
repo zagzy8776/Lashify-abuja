@@ -105,10 +105,8 @@ export async function POST(request: Request) {
         throw new Error('This time slot is already booked. Please select another time.');
       }
 
-      // Create client if doesn't exist, or just use details
-      // For simplicity, we just store it in the appointment directly for now 
-      // (denormalized, as per your old architecture, but safe)
-      
+      // Auto-confirm after customer completes the paid booking flow.
+      // Status shows as confirmed in admin immediately. Studio can still cancel if transfer is missing.
       return await tx.appointment.create({
         data: {
           service_id: service.id,
@@ -121,7 +119,7 @@ export async function POST(request: Request) {
           appointment_date: data.appointment_date,
           start_time: data.start_time,
           end_time,
-          status: 'pending',
+          status: 'confirmed',
           notes: data.notes || null,
         }
       });
@@ -136,15 +134,17 @@ export async function POST(request: Request) {
       resend.emails.send({
         from: 'LashifyAbuja <bookings@tushaesthetics.com>',
         to: adminEmail,
-        subject: `New Booking: ${appointment.service_name} on ${appointment.appointment_date}`,
+        subject: `New Confirmed Booking: ${appointment.service_name} on ${appointment.appointment_date}`,
         html: `
-          <h2>New Booking Request</h2>
+          <h2>New Confirmed Booking</h2>
           <p><strong>Client:</strong> ${appointment.client_name}</p>
           <p><strong>Phone:</strong> ${appointment.client_phone}</p>
           <p><strong>Service:</strong> ${appointment.service_name}</p>
           <p><strong>Date:</strong> ${appointment.appointment_date}</p>
           <p><strong>Time:</strong> ${appointment.start_time} - ${appointment.end_time}</p>
           <p><strong>Price:</strong> ₦${appointment.service_price}</p>
+          <p><strong>Status:</strong> Confirmed (customer completed payment flow — verify transfer)</p>
+          <p><strong>Notes:</strong> ${appointment.notes || '—'}</p>
         `,
       }).catch(err => console.error('Failed to send admin email:', err));
 
@@ -153,15 +153,16 @@ export async function POST(request: Request) {
         resend.emails.send({
           from: 'LashifyAbuja <bookings@tushaesthetics.com>',
           to: appointment.client_email,
-          subject: 'Your LashifyAbuja Appointment Request',
+          subject: 'Your LashifyAbuja Appointment is Confirmed',
           html: `
-            <h2>Thank you for booking with LashifyAbuja!</h2>
-            <p>Hi ${appointment.client_name}, we have received your booking request.</p>
+            <h2>Your appointment is confirmed!</h2>
+            <p>Hi ${appointment.client_name}, thank you for booking with LashifyAbuja.</p>
             <p><strong>Service:</strong> ${appointment.service_name}</p>
             <p><strong>Date:</strong> ${appointment.appointment_date}</p>
             <p><strong>Time:</strong> ${appointment.start_time}</p>
             <br/>
-            <p>We will contact you shortly to confirm your appointment.</p>
+            <p>Please send your payment receipt on WhatsApp if you have not already.</p>
+            <p>We look forward to seeing you!</p>
           `,
         }).catch(err => console.error('Failed to send client email:', err));
       }
