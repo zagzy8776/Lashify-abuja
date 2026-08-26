@@ -34,7 +34,7 @@ export const SERVICE_CATALOG: ServiceCatalogItem[] = [
 
 export const PAYMENT_ACCOUNT = {
   bankName: 'OPay',
-  accountNumber: '8087026970',
-  accountName: 'Samaila Florence',
+  accountNumber: '6113944949',
+  accountName: 'FLORENCE SAMAILA',
   whatsapp: '2348087026970',
 };
