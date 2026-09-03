@@ -1187,18 +1187,18 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
 
       <div className="space-y-3">
         {services.map((svc) => (
-          <div key={svc.id} className="flex items-center justify-between p-4 bg-white rounded-2xl border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
-            <div className="flex-grow flex items-center gap-5">
+          <div key={svc.id} className="p-4 bg-white rounded-2xl border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+            <div className="flex items-start gap-3 sm:gap-4">
               {svc.image_url ? (
-                <img src={svc.image_url} alt={svc.name} className="w-16 h-16 object-cover rounded-2xl shadow-sm border border-gray-100 shrink-0" />
+                <img src={svc.image_url} alt={svc.name} className="w-14 h-14 sm:w-16 sm:h-16 object-cover rounded-2xl shadow-sm border border-gray-100 shrink-0" />
               ) : (
-                <div className="w-16 h-16 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center shrink-0">
-                  <span className="text-gray-300 text-xs font-bold uppercase">No Img</span>
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-rose-50 to-gray-50 border border-gray-100 flex items-center justify-center shrink-0">
+                  <Scissors className="w-5 h-5 text-rose-300" />
                 </div>
               )}
-              <div>
-                <div className="flex items-center gap-3 mb-1">
-                  <h4 className="font-bold text-gray-900 text-lg leading-tight">{svc.name}</h4>
+              <div className="flex-grow min-w-0">
+                <div className="flex flex-wrap items-center gap-2 mb-1">
+                  <h4 className="font-bold text-gray-900 text-base sm:text-lg leading-tight">{svc.name}</h4>
                   <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md ${svc.is_active ? 'bg-green-50 text-green-600 border border-green-200' : 'bg-gray-100 text-gray-500 border border-gray-200'}`}>
                     {svc.is_active ? 'Active' : 'Inactive'}
                   </span>
@@ -1206,8 +1206,8 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
                     {svc.category.replace('-', ' ')}
                   </span>
                 </div>
-                <p className="text-sm font-medium text-gray-500 mb-1">{svc.description?.substring(0, 80)}{svc.description?.length > 80 ? '...' : ''}</p>
-                <p className="text-sm font-bold text-gray-900">
+                <p className="text-sm font-medium text-gray-500 mb-1.5 line-clamp-2">{svc.description}</p>
+                <p className="text-base font-bold text-gray-900">
                   {formatNaira(svc.price)}
                   {svc.original_price && svc.original_price > svc.price && (
                     <span className="ml-2">
@@ -1216,23 +1216,38 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
                     </span>
                   )}
                   {(svc.duration_text || svc.duration_minutes > 0) && (
-                    <span className="text-gray-400 font-medium ml-2">
+                    <span className="text-gray-400 font-medium ml-2 text-sm">
                       · {svc.duration_text || formatDuration(svc.duration_minutes)}
                     </span>
                   )}
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-3 pl-4 border-l border-gray-100">
-              <button onClick={() => toggleServiceActive(svc.id, svc.is_active)} className={`relative w-12 h-6 rounded-full transition-colors focus:outline-none ${svc.is_active ? 'bg-rose-500' : 'bg-gray-200'}`} title={svc.is_active ? 'Deactivate' : 'Activate'}>
-                <span className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform shadow-sm ${svc.is_active ? 'left-[26px]' : 'left-1'}`} />
+
+            {/* Actions: full-width row on mobile so Edit is always visible */}
+            <div className="mt-3 pt-3 border-t border-gray-100 flex items-center gap-2">
+              <button
+                onClick={() => toggleServiceActive(svc.id, svc.is_active)}
+                className={`relative w-11 h-6 rounded-full transition-colors focus:outline-none shrink-0 ${svc.is_active ? 'bg-rose-500' : 'bg-gray-200'}`}
+                title={svc.is_active ? 'Deactivate' : 'Activate'}
+              >
+                <span className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform shadow-sm ${svc.is_active ? 'left-[22px]' : 'left-1'}`} />
               </button>
-              <div className="w-px h-6 bg-gray-100 mx-1"></div>
-              <button onClick={() => handleEdit(svc)} className="p-2 rounded-xl text-blue-600 hover:bg-blue-50 transition-colors" title="Edit service">
-                <Pencil className="w-5 h-5" />
+              <span className="text-xs font-medium text-gray-400 mr-auto">{svc.is_active ? 'On' : 'Off'}</span>
+              <button
+                onClick={() => handleEdit(svc)}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-sm"
+                title="Edit service"
+              >
+                <Pencil className="w-4 h-4" />
+                Edit
               </button>
-              <button onClick={() => setServiceToDelete({ id: svc.id, name: svc.name })} className="p-2 rounded-xl text-red-600 hover:bg-red-50 transition-colors" title="Delete service">
-                <Trash2 className="w-5 h-5" />
+              <button
+                onClick={() => setServiceToDelete({ id: svc.id, name: svc.name })}
+                className="inline-flex items-center justify-center p-2 rounded-xl text-red-600 bg-red-50 hover:bg-red-100 transition-colors"
+                title="Delete service"
+              >
+                <Trash2 className="w-4 h-4" />
               </button>
             </div>
           </div>
