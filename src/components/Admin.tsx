@@ -67,17 +67,26 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const [apptData, svcData] = await Promise.all([
-          adminFetchAllAppointments(),
-          adminFetchAllServices(),
-        ]);
-        setAppointments(apptData);
-        setServices(svcData);
-      } catch (err) {
-        console.error('Failed to fetch dashboard data:', err);
-        checkAuth(err);
+      // Load appointments and services independently so one failure does not blank the other
+      const results = await Promise.allSettled([
+        adminFetchAllAppointments(),
+        adminFetchAllServices(),
+      ]);
+
+      if (results[0].status === 'fulfilled') {
+        setAppointments(results[0].value);
+      } else {
+        console.error('Failed to fetch appointments:', results[0].reason);
+        checkAuth(results[0].reason);
       }
+
+      if (results[1].status === 'fulfilled') {
+        setServices(results[1].value);
+      } else {
+        console.error('Failed to fetch services:', results[1].reason);
+        checkAuth(results[1].reason);
+      }
+
       setLoading(false);
     };
     fetchData();
@@ -908,6 +917,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
   const [editingService, setEditingService] = useState<Service | null>(null);
   const [editForm, setEditForm] = useState<Partial<Service>>({});
   const [saving, setSaving] = useState(false);
+  const [loadingServices, setLoadingServices] = useState(false);
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [newItem, setNewItem] = useState<Partial<Service>>({ name: '', description: '', price: 0, duration_minutes: 0, duration_text: '', category: 'lash', image_url: '' });
@@ -920,6 +930,26 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
   const [applyingPromo, setApplyingPromo] = useState(false);
   const [showRemovePromoModal, setShowRemovePromoModal] = useState(false);
   const [removingPromo, setRemovingPromo] = useState(false);
+
+  // Always refresh services when this tab is opened so the list is never stuck empty
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      setLoadingServices(true);
+      try {
+        const data = await adminFetchAllServices();
+        if (!cancelled) setServices(data);
+      } catch (err) {
+        console.error('Failed to load services in ServicesManager:', err);
+        checkAuth(err);
+      } finally {
+        if (!cancelled) setLoadingServices(false);
+      }
+    };
+    load();
+    return () => { cancelled = true; };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const hasActivePromo = services.some(s => s.original_price && s.original_price > s.price);
 
@@ -1207,7 +1237,12 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
             </div>
           </div>
         ))}
-        {services.length === 0 && (
+        {loadingServices && services.length === 0 && (
+          <div className="py-12 text-center text-gray-500 font-medium bg-gray-50 rounded-2xl border border-gray-200 flex items-center justify-center gap-2">
+            <Loader2 className="w-5 h-5 animate-spin" /> Loading services...
+          </div>
+        )}
+        {!loadingServices && services.length === 0 && (
           <div className="py-12 text-center text-gray-500 font-medium bg-gray-50 rounded-2xl border border-gray-200">No services found. Add your first service!</div>
         )}
       </div>
