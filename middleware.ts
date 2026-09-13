@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { ADMIN_COOKIE_NAME, verifyAdminToken } from '@/src/lib/admin-auth';
+import { ADMIN_COOKIE_NAME, verifyAdminToken } from '@/src/lib/admin-auth-core';
 
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
