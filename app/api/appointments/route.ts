@@ -1,33 +1,32 @@
 import { NextResponse } from 'next/server';
+import { Prisma } from '@prisma/client';
 import prisma from '@/src/lib/prisma';
 import { z } from 'zod';
 import { Resend } from 'resend';
-
+import { addMinutesToTime, hasTimeOverlap } from '@/src/lib/time';
 
 const nigerianPhoneRegex = /^(\+?234|0)[789]\d{9}$/;
 
 const bookingSchema = z.object({
   service_id: z.string().min(1, 'Service is required'),
-  client_name: z.string().min(2, 'Name is too short').max(100),
+  client_name: z.string().trim().min(2, 'Name is too short').max(100),
   client_phone: z.string()
     .min(10, 'Phone number is too short')
-    .max(16)
-    .transform(v => v.replace(/[\s\-()]/g, '')) // strip spaces/dashes
-    .refine(v => nigerianPhoneRegex.test(v), 'Please enter a valid Nigerian phone number (e.g. 0801 234 5678)'),
-  client_email: z.string().email('Invalid email').optional().or(z.literal('')),
+    .max(20)
+    .transform((value) => value.replace(/[\s\-()]/g, ''))
+    .refine((value) => nigerianPhoneRegex.test(value), 'Please enter a valid Nigerian phone number'),
+  client_email: z.string().email('Invalid email').max(254).optional().or(z.literal('')),
   appointment_date: z.string()
     .regex(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format')
-    .refine(v => {
-      const d = new Date(v + 'T00:00:00');
-      const today = new Date(); today.setHours(0, 0, 0, 0);
-      return d >= today;
+    .refine((value) => {
+      const date = new Date(`${value}T00:00:00`);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return date >= today;
     }, 'Cannot book a date in the past')
-    .refine(v => {
-      const day = new Date(v + 'T00:00:00').getDay();
-      return day !== 0; // 0 = Sunday
-    }, 'We are closed on Sundays'),
-  start_time: z.string().regex(/^\d{2}:\d{2}$/, 'Invalid time format'),
-  notes: z.string().max(500).optional(),
+    .refine((value) => new Date(`${value}T00:00:00`).getDay() !== 0, 'We are closed on Sundays'),
+  start_time: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, 'Invalid time format'),
+  notes: z.string().trim().max(500).optional(),
 });
 
 export async function GET(request: Request) {
@@ -35,79 +34,60 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const date = searchParams.get('date');
 
+    if (date && !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      return NextResponse.json({ error: 'Invalid date' }, { status: 400 });
+    }
+
+    // Availability endpoints must never expose customer PII.
     const appointments = await prisma.appointment.findMany({
-      where: date ? { appointment_date: date } : undefined,
-      orderBy: [
-        { appointment_date: 'asc' },
-        { start_time: 'asc' },
-      ],
+      where: date ? { appointment_date: date, status: { in: ['pending', 'confirmed'] } } : { status: { in: ['pending', 'confirmed'] } },
+      select: { id: true, appointment_date: true, start_time: true, end_time: true, status: true },
+      orderBy: [{ appointment_date: 'asc' }, { start_time: 'asc' }],
+      take: 1000,
     });
-    return NextResponse.json(appointments);
+
+    return NextResponse.json(appointments, {
+      headers: { 'Cache-Control': 'private, no-store' },
+    });
   } catch (error) {
     console.error('Error fetching appointments:', error);
-    return NextResponse.json({ error: 'Failed to fetch appointments' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to fetch availability' }, { status: 500 });
   }
 }
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    
-    // 1. Validate Input
-    const validation = bookingSchema.safeParse(body);
+    const validation = bookingSchema.safeParse(await request.json());
     if (!validation.success) {
       return NextResponse.json(
-        { error: 'Invalid booking data', details: validation.error.errors },
-        { status: 400 }
+        { error: 'Invalid booking data', details: validation.error.issues },
+        { status: 400 },
       );
     }
-    const data = validation.data;
 
-    // 2. Fetch the service to ensure prices and durations are accurate (don't trust the client)
-    const service = await prisma.service.findUnique({
-      where: { id: data.service_id },
-    });
+    const data = validation.data;
+    const service = await prisma.service.findUnique({ where: { id: data.service_id } });
 
     if (!service || !service.is_active) {
       return NextResponse.json({ error: 'Service not found or inactive' }, { status: 404 });
     }
 
-    // Calculate end time
-    const [hours, minutes] = data.start_time.split(':').map(Number);
-    const endDate = new Date(1970, 0, 1, hours, minutes + service.duration_minutes);
-    const end_time = `${endDate.getHours().toString().padStart(2, '0')}:${endDate.getMinutes().toString().padStart(2, '0')}`;
+    const end_time = addMinutesToTime(data.start_time, service.duration_minutes);
 
-    // 3. Database Transaction to prevent double booking
     const appointment = await prisma.$transaction(async (tx) => {
-      // Check if slot is taken
-      const existing = await tx.appointment.findFirst({
+      const existing = await tx.appointment.findMany({
         where: {
           appointment_date: data.appointment_date,
           status: { in: ['pending', 'confirmed'] },
-          OR: [
-            {
-              start_time: { lte: data.start_time },
-              end_time: { gt: data.start_time },
-            },
-            {
-              start_time: { lt: end_time },
-              end_time: { gte: end_time },
-            },
-            {
-              start_time: { gte: data.start_time },
-              end_time: { lte: end_time },
-            }
-          ]
-        }
+        },
+        select: { start_time: true, end_time: true },
       });
 
-      if (existing) {
+      if (existing.some((slot) => hasTimeOverlap(data.start_time, end_time, slot.start_time, slot.end_time))) {
         throw new Error('This time slot is already booked. Please select another time.');
       }
 
-      // Auto-confirm after customer completes the paid booking flow.
-      // Status shows as confirmed in admin immediately. Studio can still cancel if transfer is missing.
-      return await tx.appointment.create({
+      return tx.appointment.create({
         data: {
           service_id: service.id,
           client_name: data.client_name,
@@ -121,34 +101,30 @@ export async function POST(request: Request) {
           end_time,
           status: 'confirmed',
           notes: data.notes || null,
-        }
+        },
       });
-    });
+    }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable, maxWait: 5000, timeout: 10000 });
 
-    // 4. Send Confirmation Email via Resend (don't await this so user doesn't wait)
-    if (process.env.RESEND_API_KEY) {
+    if (process.env.RESEND_API_KEY && process.env.ADMIN_EMAIL) {
       const resend = new Resend(process.env.RESEND_API_KEY);
-      const adminEmail = process.env.ADMIN_EMAIL || 'admin@lashifyabuja.com';
-      
-      // Notify Admin
+
       resend.emails.send({
         from: 'LashifyAbuja <bookings@tushaesthetics.com>',
-        to: adminEmail,
+        to: process.env.ADMIN_EMAIL,
         subject: `New Confirmed Booking: ${appointment.service_name} on ${appointment.appointment_date}`,
         html: `
           <h2>New Confirmed Booking</h2>
-          <p><strong>Client:</strong> ${appointment.client_name}</p>
-          <p><strong>Phone:</strong> ${appointment.client_phone}</p>
-          <p><strong>Service:</strong> ${appointment.service_name}</p>
-          <p><strong>Date:</strong> ${appointment.appointment_date}</p>
-          <p><strong>Time:</strong> ${appointment.start_time} - ${appointment.end_time}</p>
+          <p><strong>Client:</strong> ${escapeHtml(appointment.client_name)}</p>
+          <p><strong>Phone:</strong> ${escapeHtml(appointment.client_phone)}</p>
+          <p><strong>Service:</strong> ${escapeHtml(appointment.service_name)}</p>
+          <p><strong>Date:</strong> ${escapeHtml(appointment.appointment_date)}</p>
+          <p><strong>Time:</strong> ${escapeHtml(appointment.start_time)} - ${escapeHtml(appointment.end_time)}</p>
           <p><strong>Price:</strong> ₦${appointment.service_price}</p>
-          <p><strong>Status:</strong> Confirmed (customer completed payment flow — verify transfer)</p>
-          <p><strong>Notes:</strong> ${appointment.notes || '—'}</p>
+          <p><strong>Status:</strong> Confirmed (verify payment receipt)</p>
+          <p><strong>Notes:</strong> ${escapeHtml(appointment.notes || '—')}</p>
         `,
-      }).catch(err => console.error('Failed to send admin email:', err));
+      }).catch((error) => console.error('Failed to send admin email:', error));
 
-      // Notify Client if email provided
       if (appointment.client_email) {
         resend.emails.send({
           from: 'LashifyAbuja <bookings@tushaesthetics.com>',
@@ -156,25 +132,38 @@ export async function POST(request: Request) {
           subject: 'Your LashifyAbuja Appointment is Confirmed',
           html: `
             <h2>Your appointment is confirmed!</h2>
-            <p>Hi ${appointment.client_name}, thank you for booking with LashifyAbuja.</p>
-            <p><strong>Service:</strong> ${appointment.service_name}</p>
-            <p><strong>Date:</strong> ${appointment.appointment_date}</p>
-            <p><strong>Time:</strong> ${appointment.start_time}</p>
+            <p>Hi ${escapeHtml(appointment.client_name)}, thank you for booking with LashifyAbuja.</p>
+            <p><strong>Service:</strong> ${escapeHtml(appointment.service_name)}</p>
+            <p><strong>Date:</strong> ${escapeHtml(appointment.appointment_date)}</p>
+            <p><strong>Time:</strong> ${escapeHtml(appointment.start_time)}</p>
             <br/>
             <p>Please send your payment receipt on WhatsApp if you have not already.</p>
             <p>We look forward to seeing you!</p>
           `,
-        }).catch(err => console.error('Failed to send client email:', err));
+        }).catch((error) => console.error('Failed to send client email:', error));
       }
     }
 
     return NextResponse.json(appointment, { status: 201 });
-
-  } catch (error: any) {
+  } catch (error) {
     console.error('Booking error:', error);
-    if (error.message.includes('already booked')) {
+    if (error instanceof Error && error.message.includes('already booked')) {
       return NextResponse.json({ error: error.message }, { status: 409 });
+    }
+    // Serializable transactions can be retried by the client when contention occurs.
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2034') {
+      return NextResponse.json({ error: 'The slot changed while booking. Please try again.' }, { status: 409 });
     }
     return NextResponse.json({ error: 'Failed to process booking' }, { status: 500 });
   }
+}
+
+function escapeHtml(value: string) {
+  return value.replace(/[&<>'"]/g, (character) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    "'": '&#39;',
+    '"': '&quot;',
+  }[character] || character));
 }
