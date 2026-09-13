@@ -18,7 +18,7 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
     const status = input.status ?? current.status;
     const endTime = addMinutesToTime(startTime, current.service_duration);
 
-    if ((status === 'pending' || status === 'confirmed') && current.status !== 'cancelled') {
+    if (status === 'pending' || status === 'confirmed') {
       const sameDay = await prisma.appointment.findMany({
         where: {
           id: { not: id },
