@@ -1,46 +1,34 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { jwtVerify } from 'jose';
-
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-for-development';
+import { ADMIN_COOKIE_NAME, verifyAdminToken } from '@/src/lib/admin-auth';
 
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
-
-  // Protect /admin routes and /api/admin routes
   const isAdminPage = path.startsWith('/admin') && path !== '/admin/login';
   const isAdminApi = path.startsWith('/api/admin') && path !== '/api/admin/login';
 
-  if (isAdminPage || isAdminApi) {
-    const token = request.cookies.get('admin_token')?.value;
+  if (!isAdminPage && !isAdminApi) return NextResponse.next();
 
-    if (!token) {
-      if (isAdminApi) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-      }
-      return NextResponse.redirect(new URL('/admin/login', request.url));
-    }
-
-    try {
-      const secretKey = new TextEncoder().encode(JWT_SECRET);
-      await jwtVerify(token, secretKey);
-      return NextResponse.next();
-    } catch (error) {
-      if (isAdminApi) {
-        return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
-      }
-      // Token is invalid/expired, clear it and redirect
-      const response = NextResponse.redirect(new URL('/admin/login', request.url));
-      response.cookies.set({
-        name: 'admin_token',
-        value: '',
-        expires: new Date(0),
-      });
-      return response;
-    }
+  const token = request.cookies.get(ADMIN_COOKIE_NAME)?.value;
+  if (!token) {
+    if (isAdminApi) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.redirect(new URL('/admin/login', request.url));
   }
 
-  return NextResponse.next();
+  try {
+    await verifyAdminToken(token);
+    return NextResponse.next();
+  } catch {
+    if (isAdminApi) {
+      const response = NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      response.cookies.delete(ADMIN_COOKIE_NAME);
+      return response;
+    }
+
+    const response = NextResponse.redirect(new URL('/admin/login', request.url));
+    response.cookies.delete(ADMIN_COOKIE_NAME);
+    return response;
+  }
 }
 
 export const config = {
