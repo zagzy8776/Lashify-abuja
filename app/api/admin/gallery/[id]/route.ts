@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/src/lib/prisma';
 import { v2 as cloudinary } from 'cloudinary';
+import { requireAdmin } from '@/src/lib/admin-auth';
+import { galleryUpdateSchema } from '@/src/lib/admin-validation';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -11,70 +13,68 @@ cloudinary.config({
 
 function getPublicIdFromUrl(url: string) {
   try {
-    // E.g., https://res.cloudinary.com/.../upload/v1234/lashify-abuja/abcde.jpg
-    // We want 'lashify-abuja/abcde'
-    const parts = url.split('/');
-    const folderIndex = parts.indexOf('lashify-abuja');
-    
-    if (folderIndex !== -1) {
-      const pathWithExt = parts.slice(folderIndex).join('/');
-      return pathWithExt.substring(0, pathWithExt.lastIndexOf('.'));
-    }
-    
-    // Fallback logic
-    return parts.pop()?.split('.')[0];
-  } catch (err) {
+    const parsed = new URL(url);
+    if (parsed.hostname !== 'res.cloudinary.com') return null;
+    const parts = parsed.pathname.split('/').filter(Boolean);
+    const uploadIndex = parts.indexOf('upload');
+    if (uploadIndex === -1) return null;
+
+    const publicParts = parts.slice(uploadIndex + 1).filter((part) => !/^v\d+$/.test(part));
+    const last = publicParts.pop();
+    if (!last) return null;
+    publicParts.push(last.replace(/\.[^.]+$/, ''));
+    return publicParts.join('/');
+  } catch {
     return null;
   }
 }
 
 export async function PATCH(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
+    await requireAdmin();
     const { id } = await context.params;
-    const body = await request.json();
-
-    const item = await prisma.galleryItem.update({
-      where: { id },
-      data: body,
-    });
-
+    const body = galleryUpdateSchema.parse(await request.json());
+    const item = await prisma.galleryItem.update({ where: { id }, data: body });
     return NextResponse.json(item);
   } catch (error) {
     console.error('Error updating gallery item:', error);
+    if (error instanceof Error && error.message === 'Unauthorized') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    if (error instanceof Error && error.name === 'ZodError') {
+      return NextResponse.json({ error: 'Invalid gallery data' }, { status: 400 });
+    }
     return NextResponse.json({ error: 'Failed to update gallery item' }, { status: 500 });
   }
 }
 
 export async function DELETE(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
+    await requireAdmin();
     const { id } = await context.params;
-    
-    // 1. Get the item to find Cloudinary URL
-    const item = await prisma.galleryItem.findUnique({
-      where: { id },
-    });
+    const item = await prisma.galleryItem.findUnique({ where: { id } });
 
-    if (item && item.image_url && item.image_url.includes('cloudinary.com')) {
+    if (!item) return NextResponse.json({ error: 'Gallery item not found' }, { status: 404 });
+
+    if (item.image_url.includes('res.cloudinary.com')) {
       const publicId = getPublicIdFromUrl(item.image_url);
       if (publicId) {
         try {
           await cloudinary.uploader.destroy(publicId);
         } catch (cloudinaryError) {
           console.error('Error deleting from Cloudinary:', cloudinaryError);
-          // We continue to delete from DB even if Cloudinary fails
+          return NextResponse.json({ error: 'Media deletion failed; database item was not removed' }, { status: 502 });
         }
       }
     }
-    
-    // 2. Delete from DB
-    await prisma.galleryItem.delete({
-      where: { id },
-    });
 
+    await prisma.galleryItem.delete({ where: { id } });
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error deleting gallery item:', error);
+    if (error instanceof Error && error.message === 'Unauthorized') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     return NextResponse.json({ error: 'Failed to delete' }, { status: 500 });
   }
 }
-
