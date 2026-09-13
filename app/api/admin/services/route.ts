@@ -1,57 +1,36 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/src/lib/prisma';
 import { SERVICE_CATALOG } from '@/src/lib/services-catalog';
-
-function catalogAsServices() {
-  return SERVICE_CATALOG.map((s) => ({
-    id: s.slug,
-    name: s.name,
-    slug: s.slug,
-    description: s.description,
-    price: s.price,
-    original_price: null,
-    duration_minutes: s.duration_minutes,
-    duration_text: s.duration_text ?? null,
-    category: s.category,
-    image_url: null,
-    is_active: true,
-    sort_order: s.sort_order,
-    created_at: new Date().toISOString(),
-  }));
-}
+import { requireAdmin } from '@/src/lib/admin-auth';
+import { serviceCreateSchema } from '@/src/lib/admin-validation';
 
 async function ensureServicesSeeded() {
-  for (const s of SERVICE_CATALOG) {
-    await prisma.service.upsert({
-      where: { slug: s.slug },
-      update: {
-        name: s.name,
-        description: s.description,
-        price: s.price,
-        duration_minutes: s.duration_minutes,
-        duration_text: s.duration_text ?? null,
-        category: s.category,
-        sort_order: s.sort_order,
-        is_active: true,
-      },
-      create: {
-        name: s.name,
-        slug: s.slug,
-        description: s.description,
-        price: s.price,
-        duration_minutes: s.duration_minutes,
-        duration_text: s.duration_text ?? null,
-        category: s.category,
-        sort_order: s.sort_order,
-        is_active: true,
-      },
-    });
-  }
+  const count = await prisma.service.count();
+  if (count > 0) return;
+
+  await prisma.service.createMany({
+    data: SERVICE_CATALOG.map((s) => ({
+      name: s.name,
+      slug: s.slug,
+      description: s.description,
+      price: s.price,
+      duration_minutes: s.duration_minutes,
+      duration_text: s.duration_text ?? null,
+      category: s.category,
+      sort_order: s.sort_order,
+      is_active: true,
+    })),
+    skipDuplicates: true,
+  });
 }
 
 export async function GET() {
   try {
-    let services = await prisma.service.findMany({
+    await requireAdmin();
+    await ensureServicesSeeded();
+
+    const services = await prisma.service.findMany({
+      take: 500,
       orderBy: [
         { category: 'asc' },
         { sort_order: 'asc' },
@@ -59,43 +38,33 @@ export async function GET() {
       ],
     });
 
-    if (services.length === 0) {
-      await ensureServicesSeeded();
-      services = await prisma.service.findMany({
-        orderBy: [
-          { category: 'asc' },
-          { sort_order: 'asc' },
-          { name: 'asc' },
-        ],
-      });
-    }
-
     return NextResponse.json(services);
   } catch (error) {
     console.error('Error fetching admin services:', error);
-    // Fallback so admin can still see and manage the catalog
-    return NextResponse.json(catalogAsServices());
+    const message = error instanceof Error && error.message === 'Unauthorized' ? 'Unauthorized' : 'Internal Server Error';
+    return NextResponse.json({ error: message }, { status: message === 'Unauthorized' ? 401 : 500 });
   }
 }
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-
-    if (!body.slug && body.name) {
-      body.slug = body.name
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/(^-|-$)+/g, '');
-    }
+    await requireAdmin();
+    const body = serviceCreateSchema.parse(await request.json());
+    const slug = body.slug || body.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
 
     const service = await prisma.service.create({
-      data: body,
+      data: { ...body, slug },
     });
 
     return NextResponse.json(service, { status: 201 });
   } catch (error) {
     console.error('Error creating service:', error);
+    if (error instanceof Error && error.message === 'Unauthorized') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    if (error instanceof Error && error.name === 'ZodError') {
+      return NextResponse.json({ error: 'Invalid service data' }, { status: 400 });
+    }
     return NextResponse.json({ error: 'Failed to create service' }, { status: 500 });
   }
 }
