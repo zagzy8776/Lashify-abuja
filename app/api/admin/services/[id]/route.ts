@@ -2,12 +2,28 @@ import { NextResponse } from 'next/server';
 import prisma from '@/src/lib/prisma';
 import { requireAdmin } from '@/src/lib/admin-auth';
 import { serviceUpdateSchema } from '@/src/lib/admin-validation';
+import { syncServiceCatalog } from '@/src/lib/service-catalog-sync';
 
 export async function PATCH(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
     await requireAdmin();
+    await syncServiceCatalog();
     const { id } = await context.params;
     const body = serviceUpdateSchema.parse(await request.json());
+
+    if (body.name) {
+      const duplicate = await prisma.service.findFirst({
+        where: {
+          id: { not: id },
+          is_active: true,
+          name: { equals: body.name, mode: 'insensitive' },
+        },
+        select: { id: true },
+      });
+      if (duplicate) {
+        return NextResponse.json({ error: 'An active service with this name already exists.' }, { status: 409 });
+      }
+    }
 
     const service = await prisma.service.update({
       where: { id },
