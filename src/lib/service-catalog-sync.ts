@@ -34,7 +34,9 @@ export async function syncServiceCatalog() {
   const usedIds = new Set<string>();
 
   for (const item of SERVICE_CATALOG) {
-    let canonical = bySlug.get(item.slug);
+    const exact = bySlug.get(item.slug);
+    let canonical = exact;
+    let migratedLegacy = false;
 
     if (!canonical) {
       const aliases = new Set([normalize(item.name), ...(LEGACY_ALIASES[item.slug] ?? []).map(normalize)]);
@@ -42,6 +44,7 @@ export async function syncServiceCatalog() {
         if (usedIds.has(service.id)) return false;
         return aliases.has(normalize(service.name)) || aliases.has(normalize(service.slug));
       });
+      migratedLegacy = Boolean(canonical);
     }
 
     if (!canonical) {
@@ -59,18 +62,26 @@ export async function syncServiceCatalog() {
         },
       });
     } else {
-      const needsCanonicalIdentity = canonical.slug !== item.slug || canonical.name !== item.name || canonical.category !== item.category || canonical.sort_order !== item.sort_order;
-      if (needsCanonicalIdentity) {
-        canonical = await prisma.service.update({
-          where: { id: canonical.id },
-          data: {
+      const data = migratedLegacy
+        ? {
+            name: item.name,
+            slug: item.slug,
+            description: item.description,
+            price: item.price,
+            duration_minutes: item.duration_minutes,
+            duration_text: item.duration_text ?? null,
+            category: item.category,
+            sort_order: item.sort_order,
+            is_active: true,
+          }
+        : {
             name: item.name,
             slug: item.slug,
             category: item.category,
             sort_order: item.sort_order,
-          },
-        });
-      }
+          };
+
+      canonical = await prisma.service.update({ where: { id: canonical.id }, data });
     }
 
     usedIds.add(canonical.id);
