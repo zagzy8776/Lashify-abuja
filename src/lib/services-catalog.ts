@@ -1,7 +1,7 @@
 export type ServiceCatalogItem = {
   name: string;
   slug: string;
-  category: 'brows' | 'lash' | 'lash-addon';
+  category: 'brows' | 'lash' | 'fox-eyes' | 'refill' | 'lash-addon';
   price: number;
   duration_minutes: number;
   duration_text?: string;
@@ -20,28 +20,34 @@ export const SERVICE_CATALOG: ServiceCatalogItem[] = [
   { name: 'Ombré brows touch up over 8 weeks', slug: 'ombre-brows-touch-up-over-8-weeks', category: 'brows', price: 25000, duration_minutes: 90, description: 'A necessary color and shape boost to keep your Ombré brows looking sharp, crisp, and beautifully pigmented.', sort_order: 8 },
   { name: 'Ombré brows touch up over 8 months', slug: 'ombre-brows-touch-up-over-8-months', category: 'brows', price: 45000, duration_minutes: 90, description: 'An extended maintenance session to restore vibrancy, depth, and perfect definition to your existing Ombré brows.', sort_order: 9 },
 
-  // Main lash services: requested display order.
-  { name: 'Natural lashes', slug: 'natural-lashes', category: 'lash', price: 0, duration_minutes: 120, duration_text: '2hrs', description: 'A soft, natural lash look designed to enhance your eyes while keeping the finish light and effortless.', sort_order: 10 },
-  { name: 'Classic set', slug: 'classic-set', category: 'lash', price: 20000, duration_minutes: 120, duration_text: '2hrs', description: 'A timeless 1:1 application where a single extension is applied to each natural lash. Ideal for a subtle, elegant, mascara-like finish.', sort_order: 11 },
-  { name: 'Hybrid set', slug: 'hybrid-set', category: 'lash', price: 23500, duration_minutes: 120, duration_text: '2hrs', description: 'The perfect middle ground. A textured blend of classic and volume lashes for those who want a bit more fluff and everyday glamour.', sort_order: 12 },
-  { name: 'Volume set', slug: 'volume-set', category: 'lash', price: 28000, duration_minutes: 210, duration_text: '3:30', description: 'Hand-made fans applied to each natural lash, delivering incredible fullness, depth, and a dramatic, fluffy finish.', sort_order: 13 },
-  { name: 'Mega volume', slug: 'mega-volume', category: 'lash', price: 33000, duration_minutes: 210, duration_text: '3:30', description: 'Unapologetically bold. Ultra-fine fans for maximum density, darkness, and an intensely glamorous, show-stopping look.', sort_order: 14 },
+  // Lash Sets — the natural/core lash collection.
+  { name: 'Classic set', slug: 'classic-set', category: 'lash', price: 20000, duration_minutes: 120, duration_text: '2hrs', description: 'A timeless 1:1 application where a single extension is applied to each natural lash. Ideal for a subtle, elegant, mascara-like finish.', sort_order: 10 },
+  { name: 'Hybrid set', slug: 'hybrid-set', category: 'lash', price: 23500, duration_minutes: 120, duration_text: '2hrs', description: 'The perfect middle ground. A textured blend of classic and volume lashes for those who want a bit more fluff and everyday glamour.', sort_order: 11 },
+  { name: 'Volume set', slug: 'volume-set', category: 'lash', price: 28000, duration_minutes: 210, duration_text: '3:30', description: 'Hand-made fans applied to each natural lash, delivering incredible fullness, depth, and a dramatic, fluffy finish.', sort_order: 12 },
+  { name: 'Mega volume', slug: 'mega-volume', category: 'lash', price: 33000, duration_minutes: 210, duration_text: '3:30', description: 'Unapologetically bold. Ultra-fine fans for maximum density, darkness, and an intensely glamorous, show-stopping look.', sort_order: 13 },
+  { name: 'Customize set', slug: 'customize-set', category: 'lash', price: 45000, duration_minutes: 210, duration_text: '3:30', description: 'A completely bespoke lash map tailored to your unique eye shape and style preference. The pinnacle of personalized luxury.', sort_order: 14 },
+  { name: 'Anime set', slug: 'anime-set', category: 'lash', price: 23500, duration_minutes: 180, duration_text: '3hrs', description: 'A striking, defined style mimicking the spiky lash look of anime characters. Perfect for a doll-like, captivating gaze.', sort_order: 15 },
+  { name: 'Wet set', slug: 'wet-set', category: 'lash', price: 0, duration_minutes: 180, duration_text: '3hrs', description: 'A sleek, darker lash finish with narrow, defined spikes for a glossy wet-look effect.', sort_order: 16 },
 
-  // Specialty styles continue after the core sets.
-  { name: 'Special cat eyes', slug: 'special-cat-eyes', category: 'lash', price: 0, duration_minutes: 180, duration_text: '3hrs', description: 'A lifted, elongated cat-eye lash design customized to emphasize the outer corners of the eyes.', sort_order: 15 },
-  { name: 'Customize set', slug: 'customize-set', category: 'lash', price: 45000, duration_minutes: 210, duration_text: '3:30', description: 'A completely bespoke lash map tailored to your unique eye shape and style preference. The pinnacle of personalized luxury.', sort_order: 16 },
-  { name: 'Wispy hybrid set', slug: 'wispy-hybrid-set', category: 'lash', price: 30000, duration_minutes: 120, duration_text: '2hr', description: 'A highly textured, fluttery look featuring varying lengths and spikes to create a modern, effortlessly chic style.', sort_order: 17 },
+  // Fox Eyes — this is the user's preferred name for the cat-eye collection.
+  { name: 'Classic Fox Eyes', slug: 'classic-fox-eyes', category: 'fox-eyes', price: 20000, duration_minutes: 120, duration_text: '2hrs', description: 'A lifted Fox Eyes mapping using a classic application for an elongated outer-corner effect.', sort_order: 20 },
+  { name: 'Hybrid Fox Eyes', slug: 'hybrid-fox-eyes', category: 'fox-eyes', price: 23500, duration_minutes: 120, duration_text: '2hrs', description: 'A textured Fox Eyes design combining classic and volume techniques for extra definition.', sort_order: 21 },
+  { name: 'Volume Fox Eyes', slug: 'volume-fox-eyes', category: 'fox-eyes', price: 28000, duration_minutes: 210, duration_text: '3:30', description: 'A fuller Fox Eyes mapping with handmade volume fans for a dramatic lifted finish.', sort_order: 22 },
+  { name: 'Mega Volume Fox Eyes', slug: 'mega-volume-fox-eyes', category: 'fox-eyes', price: 33000, duration_minutes: 210, duration_text: '3:30', description: 'Maximum-density Fox Eyes styling with ultra-fine fans and a strong elongated outer-corner effect.', sort_order: 23 },
 
-  // Add-ons / maintenance are grouped together in one box.
-  { name: 'Lash refill', slug: 'lash-refill', category: 'lash-addon', price: 0, duration_minutes: 90, duration_text: '90m', description: 'A maintenance fill to replace outgrown extensions and restore fullness to an existing lash set.', sort_order: 18 },
-  { name: 'Volume set refill', slug: 'volume-set-refill', category: 'lash-addon', price: 14000, duration_minutes: 90, description: 'Maintenance to replace outgrown volume lashes and fill in gaps, restoring your set to its original fluffy glory.', sort_order: 19 },
-  { name: 'Hybrid refill', slug: 'hybrid-refill', category: 'lash-addon', price: 11500, duration_minutes: 90, description: 'A customized top-up of your classic and volume fans to refresh your textured, hybrid look and keep it flawless.', sort_order: 20 },
-  { name: 'Bottom lash set', slug: 'bottom-lash-set', category: 'lash-addon', price: 7000, duration_minutes: 30, duration_text: '30m', description: 'A delicate enhancement applied to your lower lash line to balance your top set and subtly open up your eyes.', sort_order: 21 },
-  { name: 'Lash remover', slug: 'lash-remover', category: 'lash-addon', price: 5000, duration_minutes: 30, duration_text: '30m', description: 'A gentle and safe professional removal of your lash extensions, ensuring the health and integrity of your natural lashes.', sort_order: 22 },
+  // Refills.
+  { name: 'Lash refill', slug: 'lash-refill', category: 'refill', price: 0, duration_minutes: 90, duration_text: '90m', description: 'A maintenance fill to replace outgrown extensions and restore fullness to an existing lash set.', sort_order: 30 },
+  { name: 'Classic refill', slug: 'classic-refill', category: 'refill', price: 0, duration_minutes: 90, duration_text: '90m', description: 'A maintenance refill for an existing classic lash set.', sort_order: 31 },
+  { name: 'Hybrid refill', slug: 'hybrid-refill', category: 'refill', price: 11500, duration_minutes: 90, duration_text: '90m', description: 'A customized top-up of your classic and volume fans to refresh your textured hybrid look.', sort_order: 32 },
+  { name: 'Volume refill', slug: 'volume-refill', category: 'refill', price: 14000, duration_minutes: 90, duration_text: '90m', description: 'Maintenance to replace outgrown volume lashes and restore fullness.', sort_order: 33 },
+  { name: 'Mega volume refill', slug: 'mega-volume-refill', category: 'refill', price: 0, duration_minutes: 90, duration_text: '90m', description: 'A maintenance refill for an existing mega volume lash set.', sort_order: 34 },
+  { name: 'Wet set refill', slug: 'wet-set-refill', category: 'refill', price: 0, duration_minutes: 90, duration_text: '90m', description: 'A maintenance refill for an existing wet set.', sort_order: 35 },
+  { name: 'Anime refill', slug: 'anime-refill', category: 'refill', price: 0, duration_minutes: 90, duration_text: '90m', description: 'A maintenance refill for an existing anime set.', sort_order: 36 },
 
-  // Final two lash boxes.
-  { name: 'Anime set', slug: 'anime-set', category: 'lash', price: 23500, duration_minutes: 180, duration_text: '3hrs', description: 'A striking, defined style mimicking the spiky lash look of anime characters. Perfect for a doll-like, captivating gaze.', sort_order: 23 },
-  { name: 'Wet set', slug: 'wet-set', category: 'lash', price: 0, duration_minutes: 180, duration_text: '3hrs', description: 'A sleek, darker lash finish with narrow, defined spikes for a glossy wet-look effect.', sort_order: 24 },
+  // Add-ons & Extras.
+  { name: 'Wispy add-on', slug: 'wispy-add-on', category: 'lash-addon', price: 0, duration_minutes: 30, duration_text: '30m', description: 'Extra wispy spikes added to your lash set for more texture and definition.', sort_order: 40 },
+  { name: 'Bottom lashes', slug: 'bottom-lashes', category: 'lash-addon', price: 7000, duration_minutes: 30, duration_text: '30m', description: 'A delicate enhancement applied to your lower lash line to balance your top set and subtly open up your eyes.', sort_order: 41 },
+  { name: 'Lash removal', slug: 'lash-removal', category: 'lash-addon', price: 5000, duration_minutes: 30, duration_text: '30m', description: 'A gentle and safe professional removal of your lash extensions, ensuring the health and integrity of your natural lashes.', sort_order: 42 },
 ];
 
 export const PAYMENT_ACCOUNT = {
