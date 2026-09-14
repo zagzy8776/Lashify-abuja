@@ -51,21 +51,24 @@ export default function SeoStructuredData() {
     inLanguage: 'en-NG',
   };
 
-  const services = SERVICE_CATALOG.map((service) => ({
-    '@context': 'https://schema.org',
-    '@type': 'Service',
-    name: service.name,
-    description: service.description,
-    provider: { '@id': `${SITE_URL}/#business` },
-    areaServed: { '@type': 'City', name: 'Abuja' },
-    offers: {
-      '@type': 'Offer',
-      priceCurrency: 'NGN',
-      price: String(service.price),
-      availability: 'https://schema.org/InStock',
-      url: absoluteUrl('/services'),
-    },
-  }));
+  // Do not publish placeholder/zero prices as structured-data offers.
+  const services = SERVICE_CATALOG
+    .filter((service) => service.price > 0)
+    .map((service) => ({
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      name: service.name,
+      description: service.description,
+      provider: { '@id': `${SITE_URL}/#business` },
+      areaServed: { '@type': 'City', name: 'Abuja' },
+      offers: {
+        '@type': 'Offer',
+        priceCurrency: 'NGN',
+        price: String(service.price),
+        availability: 'https://schema.org/InStock',
+        url: absoluteUrl('/services'),
+      },
+    }));
 
   return (
     <>
