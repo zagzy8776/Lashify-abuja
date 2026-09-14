@@ -14,9 +14,27 @@ type Props = {
 const CATEGORIES = [
   {
     id: 'lash',
-    title: 'Lash Services',
-    description: 'Natural, classic, hybrid, volume and specialty lash sets.',
+    title: 'Lash Sets',
+    description: 'Natural/core lash sets: classic, hybrid, volume, mega volume, customize, anime and wet set.',
     image: '/images/category-lash-v2.jpg',
+  },
+  {
+    id: 'fox-eyes',
+    title: 'Fox Eyes',
+    description: 'Lifted Fox Eyes styles in classic, hybrid, volume and mega volume.',
+    image: '/images/category-lash-v2.jpg',
+  },
+  {
+    id: 'refill',
+    title: 'Refills',
+    description: 'Refresh and maintain your existing lash set with the right refill.',
+    image: '/images/category-lash-refill.jpg',
+  },
+  {
+    id: 'lash-addon',
+    title: 'Add-ons & Extras',
+    description: 'Wispy add-ons, bottom lashes, lash removal and other extras.',
+    image: '/images/category-lash-refill.jpg',
   },
   {
     id: 'brows',
@@ -24,15 +42,7 @@ const CATEGORIES = [
     description: 'Expert brow shaping, tinting, and microblading.',
     image: '/images/category-brow.jpg',
   },
-  {
-    id: 'lash-addon',
-    title: 'Lash Add-ons',
-    description: 'Refills, bottom lashes, removals and other lash maintenance.',
-    image: '/images/category-lash-refill.jpg',
-  },
 ];
-
-const isAddOnCategory = (category: string) => category === 'lash-addon' || category === 'lash-refill';
 
 export default function Services({ onBookService, compact }: Props) {
   const router = useRouter();
@@ -75,8 +85,8 @@ export default function Services({ onBookService, compact }: Props) {
     return (
       <section className="py-24" style={{ backgroundColor: '#faf5f0' }}>
         <div className="container-lux">
-          <div className="grid md:grid-cols-3 gap-8">
-            {[...Array(3)].map((_, i) => (
+          <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-8">
+            {[...Array(4)].map((_, i) => (
               <div key={i} className="h-96 rounded-[32px] animate-pulse" style={{ backgroundColor: 'rgba(179,139,158,0.1)' }} />
             ))}
           </div>
@@ -87,20 +97,12 @@ export default function Services({ onBookService, compact }: Props) {
 
   const activeCategory = CATEGORIES.find((category) => category.id === selectedCategory);
   const modalServices = servicesList
-    .filter((service) => {
-      if (selectedCategory === 'lash-addon') return isAddOnCategory(service.category);
-      return service.category === selectedCategory;
-    })
+    .filter((service) => service.category === selectedCategory)
     .filter((service) => service.is_active !== false)
     .sort((a, b) => a.sort_order - b.sort_order);
 
   const activeCategories = CATEGORIES.filter((category) =>
-    servicesList.some((service) => {
-      const matchesCategory = category.id === 'lash-addon'
-        ? isAddOnCategory(service.category)
-        : service.category === category.id;
-      return matchesCategory && service.is_active !== false;
-    }),
+    servicesList.some((service) => service.category === category.id && service.is_active !== false),
   );
 
   const openBooking = (service: Service) => {
@@ -118,9 +120,9 @@ export default function Services({ onBookService, compact }: Props) {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-8">
           {activeCategories.length === 0 ? (
-            <div className="col-span-3 text-center py-12">
+            <div className="col-span-full text-center py-12">
               <p className="text-xl text-gray-500 font-serif">No services are currently available.</p>
             </div>
           ) : activeCategories.map((category) => (
@@ -144,10 +146,10 @@ export default function Services({ onBookService, compact }: Props) {
                   onError={(event) => { (event.currentTarget as HTMLImageElement).style.opacity = '0.3'; }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                <div className="absolute bottom-0 inset-x-0 p-8 flex flex-col items-center text-center">
-                  <h3 className="text-3xl font-extrabold text-white mb-3 tracking-tight">{category.title}</h3>
+                <div className="absolute bottom-0 inset-x-0 p-6 flex flex-col items-center text-center">
+                  <h3 className="text-2xl font-extrabold text-white mb-3 tracking-tight">{category.title}</h3>
                   <p className="text-white/80 font-medium mb-6 text-sm">{category.description}</p>
-                  <span className="bg-rose-500 text-white font-bold px-8 py-3.5 rounded-full shadow-lg flex items-center gap-2 text-sm w-full justify-center">
+                  <span className="bg-rose-500 text-white font-bold px-6 py-3.5 rounded-full shadow-lg flex items-center gap-2 text-sm w-full justify-center">
                     View Options <ArrowRight className="w-4 h-4" />
                   </span>
                 </div>
