@@ -61,27 +61,23 @@ export async function syncServiceCatalog() {
           is_active: true,
         },
       });
-    } else {
-      const data = migratedLegacy
-        ? {
-            name: item.name,
-            slug: item.slug,
-            description: item.description,
-            price: item.price,
-            duration_minutes: item.duration_minutes,
-            duration_text: item.duration_text ?? null,
-            category: item.category,
-            sort_order: item.sort_order,
-            is_active: true,
-          }
-        : {
-            name: item.name,
-            slug: item.slug,
-            category: item.category,
-            sort_order: item.sort_order,
-          };
-
-      canonical = await prisma.service.update({ where: { id: canonical.id }, data });
+    } else if (migratedLegacy) {
+      // A legacy entry is migrated once to the new canonical identity/pricing.
+      // Once it has the canonical slug, future admin edits are preserved.
+      canonical = await prisma.service.update({
+        where: { id: canonical.id },
+        data: {
+          name: item.name,
+          slug: item.slug,
+          description: item.description,
+          price: item.price,
+          duration_minutes: item.duration_minutes,
+          duration_text: item.duration_text ?? null,
+          category: item.category,
+          sort_order: item.sort_order,
+          is_active: true,
+        },
+      });
     }
 
     usedIds.add(canonical.id);
