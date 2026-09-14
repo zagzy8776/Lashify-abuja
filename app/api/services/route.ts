@@ -3,9 +3,7 @@ import prisma from '@/src/lib/prisma';
 import { SERVICE_CATALOG } from '@/src/lib/services-catalog';
 
 async function ensureServicesSeeded() {
-  const count = await prisma.service.count();
-  if (count > 0) return;
-
+  // Seed only missing catalog entries. Never overwrite services that the admin has edited.
   await prisma.service.createMany({
     data: SERVICE_CATALOG.map((s) => ({
       name: s.name,
