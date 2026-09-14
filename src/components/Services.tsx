@@ -15,13 +15,13 @@ const CATEGORIES = [
   {
     id: 'lash',
     title: 'Lash Sets',
-    description: 'Natural/core lash sets: classic, hybrid, volume, mega volume, customize, anime and wet set.',
+    description: 'Classic, hybrid, volume, mega volume, customize, anime and wet lash sets.',
     image: '/images/category-lash-v2.jpg',
   },
   {
-    id: 'fox-eyes',
-    title: 'Fox Eyes',
-    description: 'Lifted Fox Eyes styles in classic, hybrid, volume and mega volume.',
+    id: 'cat-eyes',
+    title: 'Cat Eye Sets',
+    description: 'Classic, hybrid, volume and mega volume cat-eye lash styles.',
     image: '/images/category-lash-v2.jpg',
   },
   {
@@ -43,6 +43,11 @@ const CATEGORIES = [
     image: '/images/category-brow.jpg',
   },
 ];
+
+const isCatEyeCategory = (category: string) => category === 'cat-eyes' || category === 'fox-eyes';
+
+const displayServiceName = (service: Service) =>
+  service.name.replace(/fox eyes/gi, 'cat eye').replace(/fox-eye/gi, 'cat-eye');
 
 export default function Services({ onBookService, compact }: Props) {
   const router = useRouter();
@@ -96,17 +101,22 @@ export default function Services({ onBookService, compact }: Props) {
   }
 
   const activeCategory = CATEGORIES.find((category) => category.id === selectedCategory);
+  const matchesCategory = (service: Service, categoryId: string) => {
+    if (categoryId === 'cat-eyes') return isCatEyeCategory(service.category);
+    return service.category === categoryId;
+  };
+
   const modalServices = servicesList
-    .filter((service) => service.category === selectedCategory)
+    .filter((service) => selectedCategory ? matchesCategory(service, selectedCategory) : false)
     .filter((service) => service.is_active !== false)
     .sort((a, b) => a.sort_order - b.sort_order);
 
   const activeCategories = CATEGORIES.filter((category) =>
-    servicesList.some((service) => service.category === category.id && service.is_active !== false),
+    servicesList.some((service) => matchesCategory(service, category.id) && service.is_active !== false),
   );
 
   const openBooking = (service: Service) => {
-    if (onBookService) onBookService(service);
+    if (onBookService) onBookService({ ...service, name: displayServiceName(service) });
     else router.push(`/book?service=${encodeURIComponent(service.id)}`);
   };
 
@@ -198,7 +208,7 @@ export default function Services({ onBookService, compact }: Props) {
                       className="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-gray-100 hover:border-rose-200 hover:shadow-md transition-all"
                     >
                       <div className="flex items-start justify-between gap-4 mb-3">
-                        <h4 className="text-lg sm:text-xl font-bold text-gray-900 leading-tight pr-2">{service.name}</h4>
+                        <h4 className="text-lg sm:text-xl font-bold text-gray-900 leading-tight pr-2">{displayServiceName(service)}</h4>
                         <div className="shrink-0 text-lg font-extrabold text-gray-900 bg-gray-50 px-3 py-2 rounded-lg">
                           {service.original_price && service.original_price > service.price && (
                             <span className="line-through text-gray-400 text-xs font-normal mr-2">{formatNaira(service.original_price)}</span>
@@ -207,7 +217,7 @@ export default function Services({ onBookService, compact }: Props) {
                         </div>
                       </div>
 
-                      <p className="text-sm text-gray-500 leading-relaxed mb-5">{service.description}</p>
+                      <p className="text-sm text-gray-500 leading-relaxed mb-5">{service.description.replace(/Fox Eyes/gi, 'Cat Eye')}</p>
 
                       <div className="flex items-center justify-between gap-3 pt-4 border-t border-gray-50">
                         <span className="flex items-center gap-1.5 text-sm font-bold text-gray-500 bg-gray-50 px-3 py-1.5 rounded-full">
