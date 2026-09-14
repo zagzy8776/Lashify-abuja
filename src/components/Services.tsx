@@ -15,7 +15,7 @@ const CATEGORIES = [
   {
     id: 'lash',
     title: 'Lash Services',
-    description: 'Luxurious lash extensions tailored to your eye shape.',
+    description: 'Natural, classic, hybrid, volume and specialty lash sets.',
     image: '/images/category-lash-v2.jpg',
   },
   {
@@ -25,12 +25,14 @@ const CATEGORIES = [
     image: '/images/category-brow.jpg',
   },
   {
-    id: 'lash-refill',
-    title: 'Lash Refill',
-    description: 'Maintain your gorgeous lashes with regular refills.',
+    id: 'lash-addon',
+    title: 'Lash Add-ons',
+    description: 'Refills, bottom lashes, removals and other lash maintenance.',
     image: '/images/category-lash-refill.jpg',
   },
 ];
+
+const isAddOnCategory = (category: string) => category === 'lash-addon' || category === 'lash-refill';
 
 export default function Services({ onBookService, compact }: Props) {
   const router = useRouter();
@@ -84,9 +86,21 @@ export default function Services({ onBookService, compact }: Props) {
   }
 
   const activeCategory = CATEGORIES.find((category) => category.id === selectedCategory);
-  const modalServices = servicesList.filter((service) => service.category === selectedCategory && service.is_active !== false);
+  const modalServices = servicesList
+    .filter((service) => {
+      if (selectedCategory === 'lash-addon') return isAddOnCategory(service.category);
+      return service.category === selectedCategory;
+    })
+    .filter((service) => service.is_active !== false)
+    .sort((a, b) => a.sort_order - b.sort_order);
+
   const activeCategories = CATEGORIES.filter((category) =>
-    servicesList.some((service) => service.category === category.id && service.is_active !== false),
+    servicesList.some((service) => {
+      const matchesCategory = category.id === 'lash-addon'
+        ? isAddOnCategory(service.category)
+        : service.category === category.id;
+      return matchesCategory && service.is_active !== false;
+    }),
   );
 
   const openBooking = (service: Service) => {
@@ -187,7 +201,7 @@ export default function Services({ onBookService, compact }: Props) {
                           {service.original_price && service.original_price > service.price && (
                             <span className="line-through text-gray-400 text-xs font-normal mr-2">{formatNaira(service.original_price)}</span>
                           )}
-                          <span>{formatNaira(service.price)}</span>
+                          <span>{service.price > 0 ? formatNaira(service.price) : 'Price on request'}</span>
                         </div>
                       </div>
 
