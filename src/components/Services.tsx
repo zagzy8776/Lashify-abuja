@@ -15,7 +15,7 @@ const CATEGORIES = [
   {
     id: 'lash',
     title: 'Lash Sets',
-    description: 'Classic, hybrid, volume, mega volume, customize, anime and wet lash sets.',
+    description: 'Classic, hybrid, volume, mega volume, anime and wet lash sets.',
     image: '/images/category-lash-v2.jpg',
   },
   {
@@ -49,6 +49,38 @@ const isCatEyeCategory = (category: string) => category === 'cat-eyes' || catego
 const displayServiceName = (service: Service) =>
   service.name.replace(/fox eyes/gi, 'cat eye').replace(/fox-eye/gi, 'cat-eye');
 
+/**
+ * Customer-facing safety net for stale/cached data.
+ * The API/database sync is the source of truth, but the UI must never render
+ * two records that represent the same service under pluralization or legacy
+ * naming differences.
+ */
+const serviceIdentity = (service: Service) => {
+  const normalized = service.name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\bsets\b/g, 'set')
+    .replace(/\beyes\b/g, 'eye')
+    .replace(/\baddons\b/g, 'add on')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  return `${service.category}:${normalized}`;
+};
+
+const dedupeServices = (items: Service[]) => {
+  const seen = new Set<string>();
+  return [...items]
+    .filter((service) => service.is_active !== false)
+    .sort((a, b) => a.sort_order - b.sort_order || a.name.localeCompare(b.name))
+    .filter((service) => {
+      const key = serviceIdentity(service);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+};
+
 export default function Services({ onBookService, compact }: Props) {
   const router = useRouter();
   const [servicesList, setServicesList] = useState<Service[]>([]);
@@ -59,10 +91,10 @@ export default function Services({ onBookService, compact }: Props) {
     const loadServices = async () => {
       try {
         const data = await fetchServices();
-        setServicesList(data?.length ? data : fallbackServices);
+        setServicesList(dedupeServices(data?.length ? data : fallbackServices));
       } catch (err) {
         console.error('Failed to fetch services, using local fallback:', err);
-        setServicesList(fallbackServices);
+        setServicesList(dedupeServices(fallbackServices));
       } finally {
         setLoading(false);
       }
@@ -106,10 +138,9 @@ export default function Services({ onBookService, compact }: Props) {
     return service.category === categoryId;
   };
 
-  const modalServices = servicesList
-    .filter((service) => selectedCategory ? matchesCategory(service, selectedCategory) : false)
-    .filter((service) => service.is_active !== false)
-    .sort((a, b) => a.sort_order - b.sort_order);
+  const modalServices = dedupeServices(
+    servicesList.filter((service) => selectedCategory ? matchesCategory(service, selectedCategory) : false),
+  );
 
   const activeCategories = CATEGORIES.filter((category) =>
     servicesList.some((service) => matchesCategory(service, category.id) && service.is_active !== false),
