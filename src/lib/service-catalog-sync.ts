@@ -6,7 +6,7 @@ import { SERVICE_CATALOG } from '@/src/lib/services-catalog';
  * "Classic sets", "classic-set", and "Classic Set" resolve to one service.
  * This is deliberately identity-focused; it does not change the displayed name.
  */
-const normalize = (value: string) =>
+export const normalizeServiceIdentity = (value: string) =>
   value
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, ' ')
@@ -63,14 +63,14 @@ export async function syncServiceCatalog() {
     let migratedLegacy = false;
 
     const aliases = new Set([
-      normalize(item.name),
-      ...(LEGACY_ALIASES[item.slug] ?? []).map(normalize),
+      normalizeServiceIdentity(item.name),
+      ...(LEGACY_ALIASES[item.slug] ?? []).map(normalizeServiceIdentity),
     ]);
 
     if (!canonical) {
       canonical = existing.find((service) => {
         if (usedIds.has(service.id)) return false;
-        return aliases.has(normalize(service.name)) || aliases.has(normalize(service.slug));
+        return aliases.has(normalizeServiceIdentity(service.name)) || aliases.has(normalizeServiceIdentity(service.slug));
       });
       migratedLegacy = Boolean(canonical);
     }
@@ -116,7 +116,7 @@ export async function syncServiceCatalog() {
     const duplicates = existing.filter((service) => {
       if (service.id === canonical!.id || usedIds.has(service.id)) return false;
       if (service.slug === item.slug) return true;
-      return aliases.has(normalize(service.name)) || aliases.has(normalize(service.slug));
+      return aliases.has(normalizeServiceIdentity(service.name)) || aliases.has(normalizeServiceIdentity(service.slug));
     });
 
     if (duplicates.length) {
@@ -132,10 +132,10 @@ export async function syncServiceCatalog() {
   // Customize Set is intentionally not part of the current canonical catalog.
   const legacyOnly = existing.filter((service) => {
     if (usedIds.has(service.id)) return false;
-    const normalizedName = normalize(service.name);
-    const normalizedSlug = normalize(service.slug);
+    const normalizedName = normalizeServiceIdentity(service.name);
+    const normalizedSlug = normalizeServiceIdentity(service.slug);
     return LEGACY_ONLY_ALIASES.some((alias) => {
-      const normalizedAlias = normalize(alias);
+      const normalizedAlias = normalizeServiceIdentity(alias);
       return normalizedName === normalizedAlias || normalizedSlug === normalizedAlias;
     });
   });
