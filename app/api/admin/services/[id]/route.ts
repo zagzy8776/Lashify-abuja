@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import prisma from '@/src/lib/prisma';
 import { requireAdmin } from '@/src/lib/admin-auth';
 import { serviceUpdateSchema } from '@/src/lib/admin-validation';
-import { syncServiceCatalog } from '@/src/lib/service-catalog-sync';
+import { normalizeServiceIdentity, syncServiceCatalog } from '@/src/lib/service-catalog-sync';
 
 export async function PATCH(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
@@ -12,16 +12,24 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
     const body = serviceUpdateSchema.parse(await request.json());
 
     if (body.name) {
-      const duplicate = await prisma.service.findFirst({
-        where: {
-          id: { not: id },
-          is_active: true,
-          name: { equals: body.name, mode: 'insensitive' },
-        },
+      const activeServices = await prisma.service.findMany({
+        where: { is_active: true, id: { not: id } },
+        select: { id: true, name: true, slug: true },
+      });
+      const identity = normalizeServiceIdentity(body.name);
+
+      if (activeServices.some((service) => normalizeServiceIdentity(service.name) === identity || normalizeServiceIdentity(service.slug) === identity)) {
+        return NextResponse.json({ error: 'An active service with this name already exists.' }, { status: 409 });
+      }
+    }
+
+    if (body.slug) {
+      const duplicateSlug = await prisma.service.findFirst({
+        where: { id: { not: id }, slug: body.slug, is_active: true },
         select: { id: true },
       });
-      if (duplicate) {
-        return NextResponse.json({ error: 'An active service with this name already exists.' }, { status: 409 });
+      if (duplicateSlug) {
+        return NextResponse.json({ error: 'An active service with this slug already exists.' }, { status: 409 });
       }
     }
 
