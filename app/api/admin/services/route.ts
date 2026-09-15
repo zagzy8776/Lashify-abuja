@@ -34,21 +34,16 @@ export async function POST(request: Request) {
     const slug = body.slug || body.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
     const identity = normalizeServiceIdentity(body.name);
 
-    const duplicate = await prisma.service.findFirst({
+    const activeServices = await prisma.service.findMany({
       where: { is_active: true },
       select: { id: true, name: true, slug: true },
     });
 
-    if (duplicate && normalizeServiceIdentity(duplicate.name) === identity) {
+    if (activeServices.some((service) => normalizeServiceIdentity(service.name) === identity || normalizeServiceIdentity(service.slug) === identity)) {
       return NextResponse.json({ error: 'An active service with this name already exists.' }, { status: 409 });
     }
 
-    const duplicateSlug = await prisma.service.findFirst({
-      where: { slug, is_active: true },
-      select: { id: true },
-    });
-
-    if (duplicateSlug) {
+    if (activeServices.some((service) => service.slug === slug)) {
       return NextResponse.json({ error: 'An active service with this slug already exists.' }, { status: 409 });
     }
 
