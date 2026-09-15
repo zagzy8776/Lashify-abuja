@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import prisma from '@/src/lib/prisma';
 import { requireAdmin } from '@/src/lib/admin-auth';
 import { serviceCreateSchema } from '@/src/lib/admin-validation';
-import { syncServiceCatalog } from '@/src/lib/service-catalog-sync';
+import { normalizeServiceIdentity, syncServiceCatalog } from '@/src/lib/service-catalog-sync';
 
 export async function GET() {
   try {
@@ -32,6 +32,25 @@ export async function POST(request: Request) {
     await requireAdmin();
     const body = serviceCreateSchema.parse(await request.json());
     const slug = body.slug || body.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    const identity = normalizeServiceIdentity(body.name);
+
+    const duplicate = await prisma.service.findFirst({
+      where: { is_active: true },
+      select: { id: true, name: true, slug: true },
+    });
+
+    if (duplicate && normalizeServiceIdentity(duplicate.name) === identity) {
+      return NextResponse.json({ error: 'An active service with this name already exists.' }, { status: 409 });
+    }
+
+    const duplicateSlug = await prisma.service.findFirst({
+      where: { slug, is_active: true },
+      select: { id: true },
+    });
+
+    if (duplicateSlug) {
+      return NextResponse.json({ error: 'An active service with this slug already exists.' }, { status: 409 });
+    }
 
     const service = await prisma.service.create({
       data: { ...body, slug },
