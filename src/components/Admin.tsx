@@ -921,6 +921,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [newItem, setNewItem] = useState<Partial<Service>>({ name: '', description: '', price: 0, duration_minutes: 0, duration_text: '', category: 'lash', image_url: '' });
+  const [priceOnRequest, setPriceOnRequest] = useState(false);
   
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -1032,9 +1033,10 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
     if (!newItem.name?.trim() || Number(newItem.price) < 0 || !newItem.duration_minutes) return;
     setSaving(true);
     try {
-      const data = await adminCreateService(newItem);
+      const data = await adminCreateService({ ...newItem, price: priceOnRequest ? 0 : Number(newItem.price) });
       setServices([...services, data]);
       setNewItem({ name: '', description: '', price: 0, duration_minutes: 0, duration_text: '', category: 'lash', image_url: '' });
+      setPriceOnRequest(false);
       setShowAddModal(false);
     } catch (err) {
       console.error('Failed to create service:', err);
@@ -1047,6 +1049,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
 
   const handleEdit = (service: Service) => {
     setEditingService(service);
+    setPriceOnRequest(service.price === 0);
     setEditForm({
       name: service.name,
       description: service.description,
@@ -1062,7 +1065,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
     if (!editingService) return;
     setSaving(true);
     try {
-      await adminUpdateService(editingService.id, editForm);
+      await adminUpdateService(editingService.id, { ...editForm, price: priceOnRequest ? 0 : Number(editForm.price) });
       setServices(services.map((s) => s.id === editingService.id ? { ...s, ...editForm } : s));
       setEditingService(null);
       setEditForm({});
@@ -1115,15 +1118,15 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
             min="0"
             placeholder="0"
             value={form.price ?? ''}
-            disabled={Number(form.price) === 0}
+            disabled={priceOnRequest}
             onChange={(e) => setForm({...form, price: Number(e.target.value)})}
             className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-all font-medium text-gray-900 disabled:opacity-60 disabled:cursor-not-allowed"
           />
           <label className="mt-3 flex items-center gap-2 cursor-pointer select-none">
             <input
               type="checkbox"
-              checked={Number(form.price) === 0}
-              onChange={(e) => setForm({...form, price: e.target.checked ? 0 : ''})}
+              checked={priceOnRequest}
+              onChange={(e) => setPriceOnRequest(e.target.checked)}
               className="w-4 h-4 rounded border-gray-300 text-rose-500 focus:ring-rose-500"
             />
             <span className="text-xs font-bold text-gray-600">Price on request</span>
@@ -1193,7 +1196,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
             <Percent className="w-4 h-4" /> Apply 15% Promo
           </button>
           <button
-            onClick={() => setShowAddModal(true)}
+            onClick={() => { setPriceOnRequest(false); setShowAddModal(true); }}
             className="px-5 py-2.5 bg-rose-500 text-white text-sm font-bold rounded-xl hover:bg-rose-600 transition-colors shadow-sm flex items-center gap-2"
           >
             <span>+</span> Add Service
