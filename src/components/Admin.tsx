@@ -1029,7 +1029,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
   };
 
   const handleAddService = async () => {
-    if (!newItem.name?.trim() || !newItem.price || !newItem.duration_minutes) return;
+    if (!newItem.name?.trim() || Number(newItem.price) < 0 || !newItem.duration_minutes) return;
     setSaving(true);
     try {
       const data = await adminCreateService(newItem);
@@ -1110,7 +1110,24 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
       <div className="grid sm:grid-cols-3 gap-4">
         <div>
           <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Price (₦)</label>
-          <input type="number" placeholder="0" value={form.price || ''} onChange={(e) => setForm({...form, price: Number(e.target.value)})} className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-all font-medium text-gray-900" />
+          <input
+            type="number"
+            min="0"
+            placeholder="0"
+            value={form.price ?? ''}
+            disabled={Number(form.price) === 0}
+            onChange={(e) => setForm({...form, price: Number(e.target.value)})}
+            className="w-full h-14 bg-gray-50 border border-gray-200 rounded-xl px-4 outline-none focus:bg-white focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-all font-medium text-gray-900 disabled:opacity-60 disabled:cursor-not-allowed"
+          />
+          <label className="mt-3 flex items-center gap-2 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={Number(form.price) === 0}
+              onChange={(e) => setForm({...form, price: e.target.checked ? 0 : ''})}
+              className="w-4 h-4 rounded border-gray-300 text-rose-500 focus:ring-rose-500"
+            />
+            <span className="text-xs font-bold text-gray-600">Price on request</span>
+          </label>
         </div>
         <div>
           <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Time (mins)</label>
@@ -1143,7 +1160,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
         </div>
       </div>
       <div className="flex gap-3 mt-8">
-        <button onClick={onSave} disabled={saving || !form.name?.trim() || !form.price} className="flex-1 h-14 bg-rose-500 text-white font-bold rounded-xl hover:bg-rose-600 transition-colors disabled:opacity-50 flex items-center justify-center shadow-sm">
+        <button onClick={onSave} disabled={saving || !form.name?.trim() || Number(form.price) < 0 || !form.duration_minutes} className="flex-1 h-14 bg-rose-500 text-white font-bold rounded-xl hover:bg-rose-600 transition-colors disabled:opacity-50 flex items-center justify-center shadow-sm">
           {saving ? <Loader2 className="w-5 h-5 animate-spin inline" /> : 'Save Service'}
         </button>
         <button onClick={onCancel} disabled={saving} className="px-6 h-14 bg-white text-gray-600 font-bold rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors">
@@ -1208,7 +1225,7 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
                 </div>
                 <p className="text-sm font-medium text-gray-500 mb-1.5 line-clamp-2">{svc.description}</p>
                 <p className="text-base font-bold text-gray-900">
-                  {formatNaira(svc.price)}
+                  {svc.price > 0 ? formatNaira(svc.price) : 'Price on request'}
                   {svc.original_price && svc.original_price > svc.price && (
                     <span className="ml-2">
                       <span className="line-through text-gray-400 font-normal text-xs">{formatNaira(svc.original_price)}</span>
