@@ -1065,8 +1065,9 @@ function ServicesManager({ services, setServices, toggleServiceActive, checkAuth
     if (!editingService) return;
     setSaving(true);
     try {
-      await adminUpdateService(editingService.id, { ...editForm, price: priceOnRequest ? 0 : Number(editForm.price) });
-      setServices(services.map((s) => s.id === editingService.id ? { ...s, ...editForm } : s));
+      const updatePayload = { ...editForm, price: priceOnRequest ? 0 : Number(editForm.price) };
+      await adminUpdateService(editingService.id, updatePayload);
+      setServices(services.map((s) => s.id === editingService.id ? { ...s, ...updatePayload } : s));
       setEditingService(null);
       setEditForm({});
     } catch (err) {
